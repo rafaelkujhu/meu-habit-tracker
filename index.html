@@ -13,6 +13,14 @@
       --text: #1f2937;
     }
 
+  /* ===== TEMA FEMININO ===== */
+  .theme-feminino {
+   --bg: #fff7fb;
+   --card: #ffffff;
+   --primary: #e86aa6;
+   --text: #4a1f35;
+  }
+
     body {
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont;
@@ -59,7 +67,7 @@
     }
 
     .day {
-      background: #e5e7eb;
+      background: #f3dbe7;
       padding: 12px 0;
       border-radius: 10px;
       text-align: center;
@@ -67,14 +75,15 @@
       font-weight: 500;
     }
 
-    .day.workout { background: #86efac; }
-    .day.water   { background: #93c5fd; }
-    .day.both    { background: #d8b4fe; }
+   .day.workout { background: #f6b3cf; }
+   .day.water   { background: #c7ddf7; }
+   .day.both    { background: #e6c1f0; }
+
 
     /* ---------- PAINEL DO DIA ---------- */
     .day-panel {
       background: var(--card);
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 20px;
       width: 100%;
     }
@@ -88,6 +97,13 @@
       margin-top: 12px;
       font-size: 14px;
     }
+
+   .gentle-msg {
+   margin-top: 16px;
+   font-size: 14px;
+   opacity: 0.7;
+   text-align: center;
+ }
 
     select, input, textarea {
       width: 100%;
@@ -119,7 +135,7 @@
 </head>
 
 <body>
-  <div class="app">
+  <body class="theme-feminino">
 
     <!-- CALENDÁRIO -->
     <div class="calendar">
@@ -151,7 +167,14 @@
       <label>Observação</label>
       <textarea id="noteInput" rows="3"></textarea>
 
-      <button class="save" id="saveDay">Salvar</button>
+<p class="gentle-msg">
+  Constância é mais importante que perfeição ✨
+</p>
+
+<button class="save" id="saveDay">Salvar</button>
+
+
+        <button class="save" id="saveDay">Salvar</button>
     </div>
 
   </div>
