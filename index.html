@@ -68,8 +68,9 @@
 
     .day {
       background: #f3dbe7;
-      padding: 12px 0;
-      border-radius: 10px;
+      padding: 8px 0;
+      border-radius: 12px;
+      font-size: 13px;
       text-align: center;
       cursor: pointer;
       font-weight: 500;
@@ -124,6 +125,28 @@
       font-size: 16px;
       cursor: pointer;
     }
+
+  @media (max-width: 768px) {
+  .calendar {
+    padding: 12px;
+  }
+
+  .calendar-grid {
+    gap: 6px;
+  }
+
+  .day {
+    padding: 6px 0;
+    font-size: 12px;
+  }
+} 
+
+/* PASSO 3 — título do mês menor no mobile */
+@media (max-width: 768px) {
+  .calendar-header h2 {
+    font-size: 18px;
+  }
+}
 
     /* ---------- RESPONSIVO ---------- */
     @media (max-width: 768px) {
