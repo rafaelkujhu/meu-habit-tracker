@@ -201,8 +201,10 @@
   </style>
 </head>
 
-<body>
   <body class="theme-feminino">
+
+  <div class="app">
+
 
 <div class="year-view" id="yearView"></div>
 
@@ -295,7 +297,7 @@
       currentDate.setMonth(index);
       renderYear();
       renderCalendar();
-      renderYear();
+      
     };
 
     yearView.appendChild(div);
@@ -312,7 +314,9 @@
         year: "numeric"
       });
 
-      const firstDay = new Date(year, month, 1).getDay();
+      let firstDay = new Date(year, month, 1).getDay();
+     firstDay = firstDay === 0 ? 6 : firstDay - 1;
+
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const data = getData();
 
@@ -344,7 +348,7 @@
           else if (agua >= WATER_GOAL) dayDiv.classList.add("water");
         }
 
-        dayDiv.onclick = () => openDay(dateKey);
+        dayDiv.onclick = () => openDay(dateKey, e);
         calendarGrid.appendChild(dayDiv);
       }
    
@@ -352,15 +356,19 @@
    document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
  }
 
-    function openDay(dateKey) {
-      selectedDateKey = dateKey;
-      const data = getData()[dateKey] || {};
 
-      document.getElementById("selectedDate").innerText = dateKey;
-      document.getElementById("workoutType").value = data.treino || "";
-      document.getElementById("waterInput").value = data.agua || "";
-      document.getElementById("noteInput").value = data.obs || "";
-    }
+  function openDay(dateKey, e) {
+  clearActiveDays();
+  e.target.classList.add("active");
+
+  selectedDateKey = dateKey;
+  const data = getData()[dateKey] || {};
+
+  document.getElementById("selectedDate").innerText = dateKey;
+  document.getElementById("workoutType").value = data.treino || "";
+  document.getElementById("waterInput").value = data.agua || "";
+  document.getElementById("noteInput").value = data.obs || "";
+}
 
     document.getElementById("saveDay").onclick = () => {
       if (!selectedDateKey) return;
