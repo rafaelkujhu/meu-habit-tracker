@@ -261,14 +261,11 @@
     calendarGrid.appendChild(dayDiv);
   }
 }
+function clearActiveDays() {
+  document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
+}
 
-
-    function openDay(dateKey) {
-      selectedDateKey = dateKey;
-      const data = getData()[dateKey] || {};
-
-
-     function openDay(dateKey, e) {
+function openDay(dateKey, e) {
   clearActiveDays();
   e.target.classList.add("active");
 
@@ -291,31 +288,32 @@
   document.getElementById("noteInput").value = data.obs || "";
 }
 
-    document.getElementById("saveDay").onclick = () => {
-      if (!selectedDateKey) return;
+document.getElementById("saveDay").onclick = () => {
+  if (!selectedDateKey) return;
 
-      const data = getData();
-      data[selectedDateKey] = {
-        treino: document.getElementById("workoutType").value,
-        agua: Number(document.getElementById("waterInput").value),
-        obs: document.getElementById("noteInput").value
-      };
+  const data = getData();
+  data[selectedDateKey] = {
+    treino: document.getElementById("workoutType").value,
+    agua: Number(document.getElementById("waterInput").value),
+    obs: document.getElementById("noteInput").value
+  };
 
-      saveData(data);
-      renderCalendar();
-    };
+  saveData(data);
+  renderCalendar();
+};
 
-    document.getElementById("prevMonth").onclick = () => {
-      currentDate.setMonth(currentDate.getMonth() - 1);
-      renderCalendar();
-    };
+document.getElementById("prevMonth").onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() - 1);
+  renderCalendar();
+};
 
-    document.getElementById("nextMonth").onclick = () => {
-      currentDate.setMonth(currentDate.getMonth() + 1);
-      renderCalendar();
-    };
+document.getElementById("nextMonth").onclick = () => {
+  currentDate.setMonth(currentDate.getMonth() + 1);
+  renderCalendar();
+};
 
-    renderCalendar();
+renderCalendar();
+
   </script>
 </body>
 </html>
