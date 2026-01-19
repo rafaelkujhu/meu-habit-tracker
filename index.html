@@ -28,14 +28,21 @@
       color: var(--text);
     }
 
- .app {
+  .app {
   display: grid;
-  grid-template-columns: 320px 1fr 1fr 1fr;
+  grid-template-columns: 320px;   /* 🔥 começa só com calendário */
   gap: 24px;
   padding: 24px;
-  max-width: 1400px;
+  max-width: 900px;
   margin: auto;
   align-items: start;
+  justify-content: center;
+}
+
+/* 🔥 quando um dia for selecionado, vira layout de 2 colunas */
+  .app.show-panel {
+  grid-template-columns: 320px 1fr;
+  max-width: 1200px;
 }
 
 .calendar {
@@ -288,6 +295,8 @@ function clearActiveDays() {
 function openDay(dateKey, e) {
   clearActiveDays();
   e.target.classList.add("active");
+
+ document.querySelector(".app").classList.add("show-panel");
 
  document.getElementById("dayPanel").style.display = "block";
 
