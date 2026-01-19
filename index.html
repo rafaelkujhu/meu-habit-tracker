@@ -218,20 +218,66 @@ body {
       .app {
         flex-direction: column;
       }
-    }
+
+/* ===== VISÃO ANUAL EM FORMATO DE CALENDÁRIO ===== */
+
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.mini-month {
+  background: #f1f5f9;
+  border-radius: 14px;
+  padding: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.mini-month h4 {
+  text-align: center;
+  margin: 6px 0 10px;
+  font-size: 14px;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.mini-day {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.mini-day.workout { background: #f6b3cf; }
+.mini-day.water   { background: #c7ddf7; }
+.mini-day.both    { background: #e6c1f0; }
+ }
+   
   </style>
 </head>
 
  <body class="theme-feminino">
 
   <div class="app">
+
 <div class="calendar" id="yearView">
 
   <h2 style="text-align:center; margin-bottom:16px;">
-    Selecione o mês
+    Visão anual
   </h2>
 
-  <!-- 🔥 CONTAINER EM GRADE -->
+  <!-- 🔥 grade com 12 calendários -->
   <div class="year-grid" id="yearGrid"></div>
 
 </div>
@@ -378,31 +424,67 @@ function calculateWeeklyGoal() {
 
 function renderYear() {
   const grid = document.getElementById("yearGrid");
-grid.innerHTML = "";
+  grid.innerHTML = "";
+
+  const year = currentDate.getFullYear();
+  const data = getData();
 
   const months = [
     "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
     "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
   ];
 
-  months.forEach((name, index) => {
-    const div = document.createElement("div");
-    div.className = "month-card";
-    div.innerText = name;
+  months.forEach((name, monthIndex) => {
+    const box = document.createElement("div");
+    box.className = "mini-month";
 
-    div.onclick = () => {
-      currentDate.setMonth(index);
+    const title = document.createElement("h4");
+    title.innerText = name;
+    box.appendChild(title);
 
-      // 🔥 troca telas
-      yearView.style.display = "none";
-      monthView.style.display = "block";
-      document.querySelector(".app").classList.remove("show-panel");
-      document.getElementById("dayPanel").style.display = "none";
+    const miniGrid = document.createElement("div");
+    miniGrid.className = "mini-grid";
 
-      renderCalendar();
-    };
+    // dias da semana vazios para alinhamento
+    let firstDay = new Date(year, monthIndex, 1).getDay();
+    firstDay = firstDay === 0 ? 6 : firstDay - 1;
 
-   grid.appendChild(div);
+    const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
+
+    for (let i = 0; i < firstDay; i++) {
+      miniGrid.appendChild(document.createElement("div"));
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const d = document.createElement("div");
+      d.className = "mini-day";
+      d.innerText = day;
+
+      const key = `${year}-${monthIndex + 1}-${day}`;
+
+      if (data[key]) {
+        const { treino, agua } = data[key];
+        if (treino && agua >= WATER_GOAL) d.classList.add("both");
+        else if (treino) d.classList.add("workout");
+        else if (agua >= WATER_GOAL) d.classList.add("water");
+      }
+
+      // 🔥 clicar no dia já abre o mês e o dia correto
+      d.onclick = () => {
+        currentDate.setMonth(monthIndex);
+
+        yearView.style.display = "none";
+        monthView.style.display = "block";
+        renderCalendar();
+
+        setTimeout(() => openDay(key, { target: document.querySelector(`[data-key="${key}"]`) }), 200);
+      };
+
+      miniGrid.appendChild(d);
+    }
+
+    box.appendChild(miniGrid);
+    grid.appendChild(box);
   });
 }
 
