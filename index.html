@@ -355,15 +355,11 @@ function renderYear() {
         dayDiv.onclick = (e) => openDay(dateKey, e);
       calendarGrid.appendChild(dayDiv);
       }
-} // ← FECHA renderCalendar AQUI (ESSENCIAL)
+} 
 
 function clearActiveDays() {
   document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
 }
-
-   document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
- }
-
 
   function openDay(dateKey, e) {
   clearActiveDays();
