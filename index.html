@@ -439,31 +439,26 @@ button.save:hover {
 
 <hr style="margin:20px 0;">
 
-<h4 style="text-align:center;">📏 Medidas corporais</h4>
-
-<label>Peso (kg)</label>
-<input type="number" id="weightInput" step="0.1">
-
-<label>Cintura (cm)</label>
-<input type="number" id="waistInput">
-
-<label>Quadril (cm)</label>
-<input type="number" id="hipInput">
-
-<label>Coxa (cm)</label>
-<input type="number" id="thighInput">
-
-<label>Braço (cm)</label>
-<input type="number" id="armInput">
-
-<div id="measureCompare" style="
-  margin-top:16px;
-  background:#f1f5f9;
+<button id="toggleMeasures" style="
+  width:100%;
   padding:12px;
-  border-radius:14px;
-  text-align:center;
-  font-size:14px;
-"></div>
+  border-radius:12px;
+  border:1px solid #e5e7eb;
+  background:#ffffff;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+">
+  📏 Medidas corporais
+</button>
+
+<div id="measuresBox" style="display:none; margin-top:12px;">
+<div id="measureCompare"></div>
+</div>
 
       <p class="gentle-msg">
         Constância é mais importante que perfeição ✨
@@ -1035,6 +1030,17 @@ function renderMeasureCompare() {
 monthView.style.display = "none";
 document.getElementById("dayPanel").style.display = "none";
 yearView.style.display = "block";
+
+document.getElementById("toggleMeasures").onclick = () => {
+  const box = document.getElementById("measuresBox");
+
+  if (box.style.display === "none") {
+    box.style.display = "block";
+  } else {
+    box.style.display = "none";
+  }
+};
+
 
 renderYear();
 calculateStreak();
