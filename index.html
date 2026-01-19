@@ -180,6 +180,27 @@
       cursor: pointer;
     }
 
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.month-card {
+  background: #f2edf7;
+  padding: 14px 8px;
+  border-radius: 14px;
+  text-align: center;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.month-card:hover {
+  background: #e8ddff;
+  transform: scale(1.05);
+}
+
     /* ---------- RESPONSIVO ---------- */
     @media (max-width: 768px) {
       .app {
@@ -194,12 +215,21 @@
   <div class="app">
 
 <!-- 🔥 VISÃO DO ANO -->
-<div class="year-view" id="yearView"></div>
+<div class="calendar" id="yearView">
+
+  <h2 style="text-align:center; margin-bottom:16px;">Selecione o mês</h2>
+
+  <div class="year-grid">
+    <!-- meses serão criados pelo JS -->
+  </div>
+
+</div>
 
 
  <div class="calendar" id="monthView" style="display:none;">
-  <div class="calendar-header">
-  <button id="backYear">⬅</button>
+ <div class="calendar-header">
+  <button id="backYear">⟵</button>
+  <button id="prevMonth">◀</button>
   <h2 id="monthYear"></h2>
   <button id="nextMonth">▶</button>
 </div>
@@ -251,13 +281,13 @@
   <script>
     const calendarGrid = document.getElementById("calendarGrid");
     const monthYear = document.getElementById("monthYear");
+   const yearView = document.getElementById("yearView");
+   const monthView = document.getElementById("monthView");
     const WATER_GOAL = 2000;
 
     let currentDate = new Date();
     let selectedDateKey = null;
 
-const yearView = document.getElementById("yearView");
-const monthView = document.getElementById("monthView");
 
 function renderYear() {
   yearView.innerHTML = "";
@@ -403,17 +433,17 @@ document.getElementById("nextMonth").onclick = () => {
 };
 
 document.getElementById("backYear").onclick = () => {
-  // esconde o calendário e o painel
   monthView.style.display = "none";
   document.getElementById("dayPanel").style.display = "none";
-
-  // mostra os meses
-  yearView.style.display = "grid";
+  document.querySelector(".app").classList.remove("show-panel");
+  yearView.style.display = "block";
 };
 
-
+// 🔥 tela inicial: mostra os meses
 monthView.style.display = "none";
-yearView.style.display = "grid";
+document.getElementById("dayPanel").style.display = "none";
+yearView.style.display = "block";
+
 renderYear();
 
   </script>
