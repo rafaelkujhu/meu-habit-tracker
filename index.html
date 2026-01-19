@@ -14,13 +14,12 @@
     }
 
   /* ===== TEMA FEMININO ===== */
- .theme-feminino {
-  --bg: #fdf9fb;        /* fundo super suave */
-  --card: #ffffff;     /* branco limpo */
-  --primary: #b7a6f6;  /* lilás pastel */
-  --text: #4b4453;     /* cinza arroxeado elegante */
-}
-
+  .theme-feminino {
+   --bg: #fff7fb;
+   --card: #ffffff;
+   --primary: #e86aa6;
+   --text: #4a1f35;
+  }
 
     body {
       margin: 0;
@@ -29,21 +28,23 @@
       color: var(--text);
     }
 
-    .app {
-      display: flex;
-      gap: 20px;
-      padding: 20px;
-      max-width: 1200px;
-      margin: auto;
-    }
+ .app {
+  display: grid;
+  grid-template-columns: 320px 1fr 1fr 1fr;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1400px;
+  margin: auto;
+  align-items: start;
+}
 
-    /* ---------- CALENDÁRIO ---------- */
-    .calendar {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 20px;
-      width: 100%;
-    }
+.calendar {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+  width: 300px;
+  flex-shrink: 0;
+}
 
     .calendar-header {
       display: flex;
@@ -52,19 +53,14 @@
       margin-bottom: 10px;
     }
 
-  .calendar-header button {
-   width: 36px;
-   height: 36px;
-   border: none;
-   background: var(--primary);
-   color: #fff;
-   border-radius: 50%;
-   font-size: 18px;
-   cursor: pointer;
-   display: flex;
-   align-items: center;
-   justify-content: center;
- }
+    .calendar-header button {
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 8px;
+      padding: 6px 10px;
+      cursor: pointer;
+    }
 
     .calendar-grid {
       display: grid;
@@ -73,18 +69,27 @@
     }
 
     .day {
-      background: #f2edf7;
-      padding: 8px 0;
-      border-radius: 12px;
-      font-size: 13px;
-      text-align: center;
-      cursor: pointer;
-      font-weight: 500;
-    }
+  background: #f2edf7;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
 
-.day.workout { background: #c8f0df; } /* verde menta */
-.day.water   { background: #d6e8ff; } /* azul bebê */
-.day.both    { background: #eadcff; } /* lavanda */
+.day:hover {
+  transform: scale(1.1);
+  background: #e8ddff;
+}
+
+   .day.workout { background: #f6b3cf; }
+   .day.water   { background: #c7ddf7; }
+   .day.both    { background: #e6c1f0; }
 
 
     /* ---------- PAINEL DO DIA ---------- */
@@ -132,109 +137,31 @@
       cursor: pointer;
     }
 
- .day.active {
-  outline: 2px solid var(--primary);
-  background: #e6dcfa;
-}
-
-.year-view {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.month-card {
-  background: var(--card);
-  border-radius: 14px;
-  padding: 14px;
-  text-align: center;
-  font-weight: 500;
-  cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
-}
-
-.month-card:active {
-  transform: scale(0.96);
-}
-
-.month-card.active {
-  background: var(--primary);
-  color: white;
-}
-
-  @media (max-width: 768px) {
-  .calendar {
-    padding: 12px;
-  }
-
-  .calendar-grid {
-    gap: 6px;
-  }
- .weekdays {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  font-size: 12px;
-  opacity: 0.6;
-  margin-bottom: 6px;
-}
-
-  .day {
-    padding: 6px 0;
-    font-size: 12px;
-  }
-} 
-
-/* PASSO 3 — título do mês menor no mobile */
-@media (max-width: 768px) {
-  .calendar-header h2 {
-    font-size: 18px;
-  }
-}
-
     /* ---------- RESPONSIVO ---------- */
     @media (max-width: 768px) {
-    .day-panel {
-    padding-bottom: 20px;
+      .app {
+        flex-direction: column;
       }
     }
   </style>
 </head>
 
+<body>
   <body class="theme-feminino">
 
-  <div class="app">
-
-<!-- VISÃO ANUAL -->
-<div class="year-view" id="yearView"></div>
-
-<!-- VISÃO MENSAL -->
-<div class="calendar" id="monthView" style="display:none;">
-
-  <div class="calendar-header">
-    <button id="backYear">◀</button>
-    <h2 id="monthYear"></h2>
-    <button id="nextMonth">▶</button>
-  </div>
-
-  <div class="weekdays">
-    <span>Seg</span>
-    <span>Ter</span>
-    <span>Qua</span>
-    <span>Qui</span>
-    <span>Sex</span>
-    <span>Sáb</span>
-    <span>Dom</span>
-  </div>
-
-  <div class="calendar-grid" id="calendarGrid"></div>
-</div>
+    <!-- CALENDÁRIO -->
+    <div class="calendar">
+      <div class="calendar-header">
+        <button id="prevMonth">◀</button>
+        <h2 id="monthYear"></h2>
+        <button id="nextMonth">▶</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
 
     <!-- PAINEL DO DIA -->
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
-</div>
 
       <label>Treino</label>
       <select id="workoutType">
@@ -252,10 +179,12 @@
       <label>Observação</label>
       <textarea id="noteInput" rows="3"></textarea>
 
-    <div class="gentle-wrapper">
-      <p class="gentle-msg">
-      Constância é mais importante que perfeição ✨
-     </p>
+<p class="gentle-msg">
+  Constância é mais importante que perfeição ✨
+</p>
+
+<button class="save" id="saveDay">Salvar</button>
+
 
         <button class="save" id="saveDay">Salvar</button>
     </div>
@@ -277,34 +206,6 @@
     function saveData(data) {
       localStorage.setItem("habitData", JSON.stringify(data));
     }
- 
-  const yearView = document.getElementById("yearView");
-
-function renderYear() {
-  yearView.innerHTML = "";
-  const year = currentDate.getFullYear();
-
-  const months = [
-    "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
-    "Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"
-  ];
-
-  months.forEach((name, index) => {
-    const div = document.createElement("div");
-    div.className = "month-card";
-    div.innerText = name;
-
-    div.onclick = () => {
-      currentDate.setMonth(index);
-      yearView.style.display = "none";
-      document.getElementById("monthView").style.display = "block";
-      renderCalendar();
-    };
-
-    yearView.appendChild(div);
-  });
-}
-
 
     function renderCalendar() {
       calendarGrid.innerHTML = "";
@@ -316,9 +217,7 @@ function renderYear() {
         year: "numeric"
       });
 
-      let firstDay = new Date(year, month, 1).getDay();
-     firstDay = firstDay === 0 ? 6 : firstDay - 1;
-
+      const firstDay = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
       const data = getData();
 
@@ -331,16 +230,6 @@ function renderYear() {
         dayDiv.classList.add("day");
         dayDiv.innerText = day;
 
-     const today = new Date();
- if (
-   day === today.getDate() &&
-   month === today.getMonth() &&
-   year === today.getFullYear()
- ) {
-   dayDiv.style.border = "2px solid var(--primary)";
- }
-
-
         const dateKey = `${year}-${month + 1}-${day}`;
 
         if (data[dateKey]) {
@@ -350,27 +239,42 @@ function renderYear() {
           else if (agua >= WATER_GOAL) dayDiv.classList.add("water");
         }
 
-        dayDiv.onclick = (e) => openDay(dateKey, e);
-      calendarGrid.appendChild(dayDiv);
+        dayDiv.onclick = () => openDay(dateKey);
+        calendarGrid.appendChild(dayDiv);
       }
-} 
+    }
 
-function clearActiveDays() {
-  document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
-}
+    function openDay(dateKey) {
+      selectedDateKey = dateKey;
+      const data = getData()[dateKey] || {};
 
-  function openDay(dateKey, e) {
+     function openDay(dateKey, e) {
   clearActiveDays();
   e.target.classList.add("active");
 
   selectedDateKey = dateKey;
   const data = getData()[dateKey] || {};
 
-  document.getElementById("selectedDate").innerText = dateKey;
+  const [year, month, day] = dateKey.split("-");
+  const dateObj = new Date(year, month - 1, day);
+
+  document.getElementById("selectedDate").innerText =
+    dateObj.toLocaleDateString("pt-BR", {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    });
+
   document.getElementById("workoutType").value = data.treino || "";
   document.getElementById("waterInput").value = data.agua || "";
   document.getElementById("noteInput").value = data.obs || "";
 }
+
+      document.getElementById("workoutType").value = data.treino || "";
+      document.getElementById("waterInput").value = data.agua || "";
+      document.getElementById("noteInput").value = data.obs || "";
+    }
 
     document.getElementById("saveDay").onclick = () => {
       if (!selectedDateKey) return;
@@ -386,22 +290,17 @@ function clearActiveDays() {
       renderCalendar();
     };
 
-   
-document.getElementById("nextMonth").onclick = () => {
-  currentDate.setMonth(currentDate.getMonth() + 1);
-  renderCalendar();
-};
+    document.getElementById("prevMonth").onclick = () => {
+      currentDate.setMonth(currentDate.getMonth() - 1);
+      renderCalendar();
+    };
 
-document.getElementById("backYear").onclick = () => {
-  document.getElementById("monthView").style.display = "none";
-  yearView.style.display = "grid";
-};
+    document.getElementById("nextMonth").onclick = () => {
+      currentDate.setMonth(currentDate.getMonth() + 1);
+      renderCalendar();
+    };
 
-// 🔥 INICIALIZAÇÃO CORRETA
-document.getElementById("monthView").style.display = "none";
-yearView.style.display = "grid";
-renderYear();
-
+    renderCalendar();
   </script>
 </body>
 </html>
