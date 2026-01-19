@@ -160,6 +160,32 @@ body {
   color: #fff;
 }
 
+.activity-btn {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.activity-btn:hover {
+  background: #ff7a18;
+  color: #fff;
+  border-color: #ff7a18;
+}
+
+.activity-item {
+  background: #f1f5f9;
+  padding: 6px 10px;
+  border-radius: 10px;
+  margin-top: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 
     /* ---------- PAINEL DO DIA ---------- */
 .day-panel {
@@ -360,15 +386,18 @@ button.save:hover {
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
 
-<label>Treino</label>
-<select id="workoutType">
-  <option value="">Não treinei</option>
-  <option value="pernas">Pernas</option>
-  <option value="gluteos">Glúteos</option>
-  <option value="superior">Superior</option>
-  <option value="funcional">Funcional</option>
-  <option value="alongamento">Alongamento</option>
-</select>
+<<label>Atividades realizadas hoje</label>
+
+<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+  <button type="button" class="activity-btn" data-type="Musculação">💪 Musculação</button>
+  <button type="button" class="activity-btn" data-type="Cardio">🏃 Cardio</button>
+  <button type="button" class="activity-btn" data-type="Futebol">⚽ Futebol</button>
+  <button type="button" class="activity-btn" data-type="Alongamento">🧘 Alongamento</button>
+  <button type="button" class="activity-btn" data-type="Outro">➕ Outro</button>
+</div>
+
+<ul id="activityList" style="margin-top:10px;"></ul>
+
 
 <label>Exercícios realizados</label>
 <select id="exerciseList" multiple size="6"></select>
@@ -405,6 +434,34 @@ button.save:hover {
       <label>Observação</label>
       <textarea id="noteInput" rows="3"></textarea>
 
+<hr style="margin:20px 0;">
+
+<h4 style="text-align:center;">📏 Medidas corporais</h4>
+
+<label>Peso (kg)</label>
+<input type="number" id="weightInput" step="0.1">
+
+<label>Cintura (cm)</label>
+<input type="number" id="waistInput">
+
+<label>Quadril (cm)</label>
+<input type="number" id="hipInput">
+
+<label>Coxa (cm)</label>
+<input type="number" id="thighInput">
+
+<label>Braço (cm)</label>
+<input type="number" id="armInput">
+
+<div id="measureCompare" style="
+  margin-top:16px;
+  background:#f1f5f9;
+  padding:12px;
+  border-radius:14px;
+  text-align:center;
+  font-size:14px;
+"></div>
+
       <p class="gentle-msg">
         Constância é mais importante que perfeição ✨
       </p>
@@ -439,6 +496,7 @@ button.save:hover {
   color: #fff;
   font-size: 15px;
   cursor: pointer;
+
 ">
   🗑️ Limpar este dia
 </button>
@@ -456,6 +514,8 @@ button.save:hover {
 
     let currentDate = new Date();
     let selectedDateKey = null;
+   let activitiesToday = [];
+
 
 const exercisesByType = {
   pernas: ["Agachamento", "Búlgaro", "Leg Press", "Cadeira Extensora", "Elevação Pélvica"],
@@ -500,6 +560,42 @@ document.querySelectorAll(".water-btn").forEach(btn => {
     updateWaterUI();
   };
 });
+
+// 🔥 adicionar atividades livres
+document.querySelectorAll(".activity-btn").forEach(btn => {
+  btn.onclick = () => {
+    let name = btn.dataset.type;
+
+    if (name === "Outro") {
+      name = prompt("Qual atividade você fez?");
+      if (!name) return;
+    }
+
+    activitiesToday.push(name);
+    renderActivities();
+  };
+});
+
+function renderActivities() {
+  const list = document.getElementById("activityList");
+  list.innerHTML = "";
+
+  activitiesToday.forEach((act, index) => {
+    const li = document.createElement("li");
+    li.className = "activity-item";
+    li.innerHTML = `
+      ${act}
+      <button onclick="removeActivity(${index})">❌</button>
+    `;
+    list.appendChild(li);
+  });
+}
+
+function removeActivity(index) {
+  activitiesToday.splice(index, 1);
+  renderActivities();
+}
+
 
 // 🔥 atualiza barra + mensagem
 function updateWaterUI() {
@@ -714,6 +810,9 @@ function openDay(dateKey, e) {
 
   selectedDateKey = dateKey;
   const data = getData()[dateKey] || {};
+activitiesToday = data.atividades || [];
+renderActivities();
+
 
   const [year, month, day] = dateKey.split("-");
   const dateObj = new Date(year, month - 1, day);
@@ -732,16 +831,31 @@ function openDay(dateKey, e) {
  updateWaterUI();
 }
 
+document.getElementById("weightInput").value = data.peso || "";
+document.getElementById("waistInput").value = data.cintura || "";
+document.getElementById("hipInput").value = data.quadril || "";
+document.getElementById("thighInput").value = data.coxa || "";
+document.getElementById("armInput").value = data.braco || "";
+}
+
 document.getElementById("saveDay").onclick = () => {
   if (!selectedDateKey) return;
 
   const data = getData();
+
   data[selectedDateKey] = {
-    treino: document.getElementById("workoutType").value,
-    agua: Number(document.getElementById("waterInput").value),
-    obs: document.getElementById("noteInput").value,
-   exercicios: [...document.getElementById("exerciseList").selectedOptions].map(o => o.value)
-  };
+  atividades: activitiesToday,
+
+  agua: Number(document.getElementById("waterInput").value),
+  obs: document.getElementById("noteInput").value,
+
+  peso: Number(document.getElementById("weightInput").value),
+  cintura: Number(document.getElementById("waistInput").value),
+  quadril: Number(document.getElementById("hipInput").value),
+  coxa: Number(document.getElementById("thighInput").value),
+  braco: Number(document.getElementById("armInput").value)
+};
+
 
 document.getElementById("deleteDay").onclick = () => {
   if (!selectedDateKey) return;
@@ -776,6 +890,8 @@ document.getElementById("deleteDay").onclick = () => {
 renderCalendar();
 calculateStreak();
 calculateWeeklyGoal();
+renderMiniWeekChart();
+ renderMeasureCompare();
 };
 
 document.getElementById("prevMonth").onclick = () => {
@@ -837,6 +953,30 @@ function renderMiniWeekChart() {
   }
 }
 
+function renderMeasureCompare() {
+  const data = getData();
+  const keys = Object.keys(data);
+
+  if (keys.length < 2) return;
+
+  const first = data[keys[0]];
+  const last = data[keys[keys.length - 1]];
+
+  let html = "<b>📊 Evolução</b><br>";
+
+  if (first.peso && last.peso)
+    html += `⚖️ Peso: ${(last.peso - first.peso).toFixed(1)} kg<br>`;
+
+  if (first.cintura && last.cintura)
+    html += `📏 Cintura: ${(last.cintura - first.cintura).toFixed(1)} cm<br>`;
+
+  if (first.quadril && last.quadril)
+    html += `🍑 Quadril: ${(last.quadril - first.quadril).toFixed(1)} cm<br>`;
+
+  document.getElementById("measureCompare").innerHTML = html;
+}
+
+
 // 🔥 tela inicial: mostra os meses
 monthView.style.display = "none";
 document.getElementById("dayPanel").style.display = "none";
@@ -846,6 +986,7 @@ renderYear();
 calculateStreak();
 calculateWeeklyGoal();
 renderMiniWeekChart();
+renderMeasureCompare();
 
   </script>
 </body>
