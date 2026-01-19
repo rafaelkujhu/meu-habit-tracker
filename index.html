@@ -908,22 +908,7 @@ document.getElementById("backYear").onclick = () => {
   yearView.style.display = "block";
 };
 
-document.getElementById("workoutType").onchange = () => {
-  const type = document.getElementById("workoutType").value;
-  const list = document.getElementById("exerciseList");
 
-  list.innerHTML = "";
-
-  if (!exercisesByType[type]) return;
-
-  exercisesByType[type].forEach(ex => {
-    const option = document.createElement("option");
-    option.value = ex;
-    option.innerText = ex;
-    list.appendChild(option);
-  });
-};
- 
 function renderMiniWeekChart() {
   const data = getData();
   const today = new Date();
