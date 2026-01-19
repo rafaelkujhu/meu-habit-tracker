@@ -259,17 +259,19 @@
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
 
-      <label>Treino</label>
-      <select id="workoutType">
-     <label>Exercícios realizados</label>
-     <select id="exerciseList" multiple size="6"></select>
-        <option value="">Não treinei</option>
-        <option value="pernas">Pernas</option>
-        <option value="gluteos">Glúteos</option>
-        <option value="superior">Superior</option>
-        <option value="funcional">Funcional</option>
-        <option value="alongamento">Alongamento</option>
-      </select>
+<label>Treino</label>
+<select id="workoutType">
+  <option value="">Não treinei</option>
+  <option value="pernas">Pernas</option>
+  <option value="gluteos">Glúteos</option>
+  <option value="superior">Superior</option>
+  <option value="funcional">Funcional</option>
+  <option value="alongamento">Alongamento</option>
+</select>
+
+<label>Exercícios realizados</label>
+<select id="exerciseList" multiple size="6"></select>
+
 
       <label>Água (ml)</label>
       <input type="number" id="waterInput" placeholder="Ex: 2000" />
@@ -324,7 +326,8 @@ function renderYear() {
       // 🔥 troca telas
       yearView.style.display = "none";
       monthView.style.display = "block";
-};
+      document.querySelector(".app").classList.remove("show-panel");
+      document.getElementById("dayPanel").style.display = "none";
 
       renderCalendar();
     };
@@ -457,12 +460,6 @@ document.getElementById("backYear").onclick = () => {
   yearView.style.display = "block";
 };
 
-// 🔥 tela inicial: mostra os meses
-monthView.style.display = "none";
-document.getElementById("dayPanel").style.display = "none";
-yearView.style.display = "block";
-};
-
 document.getElementById("workoutType").onchange = () => {
   const type = document.getElementById("workoutType").value;
   const list = document.getElementById("exerciseList");
@@ -478,7 +475,11 @@ document.getElementById("workoutType").onchange = () => {
     list.appendChild(option);
   });
 };
-
+ 
+// 🔥 tela inicial: mostra os meses
+monthView.style.display = "none";
+document.getElementById("dayPanel").style.display = "none";
+yearView.style.display = "block";
 
 renderYear();
 
