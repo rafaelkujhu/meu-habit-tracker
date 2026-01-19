@@ -184,6 +184,7 @@ body {
     opacity: 1;
     transform: translateX(0);
   }
+}
 
 .day-panel h3 {
   font-size: 20px;
@@ -400,12 +401,7 @@ button.save:hover {
 
 <!-- mensagem de meta -->
 <p id="waterMessage" style="margin-top:8px; font-weight:600; text-align:center;"></p>
-      <div style="margin-top:8px;">
-  <div style="height:8px; background:#374151; border-radius:6px; overflow:hidden;">
-    <div id="waterBar" style="height:100%; width:0%; background:var(--secondary); transition:width 0.3s;"></div>
-  </div>
-</div>
-
+    
       <label>Observação</label>
       <textarea id="noteInput" rows="3"></textarea>
 
@@ -419,13 +415,16 @@ button.save:hover {
 
 <p id="weeklyGoal" style="text-align:center; margin-top:6px;">
   🎯 Meta semanal: 0 / 5 treinos
+</p>
 <div style="margin-top:10px;">
   <div style="height:8px; background:#e5e7eb; border-radius:6px; overflow:hidden;">
     <div id="weekBar" style="height:100%; width:0%; background:#ff7a18; transition:width 0.3s;"></div>
+  </div>
+</div>
+
  <!-- 🔥 MINI GRÁFICO SEMANAL -->
 <div id="miniWeekChart" style="display:flex; gap:6px; justify-content:center; margin-top:12px;"></div>
- </div>
-</div>
+
 
 
      <button class="save" id="saveDay">Salvar</button>
@@ -521,6 +520,7 @@ function updateWaterUI() {
     msg.innerText = `💧 Faltam ${falta} ml para sua meta`;
     msg.style.color = "#2563eb";
   }
+}
 
 function calculateWeeklyGoal() {
   const data = getData();
@@ -643,23 +643,6 @@ if (monthIndex === new Date().getMonth()) {
       return JSON.parse(localStorage.getItem("habitData")) || {};
     } 
 
-function calculateStreak() {
-  const data = getData();
-  let streak = 0;
-  let date = new Date();
-
-  while (true) {
-    const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    if (data[key] && (data[key].treino || data[key].agua)) {
-      streak++;
-      date.setDate(date.getDate() - 1);
-    } else {
-      break;
-    }
-  }
-
-  document.getElementById("streakCount").innerText = streak;
-}
 
     function saveData(data) {
       localStorage.setItem("habitData", JSON.stringify(data));
