@@ -77,21 +77,41 @@ body {
   margin-top: 12px;
 }
 
+/* ===== VISÃO ANUAL (MESES EM GRADE CLARA) ===== */
+
+#yearView {
+  max-width: 520px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);   /* 🔥 3 colunas */
+  gap: 18px;
+  margin-top: 20px;
+}
+
 .month-card {
-  background: #f3f4f6;
+  background: #f1f5f9;
   color: #1f2937;
-  padding: 14px;
+  padding: 18px 10px;
+  border-radius: 14px;
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
 
 .month-card:hover {
   background: #ff7a18;
   color: #fff;
-  transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255,122,24,0.5);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255,122,24,0.4);
 }
 
 .weekdays {
@@ -192,33 +212,6 @@ body {
       cursor: pointer;
     }
 
-.year-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-  max-width: 360px;
-  margin: auto;
-}
-
-.month-card {
-  background: #1f2937;           /* fundo escuro */
-  color: #f9fafb;                /* texto claro */
-  padding: 18px 10px;
-  border-radius: 14px;
-  text-align: center;
-  font-weight: 600;
-  cursor: pointer;
-  letter-spacing: 0.5px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-}
-
-.month-card:hover {
-  background: #ff7a18;           /* laranja energia */
-  color: #fff;
-  transform: scale(1.06);
-  box-shadow: 0 6px 18px rgba(255,122,24,0.5);
-}
 
     /* ---------- RESPONSIVO ---------- */
     @media (max-width: 768px) {
