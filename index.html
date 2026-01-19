@@ -62,11 +62,13 @@
       cursor: pointer;
     }
 
-    .calendar-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 8px;
-    }
+   .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  justify-items: center;
+  margin-top: 12px;
+}
 
     .day {
   background: #f2edf7;
@@ -207,46 +209,64 @@
       localStorage.setItem("habitData", JSON.stringify(data));
     }
 
-    function renderCalendar() {
-      calendarGrid.innerHTML = "";
-      const year = currentDate.getFullYear();
-      const month = currentDate.getMonth();
+  function renderCalendar() {
+  calendarGrid.innerHTML = "";
 
-      monthYear.innerText = currentDate.toLocaleDateString("pt-BR", {
-        month: "long",
-        year: "numeric"
-      });
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
 
-      const firstDay = new Date(year, month, 1).getDay();
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const data = getData();
+  monthYear.innerText = currentDate.toLocaleDateString("pt-BR", {
+    month: "long",
+    year: "numeric"
+  });
 
-      for (let i = 0; i < firstDay; i++) {
-        calendarGrid.appendChild(document.createElement("div"));
-      }
+  // 🔥 Corrige para começar em SEGUNDA
+  let firstDay = new Date(year, month, 1).getDay();
+  firstDay = firstDay === 0 ? 6 : firstDay - 1;
 
-      for (let day = 1; day <= daysInMonth; day++) {
-        const dayDiv = document.createElement("div");
-        dayDiv.classList.add("day");
-        dayDiv.innerText = day;
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const data = getData();
 
-        const dateKey = `${year}-${month + 1}-${day}`;
+  // Espaços vazios antes do dia 1
+  for (let i = 0; i < firstDay; i++) {
+    const empty = document.createElement("div");
+    calendarGrid.appendChild(empty);
+  }
 
-        if (data[dateKey]) {
-          const { treino, agua } = data[dateKey];
-          if (treino && agua >= WATER_GOAL) dayDiv.classList.add("both");
-          else if (treino) dayDiv.classList.add("workout");
-          else if (agua >= WATER_GOAL) dayDiv.classList.add("water");
-        }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayDiv = document.createElement("div");
+    dayDiv.classList.add("day");
+    dayDiv.innerText = day;
 
-        dayDiv.onclick = () => openDay(dateKey);
-        calendarGrid.appendChild(dayDiv);
-      }
+    const today = new Date();
+    if (
+      day === today.getDate() &&
+      month === today.getMonth() &&
+      year === today.getFullYear()
+    ) {
+      dayDiv.style.border = "2px solid var(--primary)";
     }
+
+    const dateKey = `${year}-${month + 1}-${day}`;
+
+    if (data[dateKey]) {
+      const { treino, agua } = data[dateKey];
+      if (treino && agua >= WATER_GOAL) dayDiv.classList.add("both");
+      else if (treino) dayDiv.classList.add("workout");
+      else if (agua >= WATER_GOAL) dayDiv.classList.add("water");
+    }
+
+    // 🔥 clique correto com evento
+    dayDiv.onclick = (e) => openDay(dateKey, e);
+    calendarGrid.appendChild(dayDiv);
+  }
+}
+
 
     function openDay(dateKey) {
       selectedDateKey = dateKey;
       const data = getData()[dateKey] || {};
+
 
      function openDay(dateKey, e) {
   clearActiveDays();
@@ -270,11 +290,6 @@
   document.getElementById("waterInput").value = data.agua || "";
   document.getElementById("noteInput").value = data.obs || "";
 }
-
-      document.getElementById("workoutType").value = data.treino || "";
-      document.getElementById("waterInput").value = data.agua || "";
-      document.getElementById("noteInput").value = data.obs || "";
-    }
 
     document.getElementById("saveDay").onclick = () => {
       if (!selectedDateKey) return;
