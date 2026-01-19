@@ -77,43 +77,6 @@ body {
   margin-top: 12px;
 }
 
-/* ===== VISÃO ANUAL (MESES EM GRADE CLARA) ===== */
-
-#yearView {
-  max-width: 520px;
-  margin: auto;
-  padding: 30px;
-  border-radius: 20px;
-  background: #ffffff;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
-
-.year-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);   /* 🔥 3 colunas */
-  gap: 18px;
-  margin-top: 20px;
-}
-
-.month-card {
-  background: #f1f5f9;
-  color: #1f2937;
-  padding: 18px 10px;
-  border-radius: 14px;
-  text-align: center;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.month-card:hover {
-  background: #ff7a18;
-  color: #fff;
-  transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(255,122,24,0.4);
-}
-
 .weekdays {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -212,13 +175,6 @@ body {
       cursor: pointer;
     }
 
-
-    /* ---------- RESPONSIVO ---------- */
-    @media (max-width: 768px) {
-      .app {
-        flex-direction: column;
-      }
-
 /* ===== VISÃO ANUAL EM FORMATO DE CALENDÁRIO REAL ===== */
 
 .year-grid {
@@ -273,7 +229,13 @@ body {
 .mini-day.water   { background: #c7ddf7; }
 .mini-day.both    { background: #e6c1f0; }
  }
-   
+
+    /* ---------- RESPONSIVO ---------- */
+    @media (max-width: 768px) {
+      .app {
+        flex-direction: column;
+      }
+  
   </style>
 </head>
 
