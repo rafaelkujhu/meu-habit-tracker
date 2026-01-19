@@ -386,7 +386,7 @@ button.save:hover {
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
 
-<<label>Atividades realizadas hoje</label>
+<label>Atividades realizadas hoje</label>
 
 <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
   <button type="button" class="activity-btn" data-type="Musculação">💪 Musculação</button>
@@ -825,12 +825,10 @@ renderActivities();
       year: "numeric"
     });
 
-  document.getElementById("workoutType").value = data.treino || "";
+  
   document.getElementById("noteInput").value = data.obs || "";
   currentWater = data.agua || 0;
  updateWaterUI();
-}
-
 document.getElementById("weightInput").value = data.peso || "";
 document.getElementById("waistInput").value = data.cintura || "";
 document.getElementById("hipInput").value = data.quadril || "";
@@ -871,8 +869,6 @@ document.getElementById("deleteDay").onclick = () => {
   saveData(data);
 
   // limpa formulário
-  document.getElementById("workoutType").value = "";
-  document.getElementById("exerciseList").innerHTML = "";
   document.getElementById("waterInput").value = "";
   document.getElementById("noteInput").value = "";
 
