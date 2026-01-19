@@ -388,18 +388,23 @@ button.save:hover {
 
 <label>Atividades realizadas hoje</label>
 
-<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-  <button type="button" class="activity-btn" data-type="Musculação">💪 Musculação</button>
-  <button type="button" class="activity-btn" data-type="Cardio">🏃 Cardio</button>
-  <button type="button" class="activity-btn" data-type="Futebol">⚽ Futebol</button>
-  <button type="button" class="activity-btn" data-type="Alongamento">🧘 Alongamento</button>
-  <button type="button" class="activity-btn" data-type="Outro">➕ Outro</button>
+<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+  <button type="button" class="activity-main" data-type="Musculação">💪 Musculação</button>
+  <button type="button" class="activity-main" data-type="Cardio">🏃 Cardio</button>
+  <button type="button" class="activity-main" data-type="Esporte">⚽ Esporte</button>
+  <button type="button" class="activity-main" data-type="Outro">➕ Outro</button>
 </div>
 
-<ul id="activityList" style="margin-top:10px;"></ul>
+<!-- ÁREA DINÂMICA DE OPÇÕES -->
+<div id="activityOptions" style="
+  background:#f8fafc;
+  padding:14px;
+  border-radius:14px;
+  margin-bottom:12px;
+  display:none;
+"></div>
 
-
-<label>Exercícios realizados</label>
+<ul id="activityList" style="margin-top:12px;"></ul>
 
 <label>Água ingerida hoje</label>
 
@@ -513,6 +518,12 @@ button.save:hover {
     let currentDate = new Date();
     let selectedDateKey = null;
    let activitiesToday = [];
+const activityOptions = {
+  "Musculação": ["Glúteo", "Pernas", "Braço", "Costas", "Peito", "Ombro", "Full body"],
+  "Cardio": ["Bicicleta", "Corrida", "Esteira", "Escada", "Jump", "Elíptico"],
+  "Esporte": ["Futebol", "Vôlei", "Basquete", "Tênis"],
+};
+
 
 
 const exercisesByType = {
@@ -559,20 +570,84 @@ document.querySelectorAll(".water-btn").forEach(btn => {
   };
 });
 
-// 🔥 adicionar atividades livres
-document.querySelectorAll(".activity-btn").forEach(btn => {
-  btn.onclick = () => {
-    let name = btn.dataset.type;
+let currentMainActivity = "";
 
-    if (name === "Outro") {
-      name = prompt("Qual atividade você fez?");
-      if (!name) return;
+document.querySelectorAll(".activity-main").forEach(btn => {
+  btn.onclick = () => {
+    const type = btn.dataset.type;
+    currentMainActivity = type;
+
+    const box = document.getElementById("activityOptions");
+    box.style.display = "block";
+
+    // monta interface dinâmica
+    let html = `<b>${type}</b><br><br>`;
+
+    if (activityOptions[type]) {
+      html += `<div style="display:flex; gap:6px; flex-wrap:wrap;">`;
+      activityOptions[type].forEach(opt => {
+        html += `
+          <button type="button" class="sub-activity" data-sub="${opt}">
+            ${opt}
+          </button>
+        `;
+      });
+      html += `</div><br>`;
     }
 
-    activitiesToday.push(name);
-    renderActivities();
+    html += `
+      <label>Exercícios / Detalhes</label>
+      <textarea id="activityDetailInput" rows="3"
+        placeholder="Ex: Elevação pélvica 4x12, corrida 30min..."
+      ></textarea>
+
+      <button id="addActivityFinal" style="
+        margin-top:10px;
+        padding:12px;
+        width:100%;
+        border-radius:12px;
+        border:none;
+        background:#ff7a18;
+        color:#fff;
+        font-weight:600;
+        cursor:pointer;
+      ">➕ Adicionar ${type}</button>
+    `;
+
+    box.innerHTML = html;
+
+    let selectedSub = "";
+
+    // clique nos subtipos
+    document.querySelectorAll(".sub-activity").forEach(b => {
+      b.onclick = () => {
+        document.querySelectorAll(".sub-activity").forEach(x => {
+          x.style.background = "#fff";
+          x.style.color = "#000";
+        });
+        b.style.background = "#ff7a18";
+        b.style.color = "#fff";
+        selectedSub = b.dataset.sub;
+      };
+    });
+
+    // botão final de adicionar
+    document.getElementById("addActivityFinal").onclick = () => {
+      const details = document.getElementById("activityDetailInput").value;
+
+      activitiesToday.push({
+        tipo: type,
+        foco: selectedSub || "",
+        detalhes: details
+      });
+
+      document.getElementById("activityOptions").style.display = "none";
+      renderActivities();
+    };
   };
 });
+
+
 
 function renderActivities() {
   const list = document.getElementById("activityList");
