@@ -219,17 +219,17 @@ body {
         flex-direction: column;
       }
 
-/* ===== VISÃO ANUAL EM FORMATO DE CALENDÁRIO ===== */
+/* ===== VISÃO ANUAL EM FORMATO DE CALENDÁRIO REAL ===== */
 
 .year-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 
 .mini-month {
   background: #f1f5f9;
-  border-radius: 14px;
+  border-radius: 16px;
   padding: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
 }
@@ -238,19 +238,29 @@ body {
   text-align: center;
   margin: 6px 0 10px;
   font-size: 14px;
+  font-weight: 700;
+}
+
+.mini-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: 9px;
+  text-align: center;
+  opacity: 0.5;
+  margin-bottom: 6px;
 }
 
 .mini-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
-  font-size: 10px;
+  font-size: 9px;
   text-align: center;
 }
 
 .mini-day {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: #e5e7eb;
   display: flex;
@@ -442,15 +452,26 @@ function renderYear() {
     title.innerText = name;
     box.appendChild(title);
 
+    // 🔥 dias da semana
+    const week = document.createElement("div");
+    week.className = "mini-weekdays";
+    ["S","T","Q","Q","S","S","D"].forEach(d => {
+      const span = document.createElement("span");
+      span.innerText = d;
+      week.appendChild(span);
+    });
+    box.appendChild(week);
+
     const miniGrid = document.createElement("div");
     miniGrid.className = "mini-grid";
 
-    // dias da semana vazios para alinhamento
+    // alinhamento correto do primeiro dia
     let firstDay = new Date(year, monthIndex, 1).getDay();
     firstDay = firstDay === 0 ? 6 : firstDay - 1;
 
     const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
 
+    // espaços vazios antes do dia 1
     for (let i = 0; i < firstDay; i++) {
       miniGrid.appendChild(document.createElement("div"));
     }
@@ -469,7 +490,7 @@ function renderYear() {
         else if (agua >= WATER_GOAL) d.classList.add("water");
       }
 
-      // 🔥 clicar no dia já abre o mês e o dia correto
+      // 🔥 clicar já abre mês + dia
       d.onclick = () => {
         currentDate.setMonth(monthIndex);
 
@@ -477,7 +498,10 @@ function renderYear() {
         monthView.style.display = "block";
         renderCalendar();
 
-        setTimeout(() => openDay(key, { target: document.querySelector(`[data-key="${key}"]`) }), 200);
+        setTimeout(() => {
+          const realDay = [...document.querySelectorAll(".day")].find(el => el.innerText == day);
+          if (realDay) realDay.click();
+        }, 200);
       };
 
       miniGrid.appendChild(d);
