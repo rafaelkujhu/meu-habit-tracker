@@ -15,12 +15,11 @@
 
 /* ===== TEMA ACADEMIA MOTIVACIONAL ===== */
 .theme-feminino {
-  --bg: #0f172a;          /* azul escuro quase preto */
-  --card: #111827;       /* cinza grafite */
-  --primary: #f97316;    /* laranja energia */
-  --text: #f9fafb;      /* branco suave */
+  --bg: #0f172a;        /* fundo azul escuro academia */
+  --card: #111827;     /* card quase preto */
+  --primary: #ff7a18;  /* laranja energia */
+  --text: #f9fafb;     /* texto claro */
 }
-
    body {
   background: linear-gradient(180deg, #0f172a, #020617);
 }
@@ -74,16 +73,6 @@
   margin-top: 12px;
 }
 
-/* 🔥 VISÃO ANUAL (MESES) */
-.year-view {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  max-width: 360px;
-  margin: auto;
-  padding: 12px;
-}
-
 .month-card {
   background: var(--card);
   border-radius: 14px;
@@ -108,33 +97,34 @@
   margin-bottom: 8px;
 }
 
-    .day {
-  background: #f2edf7;
-  width: 36px;
-  height: 36px;
+  .day {
+  background: #1f2937;
+  color: #f9fafb;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-weight: 500;
-  transition: background 0.2s ease, transform 0.1s ease;
-} 
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
 
 /* 🔥 DIA DE HOJE DESTACADO */
 .day.today {
-  border: 2px solid var(--primary);
-  box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
-  font-weight: 700;
-  background: #1f2937;
-  color: white;
+  border: 2px solid #ff7a18;
+  box-shadow: 0 0 10px rgba(255,122,24,0.8);
+  background: #111827;
+  color: #ff7a18;
 }
 
 
 .day:hover {
-  transform: scale(1.1);
-  background: #e8ddff;
+  background: #ff7a18;
+  color: #fff;
+  transform: scale(1.15);
 }
 
    .day.workout { background: #f6b3cf; }
@@ -205,20 +195,23 @@
 }
 
 .month-card {
-  background: #1f2937;
-  color: #f9fafb;
-  padding: 16px 10px;
+  background: #1f2937;           /* fundo escuro */
+  color: #f9fafb;                /* texto claro */
+  padding: 18px 10px;
   border-radius: 14px;
   text-align: center;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.15s ease;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
 }
 
 .month-card:hover {
-  background: #ff7a18;
+  background: #ff7a18;           /* laranja energia */
   color: #fff;
-  transform: scale(1.05);
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(255,122,24,0.5);
 }
 
     /* ---------- RESPONSIVO ---------- */
@@ -245,6 +238,10 @@
 
 
  <div class="calendar" id="monthView" style="display:none;">
+<div id="streakBox" style="text-align:center; margin-bottom:12px; font-weight:600;">
+  🔥 Constância: <span id="streakCount">0</span> dias
+</div>
+
  <div class="calendar-header">
   <button id="backYear">⟵</button>
   <button id="prevMonth">◀</button>
@@ -287,6 +284,11 @@
 
       <label>Água (ml)</label>
       <input type="number" id="waterInput" placeholder="Ex: 2000" />
+      <div style="margin-top:8px;">
+  <div style="height:8px; background:#374151; border-radius:6px; overflow:hidden;">
+    <div id="waterBar" style="height:100%; width:0%; background:var(--secondary); transition:width 0.3s;"></div>
+  </div>
+</div>
 
       <label>Observação</label>
       <textarea id="noteInput" rows="3"></textarea>
@@ -294,6 +296,14 @@
       <p class="gentle-msg">
         Constância é mais importante que perfeição ✨
       </p>
+
+<p id="streakInfo" style="text-align:center; margin-top:10px; font-weight:600;">
+  🔥 Constância: 0 dias
+</p>
+
+<p id="weeklyGoal" style="text-align:center; margin-top:6px;">
+  🎯 Meta semanal: 0 / 5 treinos
+</p>
 
       <button class="save" id="saveDay">Salvar</button>
     </div>
@@ -318,6 +328,53 @@ const exercisesByType = {
   alongamento: ["Posterior de Coxa", "Quadril", "Coluna", "Ombros"]
 };
 
+function calculateStreak() {
+  const data = getData();
+  let streak = 0;
+
+  const today = new Date();
+  let checkDate = new Date(today);
+
+  while (true) {
+    const key = `${checkDate.getFullYear()}-${checkDate.getMonth() + 1}-${checkDate.getDate()}`;
+
+    if (data[key] && data[key].treino) {
+      streak++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else {
+      break;
+    }
+  }
+
+  document.getElementById("streakInfo").innerText =
+    `🔥 Constância: ${streak} dia${streak === 1 ? "" : "s"}`;
+}
+
+function calculateWeeklyGoal() {
+  const data = getData();
+  const today = new Date();
+
+  let count = 0;
+
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+
+    const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
+    if (data[key] && data[key].treino) {
+      count++;
+    }
+  }
+
+  const goal = 5; // meta fixa de 5 treinos por semana
+
+  document.getElementById("weeklyGoal").innerText =
+    `🎯 Meta semanal: ${count} / ${goal} treinos`;
+}
 
 function renderYear() {
   yearView.innerHTML = "";
@@ -350,7 +407,25 @@ function renderYear() {
 
     function getData() {
       return JSON.parse(localStorage.getItem("habitData")) || {};
+    } 
+
+function calculateStreak() {
+  const data = getData();
+  let streak = 0;
+  let date = new Date();
+
+  while (true) {
+    const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    if (data[key] && (data[key].treino || data[key].agua)) {
+      streak++;
+      date.setDate(date.getDate() - 1);
+    } else {
+      break;
     }
+  }
+
+  document.getElementById("streakCount").innerText = streak;
+}
 
     function saveData(data) {
       localStorage.setItem("habitData", JSON.stringify(data));
@@ -451,7 +526,9 @@ document.getElementById("saveDay").onclick = () => {
   };
 
   saveData(data);
-  renderCalendar();
+renderCalendar();
+calculateStreak();
+calculateWeeklyGoal();
 };
 
 document.getElementById("prevMonth").onclick = () => {
@@ -494,6 +571,8 @@ document.getElementById("dayPanel").style.display = "none";
 yearView.style.display = "block";
 
 renderYear();
+calculateStreak();
+calculateWeeklyGoal();
 
   </script>
 </body>
