@@ -28,7 +28,6 @@ body {
   color: #1f2937;
 }
 
-
   .app {
   display: grid;
   grid-template-columns: 320px;   /* 🔥 começa só com calendário */
@@ -121,14 +120,6 @@ body {
    .day.both    { background: #e6c1f0; }
 }
 
-/* 🔥 DESTAQUE DO DIA DE HOJE */
-.day.today {
-  border: 2px solid var(--secondary);
-  box-shadow: 0 0 10px rgba(34,197,94,0.6);
-}
-
-
-
     /* ---------- PAINEL DO DIA ---------- */
     .day-panel {
       background: var(--card);
@@ -175,12 +166,20 @@ body {
       cursor: pointer;
     }
 
+#yearView {
+  max-width: 1000px;
+  margin: auto;
+  padding: 30px;
+}
+
 /* ===== VISÃO ANUAL EM FORMATO DE CALENDÁRIO REAL ===== */
 
 .year-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 🔥 adaptável */
   gap: 24px;
+  margin-top: 20px;
+  justify-items: center;
 }
 
 .mini-month {
@@ -188,6 +187,8 @@ body {
   border-radius: 16px;
   padding: 12px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  width: 100%;
+  max-width: 260px;
 }
 
 .mini-month h4 {
@@ -228,7 +229,7 @@ body {
 .mini-day.workout { background: #f6b3cf; }
 .mini-day.water   { background: #c7ddf7; }
 .mini-day.both    { background: #e6c1f0; }
- }
+
 
     /* ---------- RESPONSIVO ---------- */
     @media (max-width: 768px) {
@@ -409,6 +410,12 @@ function renderYear() {
   months.forEach((name, monthIndex) => {
     const box = document.createElement("div");
     box.className = "mini-month";
+   // 🔥 destaca o mês atual
+if (monthIndex === new Date().getMonth()) {
+  box.style.border = "2px solid #ff7a18";
+  box.style.boxShadow = "0 0 12px rgba(255,122,24,0.4)";
+}
+
 
     const title = document.createElement("h4");
     title.innerText = name;
@@ -417,7 +424,8 @@ function renderYear() {
     // 🔥 dias da semana
     const week = document.createElement("div");
     week.className = "mini-weekdays";
-    ["S","T","Q","Q","S","S","D"].forEach(d => {
+    ["Seg","Ter","Qua","Qui","Sex","Sáb","Dom"]
+          .forEach(d => {
       const span = document.createElement("span");
       span.innerText = d;
       week.appendChild(span);
