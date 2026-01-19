@@ -86,6 +86,7 @@ body {
 }
 
 .day {
+  position: relative;
   background: #f1f5f9;          /* 🔥 fundo mais claro e limpo */
   color: #1f2937;
   width: 38px;
@@ -99,6 +100,23 @@ body {
   font-weight: 600;
   transition: all 0.15s ease;
   box-shadow: inset 0 0 0 1px #e5e7eb;  /* 🔥 leve contorno */
+  transition: all 0.15s ease;
+}
+
+.day.workout::after {
+  content: "💪";
+  position: absolute;
+  bottom: -6px;
+  right: -4px;
+  font-size: 12px;
+}
+
+.day.water::after {
+  content: "💧";
+  position: absolute;
+  bottom: -6px;
+  left: -4px;
+  font-size: 12px;
 }
 
 /* 🔥 DIA DE HOJE */
@@ -152,6 +170,20 @@ body {
   display: none;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
+
+.day-panel {
+  animation: fadeSlide 0.35s ease;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 
 .day-panel h3 {
   font-size: 20px;
@@ -297,6 +329,8 @@ button.save:hover {
 <div id="streakBox" style="text-align:center; margin-bottom:12px; font-weight:600;">
   🔥 Constância: <span id="streakCount">0</span> dias
 </div>
+<div id="streakVisual" style="text-align:center; margin-bottom:14px;"></div>
+
 
  <div class="calendar-header">
   <button id="backYear">⟵</button>
@@ -315,6 +349,7 @@ button.save:hover {
     <span>Sáb</span>
     <span>Dom</span>
   </div>
+
 
   <div class="calendar-grid" id="calendarGrid"></div>
 </div>
@@ -384,7 +419,14 @@ button.save:hover {
 
 <p id="weeklyGoal" style="text-align:center; margin-top:6px;">
   🎯 Meta semanal: 0 / 5 treinos
-</p>
+<div style="margin-top:10px;">
+  <div style="height:8px; background:#e5e7eb; border-radius:6px; overflow:hidden;">
+    <div id="weekBar" style="height:100%; width:0%; background:#ff7a18; transition:width 0.3s;"></div>
+ <!-- 🔥 MINI GRÁFICO SEMANAL -->
+<div id="miniWeekChart" style="display:flex; gap:6px; justify-content:center; margin-top:12px;"></div>
+ </div>
+</div>
+
 
      <button class="save" id="saveDay">Salvar</button>
 
@@ -427,23 +469,27 @@ const exercisesByType = {
 function calculateStreak() {
   const data = getData();
   let streak = 0;
+  let date = new Date();
 
   const today = new Date();
   let checkDate = new Date(today);
 
   while (true) {
-    const key = `${checkDate.getFullYear()}-${checkDate.getMonth() + 1}-${checkDate.getDate()}`;
+    const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
     if (data[key] && data[key].treino) {
       streak++;
-      checkDate.setDate(checkDate.getDate() - 1);
+      date.setDate(date.getDate() - 1);
     } else {
       break;
     }
   }
 
-  document.getElementById("streakInfo").innerText =
-    `🔥 Constância: ${streak} dia${streak === 1 ? "" : "s"}`;
+   document.getElementById("streakCount").innerText = streak;
+ const visual = document.getElementById("streakVisual");
+  visual.innerHTML = streak > 0
+    ? `🔥 Você está em <b>${streak} dias seguidos</b> de treino!`
+    : `✨ Comece hoje sua sequência`;
 }
 
 // 🔥 botões de adicionar água
@@ -475,7 +521,6 @@ function updateWaterUI() {
     msg.innerText = `💧 Faltam ${falta} ml para sua meta`;
     msg.style.color = "#2563eb";
   }
-}
 
 function calculateWeeklyGoal() {
   const data = getData();
@@ -497,11 +542,15 @@ function calculateWeeklyGoal() {
     }
   }
 
-  const goal = 5; // meta fixa de 5 treinos por semana
+  const goal = 5;
 
   document.getElementById("weeklyGoal").innerText =
     `🎯 Meta semanal: ${count} / ${goal} treinos`;
+
+  const percent = Math.min((count / goal) * 100, 100);
+  document.getElementById("weekBar").style.width = percent + "%";
 }
+
 
 function renderYear() {
   const grid = document.getElementById("yearGrid");
@@ -734,6 +783,7 @@ document.getElementById("deleteDay").onclick = () => {
   renderCalendar();
   calculateStreak();
   calculateWeeklyGoal();
+  renderMiniWeekChart();
 
   alert("Dia limpo com sucesso ✨");
 };
@@ -779,6 +829,31 @@ document.getElementById("workoutType").onchange = () => {
   });
 };
  
+function renderMiniWeekChart() {
+  const data = getData();
+  const today = new Date();
+  const chart = document.getElementById("miniWeekChart");
+  chart.innerHTML = "";
+
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(startOfWeek);
+    d.setDate(startOfWeek.getDate() + i);
+
+    const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
+    const bar = document.createElement("div");
+    bar.style.width = "14px";
+    bar.style.height = "40px";
+    bar.style.borderRadius = "6px";
+    bar.style.background = data[key] && data[key].treino ? "#ff7a18" : "#e5e7eb";
+
+    chart.appendChild(bar);
+  }
+}
+
 // 🔥 tela inicial: mostra os meses
 monthView.style.display = "none";
 document.getElementById("dayPanel").style.display = "none";
@@ -787,6 +862,7 @@ yearView.style.display = "block";
 renderYear();
 calculateStreak();
 calculateWeeklyGoal();
+renderMiniWeekChart();
 
   </script>
 </body>
