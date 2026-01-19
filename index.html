@@ -24,8 +24,8 @@
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
-  background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
-  color: #e5e7eb;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #1f2937;
 }
 
 
@@ -48,10 +48,9 @@ body {
 
 .calendar,
 .day-panel {
-  background: #020617cc;  /* preto azulado translúcido */
-  backdrop-filter: blur(8px);
+  background: #ffffff;
   border-radius: 18px;
-  box-shadow: 0 0 30px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
 }
 
     .calendar-header {
@@ -79,8 +78,8 @@ body {
 }
 
 .month-card {
-  background: var(--card);
-  border-radius: 14px;
+  background: #f3f4f6;
+  color: #1f2937;
   padding: 14px;
   text-align: center;
   font-weight: 600;
@@ -89,8 +88,10 @@ body {
 }
 
 .month-card:hover {
-  background: #f2e8f5;
-  transform: scale(1.05);
+  background: #ff7a18;
+  color: #fff;
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(255,122,24,0.5);
 }
 
 .weekdays {
@@ -103,8 +104,8 @@ body {
 }
 
   .day {
-  background: #1f2937;
-  color: #f9fafb;
+  background: #e5e7eb;
+  color: #1f2937;
   width: 38px;
   height: 38px;
   border-radius: 50%;
