@@ -225,13 +225,14 @@ body {
  <body class="theme-feminino">
 
   <div class="app">
-
-<!-- 🔥 VISÃO DO ANO -->
 <div class="calendar" id="yearView">
 
   <h2 style="text-align:center; margin-bottom:16px;">
     Selecione o mês
   </h2>
+
+  <!-- 🔥 CONTAINER EM GRADE -->
+  <div class="year-grid" id="yearGrid"></div>
 
 </div>
 
@@ -376,7 +377,8 @@ function calculateWeeklyGoal() {
 }
 
 function renderYear() {
-  yearView.innerHTML = "";
+  const grid = document.getElementById("yearGrid");
+grid.innerHTML = "";
 
   const months = [
     "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
@@ -400,7 +402,7 @@ function renderYear() {
       renderCalendar();
     };
 
-    yearView.appendChild(div);
+   grid.appendChild(div);
   });
 }
 
