@@ -208,9 +208,6 @@
 
 <!-- VISÃO ANUAL -->
 <div class="year-view" id="yearView"></div>
-<script>
-  document.getElementById("yearView").style.display = "grid";
-</script>
 
 <!-- VISÃO MENSAL -->
 <div class="calendar" id="monthView" style="display:none;">
@@ -237,6 +234,7 @@
     <!-- PAINEL DO DIA -->
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
+</div>
 
       <label>Treino</label>
       <select id="workoutType">
@@ -388,11 +386,7 @@ function clearActiveDays() {
       renderCalendar();
     };
 
-    document.getElementById("prevMonth").onclick = () => {
-  currentDate.setMonth(currentDate.getMonth() - 1);
-  renderCalendar();
-};
-
+   
 document.getElementById("nextMonth").onclick = () => {
   currentDate.setMonth(currentDate.getMonth() + 1);
   renderCalendar();
