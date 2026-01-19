@@ -205,8 +205,31 @@
 
   <div class="app">
 
-
+<!-- VISÃO ANUAL -->
 <div class="year-view" id="yearView"></div>
+
+<!-- VISÃO MENSAL (começa escondida) -->
+<div class="calendar" id="monthView" style="display:none;">
+
+  <div class="calendar-header">
+    <button id="backYear">◀</button>
+    <h2 id="monthYear"></h2>
+    <button id="nextMonth">▶</button>
+  </div>
+
+  <div class="weekdays">
+    <span>Seg</span>
+    <span>Ter</span>
+    <span>Qua</span>
+    <span>Qui</span>
+    <span>Sex</span>
+    <span>Sáb</span>
+    <span>Dom</span>
+  </div>
+
+  <div class="calendar-grid" id="calendarGrid"></div>
+</div>
+
 
     <!-- CALENDÁRIO -->
     <div class="calendar">
@@ -275,7 +298,7 @@
  
   const yearView = document.getElementById("yearView");
 
-  function renderYear() {
+function renderYear() {
   yearView.innerHTML = "";
   const year = currentDate.getFullYear();
 
@@ -289,20 +312,17 @@
     div.className = "month-card";
     div.innerText = name;
 
-    if (index === currentDate.getMonth()) {
-      div.classList.add("active");
-    }
-
     div.onclick = () => {
       currentDate.setMonth(index);
-      renderYear();
+      yearView.style.display = "none";
+      document.getElementById("monthView").style.display = "block";
       renderCalendar();
-      
     };
 
     yearView.appendChild(div);
   });
 }
+
 
     function renderCalendar() {
       calendarGrid.innerHTML = "";
@@ -394,7 +414,12 @@
       renderCalendar();
     };
 
-    renderCalendar();
+ document.getElementById("backYear").onclick = () => {
+  document.getElementById("monthView").style.display = "none";
+  yearView.style.display = "grid";
+};
+
+      renderYear();
   </script>
 </body>
 </html>
