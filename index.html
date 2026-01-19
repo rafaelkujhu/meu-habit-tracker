@@ -20,9 +20,14 @@
   --primary: #ff7a18;  /* laranja energia */
   --text: #f9fafb;     /* texto claro */
 }
-   body {
-  background: linear-gradient(180deg, #0f172a, #020617);
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #334155);
+  color: #e5e7eb;
 }
+
 
   .app {
   display: grid;
@@ -41,12 +46,12 @@
   max-width: 1200px;
 }
 
-.calendar {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 20px;
-  width: 300px;
-  flex-shrink: 0;
+.calendar,
+.day-panel {
+  background: #020617cc;  /* preto azulado translúcido */
+  backdrop-filter: blur(8px);
+  border-radius: 18px;
+  box-shadow: 0 0 30px rgba(0,0,0,0.4);
 }
 
     .calendar-header {
