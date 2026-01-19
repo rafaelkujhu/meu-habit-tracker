@@ -324,18 +324,33 @@ body {
 <select id="exerciseList" multiple size="6"></select>
 
 
-      <label>Água ingerida</label>
-<select id="waterInput">
-  <option value="">Selecione a quantidade</option>
-  <option value="100">100 ml</option>
-  <option value="200">200 ml</option>
-  <option value="500">500 ml</option>
-  <option value="1000">1 L</option>
-  <option value="1500">1,5 L</option>
-  <option value="2000">2 L</option>
-  <option value="2500">2,5 L</option>
-  <option value="3000">3 L</option>
-</select>
+<label>Água ingerida hoje</label>
+
+<!-- 🔥 botões rápidos -->
+<div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
+  <button type="button" class="water-btn" data-ml="100">+100 ml</button>
+  <button type="button" class="water-btn" data-ml="200">+200 ml</button>
+  <button type="button" class="water-btn" data-ml="500">+500 ml</button>
+  <button type="button" class="water-btn" data-ml="1000">+1 L</button>
+</div>
+
+<!-- total do dia -->
+<input type="number" id="waterInput" placeholder="Total do dia (ml)" readonly />
+
+<!-- barra de progresso -->
+<div style="margin-top:10px;">
+  <div style="height:10px; background:#e5e7eb; border-radius:8px; overflow:hidden;">
+    <div id="waterBar" style="
+      height:100%;
+      width:0%;
+      background:#60a5fa;
+      transition:width 0.3s;
+    "></div>
+  </div>
+</div>
+
+<!-- mensagem de meta -->
+<p id="waterMessage" style="margin-top:8px; font-weight:600; text-align:center;"></p>
       <div style="margin-top:8px;">
   <div style="height:8px; background:#374151; border-radius:6px; overflow:hidden;">
     <div id="waterBar" style="height:100%; width:0%; background:var(--secondary); transition:width 0.3s;"></div>
@@ -357,8 +372,22 @@ body {
   🎯 Meta semanal: 0 / 5 treinos
 </p>
 
-      <button class="save" id="saveDay">Salvar</button>
-    </div>
+     <button class="save" id="saveDay">Salvar</button>
+
+<button id="deleteDay" style="
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: #ef4444;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+">
+  🗑️ Limpar este dia
+</button>
+
 
   </div>
 
@@ -368,6 +397,7 @@ body {
    const yearView = document.getElementById("yearView");
    const monthView = document.getElementById("monthView");
     const WATER_GOAL = 2000;
+   let currentWater = 0;
 
     let currentDate = new Date();
     let selectedDateKey = null;
@@ -400,6 +430,37 @@ function calculateStreak() {
 
   document.getElementById("streakInfo").innerText =
     `🔥 Constância: ${streak} dia${streak === 1 ? "" : "s"}`;
+}
+
+// 🔥 botões de adicionar água
+document.querySelectorAll(".water-btn").forEach(btn => {
+  btn.onclick = () => {
+    const add = Number(btn.dataset.ml);
+    currentWater += add;
+
+    updateWaterUI();
+  };
+});
+
+// 🔥 atualiza barra + mensagem
+function updateWaterUI() {
+  const input = document.getElementById("waterInput");
+  const bar = document.getElementById("waterBar");
+  const msg = document.getElementById("waterMessage");
+
+  input.value = currentWater;
+
+  const percent = Math.min((currentWater / WATER_GOAL) * 100, 100);
+  bar.style.width = percent + "%";
+
+  if (currentWater >= WATER_GOAL) {
+    msg.innerText = "🎉 Meta de água atingida!";
+    msg.style.color = "#16a34a";
+  } else {
+    const falta = WATER_GOAL - currentWater;
+    msg.innerText = `💧 Faltam ${falta} ml para sua meta`;
+    msg.style.color = "#2563eb";
+  }
 }
 
 function calculateWeeklyGoal() {
@@ -620,8 +681,9 @@ function openDay(dateKey, e) {
     });
 
   document.getElementById("workoutType").value = data.treino || "";
-  document.getElementById("waterInput").value = data.agua || "";
   document.getElementById("noteInput").value = data.obs || "";
+  currentWater = data.agua || 0;
+ updateWaterUI();
 }
 
 document.getElementById("saveDay").onclick = () => {
@@ -634,6 +696,34 @@ document.getElementById("saveDay").onclick = () => {
     obs: document.getElementById("noteInput").value,
    exercicios: [...document.getElementById("exerciseList").selectedOptions].map(o => o.value)
   };
+
+document.getElementById("deleteDay").onclick = () => {
+  if (!selectedDateKey) return;
+
+  const confirmDelete = confirm("Tem certeza que deseja apagar os dados deste dia?");
+  if (!confirmDelete) return;
+
+  const data = getData();
+
+  // apaga o dia do histórico
+  delete data[selectedDateKey];
+
+  saveData(data);
+
+  // limpa formulário
+  document.getElementById("workoutType").value = "";
+  document.getElementById("exerciseList").innerHTML = "";
+  document.getElementById("waterInput").value = "";
+  document.getElementById("noteInput").value = "";
+
+  // atualiza tudo
+  renderCalendar();
+  calculateStreak();
+  calculateWeeklyGoal();
+
+  alert("Dia limpo com sucesso ✨");
+};
+
 
   saveData(data);
 renderCalendar();
