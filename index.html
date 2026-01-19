@@ -11,22 +11,19 @@
       --card: #ffffff;
       --primary: #6366f1;
       --text: #1f2937;
-    }
+    } 
 
-  /* ===== TEMA FEMININO ===== */
-  .theme-feminino {
-   --bg: #fff7fb;
-   --card: #ffffff;
-   --primary: #e86aa6;
-   --text: #4a1f35;
-  }
+/* ===== TEMA ACADEMIA MOTIVACIONAL ===== */
+.theme-feminino {
+  --bg: #0f172a;          /* azul escuro quase preto */
+  --card: #111827;       /* cinza grafite */
+  --primary: #f97316;    /* laranja energia */
+  --text: #f9fafb;      /* branco suave */
+}
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont;
-      background: var(--bg);
-      color: var(--text);
-    }
+   body {
+  background: linear-gradient(180deg, #0f172a, #020617);
+}
 
   .app {
   display: grid;
@@ -84,6 +81,7 @@
   gap: 16px;
   max-width: 360px;
   margin: auto;
+  padding: 12px;
 }
 
 .month-card {
@@ -122,7 +120,17 @@
   cursor: pointer;
   font-weight: 500;
   transition: background 0.2s ease, transform 0.1s ease;
+} 
+
+/* 🔥 DIA DE HOJE DESTACADO */
+.day.today {
+  border: 2px solid var(--primary);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.6);
+  font-weight: 700;
+  background: #1f2937;
+  color: white;
 }
+
 
 .day:hover {
   transform: scale(1.1);
@@ -253,6 +261,8 @@
 
       <label>Treino</label>
       <select id="workoutType">
+     <label>Exercícios realizados</label>
+     <select id="exerciseList" multiple size="6"></select>
         <option value="">Não treinei</option>
         <option value="pernas">Pernas</option>
         <option value="gluteos">Glúteos</option>
@@ -286,6 +296,14 @@
     let currentDate = new Date();
     let selectedDateKey = null;
 
+const exercisesByType = {
+  pernas: ["Agachamento", "Búlgaro", "Leg Press", "Cadeira Extensora", "Elevação Pélvica"],
+  gluteos: ["Elevação Pélvica", "Abdução", "Coice", "Passada"],
+  superior: ["Elevação Lateral", "Desenvolvimento", "Remada", "Rosca Bíceps", "Tríceps Corda"],
+  funcional: ["Burpee", "Prancha", "Mountain Climber", "Kettlebell Swing"],
+  alongamento: ["Posterior de Coxa", "Quadril", "Coluna", "Ombros"]
+};
+
 
 function renderYear() {
   yearView.innerHTML = "";
@@ -306,6 +324,7 @@ function renderYear() {
       // 🔥 troca telas
       yearView.style.display = "none";
       monthView.style.display = "block";
+};
 
       renderCalendar();
     };
@@ -357,7 +376,7 @@ function renderYear() {
       month === today.getMonth() &&
       year === today.getFullYear()
     ) {
-      dayDiv.style.border = "2px solid var(--primary)";
+     dayDiv.classList.add("today");
     }
 
     const dateKey = `${year}-${month + 1}-${day}`;
@@ -412,7 +431,8 @@ document.getElementById("saveDay").onclick = () => {
   data[selectedDateKey] = {
     treino: document.getElementById("workoutType").value,
     agua: Number(document.getElementById("waterInput").value),
-    obs: document.getElementById("noteInput").value
+    obs: document.getElementById("noteInput").value,
+   exercicios: [...document.getElementById("exerciseList").selectedOptions].map(o => o.value)
   };
 
   saveData(data);
@@ -441,6 +461,24 @@ document.getElementById("backYear").onclick = () => {
 monthView.style.display = "none";
 document.getElementById("dayPanel").style.display = "none";
 yearView.style.display = "block";
+};
+
+document.getElementById("workoutType").onchange = () => {
+  const type = document.getElementById("workoutType").value;
+  const list = document.getElementById("exerciseList");
+
+  list.innerHTML = "";
+
+  if (!exercisesByType[type]) return;
+
+  exercisesByType[type].forEach(ex => {
+    const option = document.createElement("option");
+    option.value = ex;
+    option.innerText = ex;
+    list.appendChild(option);
+  });
+};
+
 
 renderYear();
 
