@@ -62,28 +62,28 @@ body.dark input {
   color: #e5e7eb;
   border-color: #334155;
 }
+/* 🔥 BASE MOBILE REAL */
+
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
+  background: linear-gradient(180deg, #020617, #0b1020);
   font-family: system-ui, -apple-system, BlinkMacSystemFont;
-  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
-  color: #1f2937;
 }
 
-/* 🔥 MOBILE FIRST BASE */
 .app {
+  width: 100%;
+  max-width: 390px;          /* largura real de celular */
+  margin: 0 auto;
+  padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  padding: 16px;
-  max-width: 480px;     /* largura ideal de celular */
-  margin: auto;
+  gap: 16px;
 }
 
-/* 🔥 NO MOBILE continua em coluna única */
-.app.show-panel {
-  max-width: 480px;
-}
 
 .calendar,
 .day-panel {
@@ -386,7 +386,6 @@ input::placeholder {
 
 
 button.save {
-  margin-top: 24px;
   width: 100%;
   padding: 14px;
   border-radius: 14px;
@@ -394,12 +393,20 @@ button.save {
   background: linear-gradient(135deg, #22c55e, #16a34a);
   color: #020617;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 6px 18px rgba(34,197,94,0.5);
-  transition: transform 0.2s ease;
+  box-shadow: 0 6px 20px rgba(34,197,94,0.4);
 }
 
+#deleteDay {
+  width:100%;
+  padding:12px;
+  border-radius:12px;
+  border:none;
+  background:#ef4444;
+  color:#fff;
+  font-weight:800;
+}
 
 button.save:hover {
   transform: translateY(-2px);
@@ -639,23 +646,28 @@ button.save:hover {
   <h3 id="selectedDate">Selecione um dia</h3>
 
   <!-- 🎯 CARD METAS -->
-  <div class="gym-card">
-    <div class="card-title">🎯 Suas metas</div>
+<div class="card">
+  <div class="card-title">🎯 Suas metas</div>
 
-    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; text-align:center;">
+  <div style="
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:12px;
+  ">
 
-      <div>
-        <small>💧 Meta diária de água</small>
-        <input type="number" id="waterGoalInput" placeholder="ml">
-      </div>
-
-      <div>
-        <small>🔥 Meta semanal de treinos</small>
-        <input type="number" id="weeklyGoalInput" placeholder="ex: 5">
-      </div>
-
+    <div>
+      <small style="color:#94a3b8;">💧 Água diária (ml)</small>
+      <input type="number" id="waterGoalInput" placeholder="ex: 3000">
     </div>
+
+    <div>
+      <small style="color:#94a3b8;">🔥 Treinos / semana</small>
+      <input type="number" id="weeklyGoalInput" placeholder="ex: 5">
+    </div>
+
   </div>
+</div>
+
 
   <!-- 🏋️ ATIVIDADE -->
   <label>Atividade</label>
@@ -674,40 +686,52 @@ button.save:hover {
 
   <div id="activityList" style="margin-top:14px;"></div>
 
-  <!-- 💧 CARD HIDRATAÇÃO -->
-  <div class="gym-card">
-    <div class="card-title">💧 Hidratação</div>
+  <div class="card">
+  <div class="card-title">💧 Hidratação</div>
 
-    <div class="water-buttons">
-      <button type="button" class="water-btn" data-ml="100">💧 100 ml</button>
-      <button type="button" class="water-btn" data-ml="200">💧 200 ml</button>
-      <button type="button" class="water-btn" data-ml="500">💧 500 ml</button>
-      <button type="button" class="water-btn" data-ml="1000">💧 1 L</button>
+  <div class="water-buttons">
+    <button class="water-btn" data-ml="100">100 ml</button>
+    <button class="water-btn" data-ml="200">200 ml</button>
+    <button class="water-btn" data-ml="500">500 ml</button>
+    <button class="water-btn" data-ml="1000">1 L</button>
+  </div>
+
+  <div style="text-align:center; margin-top:12px;">
+    <div style="font-size:32px; font-weight:800; color:#22c55e;">
+      <span id="waterDisplay">0</span> ml
     </div>
 
-    <div style="text-align:center; margin-top:12px;">
-      <div style="font-size:32px; font-weight:800; color:#22c55e;">
-        <span id="waterDisplay">0</span> ml
-      </div>
-
-      <div style="font-size:13px; opacity:0.7;">
-        de <span id="waterGoalText">2000</span> ml
-      </div>
-
-      <div style="margin-top:10px;">
-        <div style="height:10px; background:#020617; border-radius:8px; overflow:hidden;">
-          <div id="waterBar" style="
-            height:100%;
-            width:0%;
-            background:linear-gradient(90deg,#22c55e,#16a34a);
-            transition:width 0.3s;
-          "></div>
-        </div>
-      </div>
-
-      <p id="waterMessage" style="margin-top:10px; font-weight:700;"></p>
+    <div style="font-size:13px; color:#94a3b8;">
+      de <span id="waterGoalText">2000</span> ml
     </div>
   </div>
+
+  <!-- BARRA PREMIUM -->
+  <div style="margin-top:14px;">
+    <div style="
+      height:10px;
+      background:#020617;
+      border-radius:8px;
+      overflow:hidden;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.6);
+    ">
+      <div id="waterBar" style="
+        height:100%;
+        width:0%;
+        background:linear-gradient(90deg,#22c55e,#16a34a);
+        transition:width 0.4s ease;
+      "></div>
+    </div>
+  </div>
+
+  <p id="waterMessage" style="
+    margin-top:10px;
+    text-align:center;
+    font-weight:700;
+    color:#22c55e;
+  "></p>
+</div>
+
 
   <!-- 📏 CARD MEDIDAS -->
   <div class="gym-card">
