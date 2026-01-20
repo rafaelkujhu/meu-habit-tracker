@@ -517,20 +517,43 @@ button.save:hover {
 
 <div id="measuresBox" style="display:none; margin-top:16px;">
 
-  <label>Peso (kg)</label>
-  <input type="number" id="weightInput" step="0.1">
+  <div style="
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:14px;
+  ">
 
-  <label>Cintura (cm)</label>
-  <input type="number" id="waistInput">
+    <div>
+      <small>Peso</small>
+      <input type="number" id="weightInput" step="0.1" placeholder="kg">
+    </div>
 
-  <label>Quadril (cm)</label>
-  <input type="number" id="hipInput">
+    <div>
+      <small>Cintura</small>
+      <input type="number" id="waistInput" placeholder="cm">
+    </div>
 
-  <label>Coxa (cm)</label>
-  <input type="number" id="thighInput">
+    <div>
+      <small>Quadril</small>
+      <input type="number" id="hipInput" placeholder="cm">
+    </div>
 
-  <label>Braço (cm)</label>
-  <input type="number" id="armInput">
+    <div>
+      <small>Coxa</small>
+      <input type="number" id="thighInput" placeholder="cm">
+    </div>
+
+    <div>
+      <small>Braço</small>
+      <input type="number" id="armInput" placeholder="cm">
+    </div>
+
+    <div>
+      <small>Panturrilha</small>
+      <input type="number" id="calfInput" placeholder="cm">
+    </div>
+
+  </div>
 
 </div>
 
@@ -684,7 +707,7 @@ box.innerHTML = `
   </div>
 
   <input type="number" id="cardioTime" placeholder="Outro tempo (min)">
-`;
+  `;
 
  // 🔥 lógica dos botões de tempo (AQUIIIII 👇)
   document.querySelectorAll(".time-btn").forEach(btn => {
@@ -1036,7 +1059,7 @@ document.getElementById("waistInput").value = data.cintura || "";
 document.getElementById("hipInput").value = data.quadril || "";
 document.getElementById("thighInput").value = data.coxa || "";
 document.getElementById("armInput").value = data.braco || "";
-document.getElementById("armInput").value = data.panturilha || "";
+document.getElementById("calInput").value = data.panturilha || "";
 }
 
 document.getElementById("saveDay").onclick = () => {
@@ -1053,7 +1076,8 @@ document.getElementById("saveDay").onclick = () => {
   cintura: Number(document.getElementById("waistInput").value),
   quadril: Number(document.getElementById("hipInput").value),
   coxa: Number(document.getElementById("thighInput").value),
-  braco: Number(document.getElementById("armInput").value)
+  braco: Number(document.getElementById("armInput").value),
+  panturrilha: Number(document.getElementById("calfInput").value)
 };
 
 document.getElementById("deleteDay").onclick = () => {
