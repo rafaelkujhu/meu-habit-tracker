@@ -428,6 +428,41 @@ button.save:hover {
   margin: auto;
   padding: 30px;
 }
+ 
+/* 🧱 CARD PREMIUM (estilo post-it fitness) */
+.card {
+  background: linear-gradient(160deg, #0b1220, #020617);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 
+    0 0 0 1px rgba(34,197,94,0.15),
+    0 12px 30px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* detalhe verde neon lateral */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, #22c55e, #16a34a);
+  border-radius: 0 6px 6px 0;
+}
+
+/* título dos cards */
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #22c55e;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 
 /* ===== VISÃO ANUAL EM FORMATO DE CALENDÁRIO REAL ===== */
 
@@ -578,10 +613,8 @@ button.save:hover {
 
 
     <!-- PAINEL DO DIA -->
-    <div class="day-panel" id="dayPanel">
-      <h3 id="selectedDate">Selecione um dia</h3>
-
-<div class="info-card">
+   <div class="card" style="margin-bottom:16px;">
+  <div class="card-title">🎯 Suas metas</div>
 
   <div style="
     display:grid;
@@ -591,18 +624,18 @@ button.save:hover {
   ">
 
     <div>
-      <small>💧 Meta diária de água</small>
-      <input type="number" id="waterGoalInput" placeholder="ml" value="3000">
+      <small style="color:#cbd5f5;">💧 Meta diária de água</small>
+      <input type="number" id="waterGoalInput" placeholder="ml">
     </div>
 
     <div>
-      <small>🎯 Meta semanal de treinos</small>
-      <input type="number" id="weeklyGoalInput" placeholder="ex: 5" value="5">
+      <small style="color:#cbd5f5;">🔥 Meta semanal de treinos</small>
+      <input type="number" id="weeklyGoalInput" placeholder="ex: 5">
     </div>
 
   </div>
-
 </div>
+
 
 
 
@@ -649,53 +682,49 @@ button.save:hover {
 
 <div class="info-card" style="text-align:center;">
 
-  <div style="font-size:28px; font-weight:800; color:#2563eb;">
+<div class="card" style="margin-top:14px;">
+  <div class="card-title">💧 Hidratação</div>
+
+  <div style="font-size:32px; font-weight:800; color:#22c55e;">
     <span id="waterDisplay">0</span> ml
   </div>
 
-  <div style="font-size:13px; opacity:0.6;">
-    de <span id="waterGoalText">3000</span> ml
+  <div style="font-size:13px; opacity:0.7; color:#cbd5f5;">
+    de <span id="waterGoalText">2000</span> ml
   </div>
 
   <div style="margin-top:10px;">
-    <div style="height:10px; background:#e5e7eb; border-radius:8px; overflow:hidden;">
+    <div style="height:10px; background:#020617; border-radius:8px; overflow:hidden;">
       <div id="waterBar" style="
         height:100%;
         width:0%;
-        background:linear-gradient(90deg,#60a5fa,#2563eb);
+        background:linear-gradient(90deg,#22c55e,#16a34a);
         transition:width 0.3s;
       "></div>
     </div>
   </div>
 
+  <p id="waterMessage" style="margin-top:10px; font-weight:700; color:#22c55e;"></p>
 </div>
+ 
+<div class="card" style="margin-top:18px;">
+  <div class="card-title">📏 Medidas corporais</div>
 
+  <button id="toggleMeasures" style="
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:none;
+    background:#22c55e;
+    color:#020617;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+  ">
+    Abrir / Fechar medidas
+  </button>
 
-<!-- mensagem de meta -->
-<p id="waterMessage" style="margin-top:8px; font-weight:600; text-align:center;"></p>
-    
-      
-<hr style="margin:20px 0;">
-
-<button id="toggleMeasures" style="
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border:1px solid #e5e7eb;
-  background:#ffffff;
-  font-size:15px;
-  font-weight:600;
-  cursor:pointer;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:8px;
-">
-  📏 Medidas corporais
-</button>
-
-
-<div id="measuresBox" style="display:none; margin-top:16px;">
+  <div id="measuresBox" style="display:none; margin-top:16px;">
 
   <div style="
     display:grid;
@@ -743,32 +772,35 @@ button.save:hover {
       </p>
 
 <div class="info-card">
+<div class="card" style="margin-top:20px;">
+  <div class="card-title">🔥 Progresso</div>
 
-  <p id="streakInfo" style="text-align:center; font-weight:600;">
+  <p id="streakInfo" style="text-align:center; font-weight:700; color:#22c55e;">
     🔥 Constância: 0 dias
   </p>
 
-  <p id="weeklyGoal" style="text-align:center; margin-top:6px;">
-    🎯 Meta semanal: 0 / 5 treinos
+  <p id="weeklyGoal" style="text-align:center; color:#cbd5f5;">
+    🎯 Meta semanal: 0 / 3 treinos
   </p>
 
   <div style="margin-top:10px;">
-    <div style="height:8px; background:#e5e7eb; border-radius:6px; overflow:hidden;">
+    <div style="height:8px; background:#020617; border-radius:6px; overflow:hidden;">
       <div id="weekBar" style="
         height:100%;
         width:0%;
-        background:#ff7a18;
+        background:linear-gradient(90deg,#22c55e,#16a34a);
         transition:width 0.3s;
       "></div>
     </div>
   </div>
 
+  <div id="miniWeekChart" style="
+    display:flex;
+    gap:8px;
+    justify-content:center;
+    margin-top:14px;
+  "></div>
 </div>
-
-
- <!-- 🔥 MINI GRÁFICO SEMANAL -->
-<div id="miniWeekChart" style="display:flex; gap:6px; justify-content:center; margin-top:12px;"></div>
-
 
 
      <button class="save" id="saveDay">Salvar</button>
