@@ -13,12 +13,12 @@
       --text: #1f2937;
     } 
 
-/* ===== TEMA ACADEMIA MOTIVACIONAL ===== */
 .theme-feminino {
-  --bg: #0f172a;        /* fundo azul escuro academia */
-  --card: #111827;     /* card quase preto */
-  --primary: #ff7a18;  /* laranja energia */
-  --text: #f9fafb;     /* texto claro */
+  --bg: #0f172a;        /* fundo escuro premium */
+  --card: #111827;     /* cards elegantes */
+  --primary: #f59e0b;   /* dourado treino – luxo + energia */
+  --accent: #2563eb;  /* água / wellness */
+  --text: #f9fafb;
 }
 
 body {
@@ -28,22 +28,20 @@ body {
   color: #1f2937;
 }
 
-  .app {
-  display: grid;
-  grid-template-columns: 320px;   /* 🔥 começa só com calendário */
-  gap: 24px;
-  padding: 24px;
-  max-width: 900px;
+/* 🔥 MOBILE FIRST BASE */
+.app {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
+  max-width: 480px;     /* largura ideal de celular */
   margin: auto;
-  align-items: start;
-  justify-content: center;
 }
 
+/* 🔥 NO MOBILE continua em coluna única */
 .app.show-panel {
-  grid-template-columns: 360px 1fr;  /* 🔥 calendário mais confortável */
-  max-width: 1100px;
+  max-width: 480px;
 }
-
 
 .calendar,
 .day-panel {
@@ -438,6 +436,40 @@ button.save:hover {
   justify-content: center;
   cursor: pointer;
 }
+
+/* 🔥 DESKTOP / TELAS GRANDES */
+@media (min-width: 900px) {
+
+  .app {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    max-width: 1100px;
+  }
+
+  .app.show-panel {
+    grid-template-columns: 360px 1fr;
+  }
+
+}
+
+/* 🔥 MODO ESCURO FUTURO (BASE PRONTA) */
+.dark {
+  background: #020617;
+}
+
+.dark .calendar,
+.dark .day-panel {
+  background: #020617;
+  color: #e5e7eb;
+}
+
+.dark select,
+.dark input {
+  background: #020617;
+  color: #f9fafb;
+  border-color: #334155;
+}
+
 
 .mini-day.workout { background: #f6b3cf; }
 .mini-day.water   { background: #c7ddf7; }
@@ -1324,6 +1356,7 @@ calculateStreak();
 calculateWeeklyGoal();
 renderMiniWeekChart();
 renderMeasureCompare();
+document.body.classList.add("dark");
 
   </script>
 </body>
