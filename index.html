@@ -569,6 +569,31 @@ button.save:hover {
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
 
+<!-- ⚙️ CONFIGURAÇÃO DE METAS -->
+<div style="
+  background:#f1f5f9;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:16px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:12px;
+  text-align:center;
+">
+
+  <div>
+    <small>💧 Meta diária de água</small>
+    de <span id="waterGoalLabel">3000</span> ml
+ </div>
+
+  <div>
+    <small>🎯 Meta semanal de treinos</small>
+    <input type="number" id="weeklyGoalInput" placeholder="ex: 5" value="5">
+  </div>
+
+</div>
+
+
 <label>Atividade</label>
 
 <div id="activityButtons" style="
@@ -754,7 +779,7 @@ button.save:hover {
     const monthYear = document.getElementById("monthYear");
    const yearView = document.getElementById("yearView");
    const monthView = document.getElementById("monthView");
-    const WATER_GOAL = 3000;
+
    let currentWater = 0;
 
     let currentDate = new Date();
@@ -996,20 +1021,25 @@ function removeActivity(index) {
 
 
 function updateWaterUI() {
+document.getElementById("waterGoalLabel").innerText = goal;
+
   const display = document.getElementById("waterDisplay");
   const bar = document.getElementById("waterBar");
   const msg = document.getElementById("waterMessage");
 
   display.innerText = currentWater;
 
-  const percent = Math.min((currentWater / WATER_GOAL) * 100, 100);
-  bar.style.width = percent + "%";
+ const settings = getSettings();
+const goal = settings.waterGoal;
 
-  if (currentWater >= WATER_GOAL) {
+const percent = Math.min((currentWater / goal) * 100, 100);
+
+
+  if (currentWater >= goal) {
     msg.innerText = "🎉 Meta de água atingida! Parabéns!";
     msg.style.color = "#16a34a";
   } else {
-    const falta = WATER_GOAL - currentWater;
+    const falta = goal - currentWater;
     msg.innerText = `💧 Faltam ${falta} ml para sua meta`;
     msg.style.color = "#2563eb";
   }
@@ -1037,7 +1067,8 @@ startOfWeek.setDate(today.getDate() - day + 1); // começa segunda
     }
   }
 
-  const goal = 5;
+const settings = getSettings();
+const goal = settings.weeklyGoal;
 
   document.getElementById("weeklyGoal").innerText =
     `🎯 Meta semanal: ${count} / ${goal} treinos`;
@@ -1138,6 +1169,16 @@ if (monthIndex === new Date().getMonth()) {
       return JSON.parse(localStorage.getItem("habitData")) || {};
     } 
 
+function getSettings() {
+  return JSON.parse(localStorage.getItem("habitSettings")) || {
+    waterGoal: 3000,
+    weeklyGoal: 5
+  };
+}
+
+function saveSettings(settings) {
+  localStorage.setItem("habitSettings", JSON.stringify(settings));
+}
 
     function saveData(data) {
       localStorage.setItem("habitData", JSON.stringify(data));
@@ -1391,6 +1432,28 @@ document.getElementById("toggleMeasures").onclick = () => {
   }
 };
 
+// 🔥 carrega metas salvas
+const settings = getSettings();
+document.getElementById("waterGoalInput").value = settings.waterGoal;
+document.getElementById("weeklyGoalInput").value = settings.weeklyGoal;
+
+document.getElementById("waterGoalInput").onchange = () => {
+  const settings = getSettings();
+  settings.waterGoal = Number(document.getElementById("waterGoalInput").value);
+  saveSettings(settings);
+
+  updateWaterUI();
+  calculateWeeklyGoal();
+};
+
+document.getElementById("weeklyGoalInput").onchange = () => {
+  const settings = getSettings();
+  settings.weeklyGoal = Number(document.getElementById("weeklyGoalInput").value);
+  saveSettings(settings);
+
+  calculateWeeklyGoal();
+};
+
 
 renderYear();
 calculateStreak();
@@ -1398,6 +1461,7 @@ calculateWeeklyGoal();
 renderMiniWeekChart();
 renderMeasureCompare();
 document.body.classList.add("dark");
+
 
   </script>
 </body>
