@@ -199,13 +199,53 @@ body {
 }
 
 .activity-item {
-  background: #f1f5f9;
-  padding: 6px 10px;
-  border-radius: 10px;
-  margin-top: 6px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.25s ease;
+}
+
+.activity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activity-title {
+  font-weight: 700;
+  font-size: 15px;
+  color: #111827;
+}
+
+.activity-sub {
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.activity-remove {
+  background: #ef4444;
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: transform 0.15s ease;
+}
+
+.activity-remove:hover {
+  transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 
@@ -789,29 +829,44 @@ document.querySelectorAll(".water-btn").forEach(btn => {
   };
 });
 
-    function renderActivities() {
+   function renderActivities() {
   const list = document.getElementById("activityList");
   list.innerHTML = "";
 
   activitiesToday.forEach((act, index) => {
-    let text = "";
+
+    let icon = "";
+    let title = "";
+    let sub = "";
 
     if (act.tipo === "Musculação") {
-      text = `💪 ${act.grupo} — ${act.exercicio} (${act.series})`;
+      icon = "💪";
+      title = `${act.grupo}`;
+      sub = `${act.exercicio} • ${act.series}`;
     } else {
-      text = `🏃 ${act.atividade} — ${act.tempo}`;
+      icon = act.tipo === "Cardio" ? "🏃" : "⚽";
+      title = act.atividade;
+      sub = `Tempo: ${act.tempo}`;
     }
 
     const div = document.createElement("div");
     div.className = "activity-item";
+
     div.innerHTML = `
-      ${text}
-      <button onclick="removeActivity(${index})">❌</button>
+      <div class="activity-info">
+        <div class="activity-title">${icon} ${title}</div>
+        <div class="activity-sub">${sub}</div>
+      </div>
+
+      <button class="activity-remove" onclick="removeActivity(${index})">
+        ❌
+      </button>
     `;
 
     list.appendChild(div);
   });
 }
+
 
 
 function removeActivity(index) {
