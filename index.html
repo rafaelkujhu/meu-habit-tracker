@@ -514,27 +514,40 @@ button.save:hover {
   <button type="button" class="water-btn" data-ml="1000">+1 L</button>
 </div>
 
-<!-- total do dia -->
-<input type="number" id="waterInput" placeholder="Total do dia (ml)" readonly />
+<div style="
+  margin-top:10px;
+  background:#ffffff;
+  border-radius:16px;
+  padding:14px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+">
 
-<!-- barra de progresso -->
-<div style="margin-top:10px;">
-  <div style="height:10px; background:#e5e7eb; border-radius:8px; overflow:hidden;">
-    <div id="waterBar" style="
-      height:100%;
-      width:0%;
-      background:#60a5fa;
-      transition:width 0.3s;
-    "></div>
+  <div style="font-size:28px; font-weight:800; color:#2563eb;">
+    <span id="waterDisplay">0</span> ml
+  </div>
+
+  <div style="font-size:13px; opacity:0.6;">
+    de 3000 ml
+  </div>
+
+  <div style="margin-top:10px;">
+    <div style="height:10px; background:#e5e7eb; border-radius:8px; overflow:hidden;">
+      <div id="waterBar" style="
+        height:100%;
+        width:0%;
+        background:linear-gradient(90deg,#60a5fa,#2563eb);
+        transition:width 0.3s;
+      "></div>
+    </div>
   </div>
 </div>
+
 
 <!-- mensagem de meta -->
 <p id="waterMessage" style="margin-top:8px; font-weight:600; text-align:center;"></p>
     
-      <label>Observação</label>
-      <textarea id="noteInput" rows="3"></textarea>
-
+      
 <hr style="margin:20px 0;">
 
 <button id="toggleMeasures" style="
@@ -645,7 +658,7 @@ button.save:hover {
     const monthYear = document.getElementById("monthYear");
    const yearView = document.getElementById("yearView");
    const monthView = document.getElementById("monthView");
-    const WATER_GOAL = 2000;
+    const WATER_GOAL = 3000;
    let currentWater = 0;
 
     let currentDate = new Date();
@@ -691,8 +704,11 @@ function loadActivityOptions(type) {
       <label>Grupo muscular</label>
       <select id="muscleGroup"></select>
 
-      <label>Exercício</label>
-      <select id="exerciseName"></select>
+   <label>Exercício</label>
+<select id="exerciseName"></select>
+
+<input type="text" id="customExercise" placeholder="Ou digite outro exercício (opcional)">
+
 
       <label>Séries x repetições</label>
       <select id="setsReps">
@@ -776,7 +792,12 @@ document.getElementById("addActivity").onclick = () => {
     item = {
       tipo: "Musculação",
       grupo: document.getElementById("muscleGroup").value,
-      exercicio: document.getElementById("exerciseName").value,
+     const custom = document.getElementById("customExercise").value;
+
+exercicio: custom !== "" 
+  ? custom 
+  : document.getElementById("exerciseName").value,
+
       series: document.getElementById("setsReps").value
     };
   }
@@ -875,19 +896,18 @@ function removeActivity(index) {
 }
 
 
-// 🔥 atualiza barra + mensagem
 function updateWaterUI() {
-  const input = document.getElementById("waterInput");
+  const display = document.getElementById("waterDisplay");
   const bar = document.getElementById("waterBar");
   const msg = document.getElementById("waterMessage");
 
-  input.value = currentWater;
+  display.innerText = currentWater;
 
   const percent = Math.min((currentWater / WATER_GOAL) * 100, 100);
   bar.style.width = percent + "%";
 
   if (currentWater >= WATER_GOAL) {
-    msg.innerText = "🎉 Meta de água atingida!";
+    msg.innerText = "🎉 Meta de água atingida! Parabéns!";
     msg.style.color = "#16a34a";
   } else {
     const falta = WATER_GOAL - currentWater;
@@ -1106,8 +1126,7 @@ renderActivities();
     });
 
   
-  document.getElementById("noteInput").value = data.obs || "";
-  currentWater = data.agua || 0;
+    currentWater = data.agua || 0;
  updateWaterUI();
 document.getElementById("weightInput").value = data.peso || "";
 document.getElementById("waistInput").value = data.cintura || "";
@@ -1125,7 +1144,6 @@ document.getElementById("saveDay").onclick = () => {
   data[selectedDateKey] = {
   atividades: activitiesToday,
   agua: Number(document.getElementById("waterInput").value),
-  obs: document.getElementById("noteInput").value,
 
   peso: Number(document.getElementById("weightInput").value),
   cintura: Number(document.getElementById("waistInput").value),
@@ -1153,7 +1171,7 @@ renderActivities();
 
   // limpa formulário
   document.getElementById("waterInput").value = "";
-  document.getElementById("noteInput").value = "";
+
 
   // atualiza tudo
   renderCalendar();
