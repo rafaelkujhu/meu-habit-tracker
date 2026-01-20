@@ -581,10 +581,11 @@ button.save:hover {
   text-align:center;
 ">
 
-  <div>
-    <small>💧 Meta diária de água</small>
-    de <span id="waterGoalLabel">3000</span> ml
- </div>
+<div>
+  <small>💧 Meta diária de água</small>
+  <input type="number" id="waterGoalInput" placeholder="ml" value="3000">
+</div>
+
 
   <div>
     <small>🎯 Meta semanal de treinos</small>
@@ -648,9 +649,9 @@ button.save:hover {
     <span id="waterDisplay">0</span> ml
   </div>
 
-  <div style="font-size:13px; opacity:0.6;">
-    de 3000 ml
-  </div>
+<div style="font-size:13px; opacity:0.6;">
+  de <span id="waterGoalText">3000</span> ml
+</div>
 
   <div style="margin-top:10px;">
     <div style="height:10px; background:#e5e7eb; border-radius:8px; overflow:hidden;">
@@ -1021,7 +1022,10 @@ function removeActivity(index) {
 
 
 function updateWaterUI() {
-document.getElementById("waterGoalLabel").innerText = goal;
+  const settings = getSettings();
+  const goal = settings.waterGoal;
+
+ document.getElementById("waterGoalText").innerText = goal;
 
   const display = document.getElementById("waterDisplay");
   const bar = document.getElementById("waterBar");
@@ -1029,11 +1033,8 @@ document.getElementById("waterGoalLabel").innerText = goal;
 
   display.innerText = currentWater;
 
- const settings = getSettings();
-const goal = settings.waterGoal;
-
-const percent = Math.min((currentWater / goal) * 100, 100);
-
+  const percent = Math.min((currentWater / goal) * 100, 100);
+  bar.style.width = percent + "%";
 
   if (currentWater >= goal) {
     msg.innerText = "🎉 Meta de água atingida! Parabéns!";
@@ -1044,6 +1045,7 @@ const percent = Math.min((currentWater / goal) * 100, 100);
     msg.style.color = "#2563eb";
   }
 }
+
 
 function calculateWeeklyGoal() {
   const data = getData();
@@ -1138,9 +1140,9 @@ if (monthIndex === new Date().getMonth()) {
 
       if (data[key]) {
         const { treino, agua } = data[key];
-        if (treino && agua >= WATER_GOAL) d.classList.add("both");
+       if (treino && agua >= settings.waterGoal)
         else if (treino) d.classList.add("workout");
-        else if (agua >= WATER_GOAL) d.classList.add("water");
+      else if (agua >= settings.waterGoal)
       }
 
       // 🔥 clicar já abre mês + dia
@@ -1201,6 +1203,8 @@ function saveSettings(settings) {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const data = getData();
 
+  const settings = getSettings();   // 👈 AQUI
+
   // Espaços vazios antes do dia 1
   for (let i = 0; i < firstDay; i++) {
     const empty = document.createElement("div");
@@ -1225,9 +1229,9 @@ function saveSettings(settings) {
 
     if (data[dateKey]) {
       const { treino, agua } = data[dateKey];
-      if (treino && agua >= WATER_GOAL) dayDiv.classList.add("both");
+     if (treino && agua >= settings.waterGoal) dayDiv.classList.add("both");
       else if (treino) dayDiv.classList.add("workout");
-      else if (agua >= WATER_GOAL) dayDiv.classList.add("water");
+      else if (agua >= settings.waterGoal) dayDiv.classList.add("water");
     }
 
     // 🔥 clique correto com evento
