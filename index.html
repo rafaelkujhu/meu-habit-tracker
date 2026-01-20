@@ -20,6 +20,18 @@
   --accent: #2563eb;  /* água / wellness */
   --text: #f9fafb;
 } 
+ .info-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  margin-bottom: 14px;
+}
+
+.dark .info-card {
+  background: #020617;
+}
+
 
  /* 🌙 MODO ESCURO PREMIUM */
 
@@ -569,30 +581,29 @@ button.save:hover {
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
 
-<!-- ⚙️ CONFIGURAÇÃO DE METAS -->
-<div style="
-  background:#f1f5f9;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:16px;
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap:12px;
-  text-align:center;
-">
+<div class="info-card">
 
-<div>
-  <small>💧 Meta diária de água</small>
-  <input type="number" id="waterGoalInput" placeholder="ml" value="3000">
-</div>
+  <div style="
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:12px;
+    text-align:center;
+  ">
 
+    <div>
+      <small>💧 Meta diária de água</small>
+      <input type="number" id="waterGoalInput" placeholder="ml" value="3000">
+    </div>
 
-  <div>
-    <small>🎯 Meta semanal de treinos</small>
-    <input type="number" id="weeklyGoalInput" placeholder="ex: 5" value="5">
+    <div>
+      <small>🎯 Meta semanal de treinos</small>
+      <input type="number" id="weeklyGoalInput" placeholder="ex: 5" value="5">
+    </div>
+
   </div>
 
 </div>
+
 
 
 <label>Atividade</label>
@@ -636,22 +647,15 @@ button.save:hover {
   <button type="button" class="water-btn" data-ml="1000">💧 1 L</button>
 </div>
 
-<div style="
-  margin-top:10px;
-  background:#ffffff;
-  border-radius:16px;
-  padding:14px;
-  text-align:center;
-  box-shadow:0 4px 12px rgba(0,0,0,0.05);
-">
+<div class="info-card" style="text-align:center;">
 
   <div style="font-size:28px; font-weight:800; color:#2563eb;">
     <span id="waterDisplay">0</span> ml
   </div>
 
-<div style="font-size:13px; opacity:0.6;">
-  de <span id="waterGoalText">3000</span> ml
-</div>
+  <div style="font-size:13px; opacity:0.6;">
+    de <span id="waterGoalText">3000</span> ml
+  </div>
 
   <div style="margin-top:10px;">
     <div style="height:10px; background:#e5e7eb; border-radius:8px; overflow:hidden;">
@@ -663,6 +667,7 @@ button.save:hover {
       "></div>
     </div>
   </div>
+
 </div>
 
 
@@ -737,18 +742,29 @@ button.save:hover {
         Constância é mais importante que perfeição ✨
       </p>
 
-<p id="streakInfo" style="text-align:center; margin-top:10px; font-weight:600;">
-  🔥 Constância: 0 dias
-</p>
+<div class="info-card">
 
-<p id="weeklyGoal" style="text-align:center; margin-top:6px;">
-  🎯 Meta semanal: 0 / 5 treinos
-</p>
-<div style="margin-top:10px;">
-  <div style="height:8px; background:#e5e7eb; border-radius:6px; overflow:hidden;">
-    <div id="weekBar" style="height:100%; width:0%; background:#ff7a18; transition:width 0.3s;"></div>
+  <p id="streakInfo" style="text-align:center; font-weight:600;">
+    🔥 Constância: 0 dias
+  </p>
+
+  <p id="weeklyGoal" style="text-align:center; margin-top:6px;">
+    🎯 Meta semanal: 0 / 5 treinos
+  </p>
+
+  <div style="margin-top:10px;">
+    <div style="height:8px; background:#e5e7eb; border-radius:6px; overflow:hidden;">
+      <div id="weekBar" style="
+        height:100%;
+        width:0%;
+        background:#ff7a18;
+        transition:width 0.3s;
+      "></div>
+    </div>
   </div>
+
 </div>
+
 
  <!-- 🔥 MINI GRÁFICO SEMANAL -->
 <div id="miniWeekChart" style="display:flex; gap:6px; justify-content:center; margin-top:12px;"></div>
