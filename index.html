@@ -7,10 +7,12 @@
 
   <style>
 :root {
-  --bg: #f8fafc;
-  --card: #ffffff;
-  --primary: #3b82f6;   /* azul premium */
-  --text: #1f2937;
+  --bg: #020617;          /* fundo preto azulado */
+  --card: #0b1220;       /* cards escuros */
+  --primary: #22c55e;    /* verde neon fitness */
+  --accent: #16a34a;     /* verde escuro */
+  --text: #e5e7eb;       /* texto claro elegante */
+  --muted: #94a3b8;      /* texto secundário */
 }
 
 .theme-feminino {
@@ -85,9 +87,11 @@ body {
 
 .calendar,
 .day-panel {
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  background: linear-gradient(180deg, #020617, #0b1220);
+  border-radius: 22px;
+  box-shadow: 
+    0 20px 40px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
     .calendar-header {
@@ -181,21 +185,24 @@ body {
   transform: scale(1.15);
 }
 
- /* 🔥 STATUS DOS DIAS (bem visíveis) */
+/* 🔥 STATUS DOS DIAS (GYM PREMIUM) */
 
 .day.workout {
-  background: #fb7185;   /* rosa forte treino */
-  color: #fff;
+  background: #22c55e;
+  color: #020617;
+  box-shadow: 0 0 12px rgba(34,197,94,0.8);
 }
 
 .day.water {
-  background: #60a5fa;   /* azul água */
-  color: #fff;
+  background: #38bdf8;
+  color: #020617;
+  box-shadow: 0 0 10px rgba(56,189,248,0.7);
 }
 
 .day.both {
-  background: #a855f7;   /* roxo ambos */
-  color: #fff;
+  background: linear-gradient(135deg, #22c55e, #38bdf8);
+  color: #020617;
+  box-shadow: 0 0 14px rgba(34,197,94,0.9);
 }
 
 .time-btn {
@@ -341,10 +348,15 @@ select, input, textarea {
   width: 100%;
   padding: 10px 12px;
   border-radius: 12px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #1e293b;
   margin-top: 6px;
-  background: #ffffff;
+  background: #020617;
   font-size: 14px;
+  color: #e5e7eb;
+}
+
+input::placeholder {
+  color: #64748b;
 }
 
 .act-btn {
@@ -360,16 +372,16 @@ select, input, textarea {
 }
 
 .act-btn:hover {
-  background:#ff7a18;
-  color:#fff;
-  border-color:#ff7a18;
+  background:#22c55e;
+  color:#020617;
+  border-color:#22c55e;
 }
 
 .act-btn.active {
-  background:#2563eb;          /* azul premium */
-  color:#fff;
-  border-color:#2563eb;
-  box-shadow:0 4px 12px rgba(37,99,235,0.4);
+  background:#22c55e;
+  color:#020617;
+  border-color:#22c55e;
+  box-shadow:0 4px 14px rgba(34,197,94,0.6);
 }
 
 
@@ -379,14 +391,15 @@ button.save {
   padding: 14px;
   border-radius: 14px;
   border: none;
-  background: linear-gradient(135deg, #ff7a18, #ff9f43);
-  color: #fff;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #020617;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 6px 16px rgba(255,122,24,0.4);
+  box-shadow: 0 6px 18px rgba(34,197,94,0.5);
   transition: transform 0.2s ease;
 }
+
 
 button.save:hover {
   transform: translateY(-2px);
@@ -429,40 +442,6 @@ button.save:hover {
   padding: 30px;
 }
  
-/* 🧱 CARD PREMIUM (estilo post-it fitness) */
-.card {
-  background: linear-gradient(160deg, #0b1220, #020617);
-  border-radius: 18px;
-  padding: 16px;
-  box-shadow: 
-    0 0 0 1px rgba(34,197,94,0.15),
-    0 12px 30px rgba(0,0,0,0.6);
-  position: relative;
-  overflow: hidden;
-}
-
-/* detalhe verde neon lateral */
-.card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 6px;
-  height: 100%;
-  background: linear-gradient(180deg, #22c55e, #16a34a);
-  border-radius: 0 6px 6px 0;
-}
-
-/* título dos cards */
-.card-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #22c55e;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
 
 /* ===== VISÃO ANUAL EM FORMATO DE CALENDÁRIO REAL ===== */
 
@@ -518,6 +497,40 @@ button.save:hover {
   cursor: pointer;
 }
 
+ /* 🧱 CARD PREMIUM (estilo post-it fitness) */
+.card {
+  background: linear-gradient(160deg, #0b1220, #020617);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 
+    0 0 0 1px rgba(34,197,94,0.15),
+    0 12px 30px rgba(0,0,0,0.6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* detalhe verde neon lateral */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, #22c55e, #16a34a);
+  border-radius: 0 6px 6px 0;
+}
+
+/* título dos cards */
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #22c55e;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 /* 🔥 DESKTOP / TELAS GRANDES */
 @media (min-width: 900px) {
 
@@ -531,6 +544,16 @@ button.save:hover {
     grid-template-columns: 360px 1fr;
   }
 
+}
+
+.gym-card {
+  background: linear-gradient(180deg, #020617, #0b1220);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 
+    0 12px 30px rgba(0,0,0,0.6),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+  margin-bottom: 16px;
 }
 
 /* 🔥 MODO ESCURO FUTURO (BASE PRONTA) */
@@ -607,221 +630,152 @@ button.save:hover {
     <span>Dom</span>
   </div>
 
-
   <div class="calendar-grid" id="calendarGrid"></div>
 </div>
-
-
-    <!-- PAINEL DO DIA -->
-   <div class="card" style="margin-bottom:16px;">
-  <div class="card-title">🎯 Suas metas</div>
-
-  <div style="
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:12px;
-    text-align:center;
-  ">
-
-    <div>
-      <small style="color:#cbd5f5;">💧 Meta diária de água</small>
-      <input type="number" id="waterGoalInput" placeholder="ml">
-    </div>
-
-    <div>
-      <small style="color:#cbd5f5;">🔥 Meta semanal de treinos</small>
-      <input type="number" id="weeklyGoalInput" placeholder="ex: 5">
-    </div>
-
-  </div>
-</div>
-
-
-
-
-<label>Atividade</label>
-
-<div id="activityButtons" style="
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  margin-bottom:14px;
-">
-  <button class="act-btn" data-type="musculacao">💪 Musculação</button>
-  <button class="act-btn" data-type="cardio">🏃 Cardio</button>
-  <button class="act-btn" data-type="esporte">⚽ Esporte</button>
-</div>
-
-<div id="activityDetails" style="margin-top:12px;"></div>
-
-<button type="button" id="addActivity" style="
-  margin-top:10px;
-  padding:10px;
-  border-radius:10px;
-
-  border:none;
-  background:#ff7a18;
-  color:#fff;
-  cursor:pointer;
-">
-➕ Adicionar atividade
-</button>
-
-<div id="activityList" style="margin-top:14px;"></div>
-
-
-<label>Água ingerida hoje</label>
-
-<!-- 💧 controle rápido de água -->
-<div class="water-buttons">
-  <button type="button" class="water-btn" data-ml="100">💧 100 ml</button>
-  <button type="button" class="water-btn" data-ml="200">💧 200 ml</button>
-  <button type="button" class="water-btn" data-ml="500">💧 500 ml</button>
-  <button type="button" class="water-btn" data-ml="1000">💧 1 L</button>
-</div>
-
-<div class="info-card" style="text-align:center;">
-
-<div class="card" style="margin-top:14px;">
-  <div class="card-title">💧 Hidratação</div>
-
-  <div style="font-size:32px; font-weight:800; color:#22c55e;">
-    <span id="waterDisplay">0</span> ml
-  </div>
-
-  <div style="font-size:13px; opacity:0.7; color:#cbd5f5;">
-    de <span id="waterGoalText">2000</span> ml
-  </div>
-
-  <div style="margin-top:10px;">
-    <div style="height:10px; background:#020617; border-radius:8px; overflow:hidden;">
-      <div id="waterBar" style="
-        height:100%;
-        width:0%;
-        background:linear-gradient(90deg,#22c55e,#16a34a);
-        transition:width 0.3s;
-      "></div>
-    </div>
-  </div>
-
-  <p id="waterMessage" style="margin-top:10px; font-weight:700; color:#22c55e;"></p>
-</div>
  
-<div class="card" style="margin-top:18px;">
-  <div class="card-title">📏 Medidas corporais</div>
+<!-- PAINEL DO DIA -->
+<div class="day-panel" id="dayPanel">
 
-  <button id="toggleMeasures" style="
-    width:100%;
-    padding:12px;
-    border-radius:12px;
-    border:none;
-    background:#22c55e;
-    color:#020617;
-    font-size:15px;
-    font-weight:800;
-    cursor:pointer;
-  ">
-    Abrir / Fechar medidas
+  <h3 id="selectedDate">Selecione um dia</h3>
+
+  <!-- 🎯 CARD METAS -->
+  <div class="gym-card">
+    <div class="card-title">🎯 Suas metas</div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; text-align:center;">
+
+      <div>
+        <small>💧 Meta diária de água</small>
+        <input type="number" id="waterGoalInput" placeholder="ml">
+      </div>
+
+      <div>
+        <small>🔥 Meta semanal de treinos</small>
+        <input type="number" id="weeklyGoalInput" placeholder="ex: 5">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 🏋️ ATIVIDADE -->
+  <label>Atividade</label>
+
+  <div id="activityButtons" style="display:flex; gap:10px; justify-content:center; margin-bottom:14px;">
+    <button class="act-btn" data-type="musculacao">💪 Musculação</button>
+    <button class="act-btn" data-type="cardio">🏃 Cardio</button>
+    <button class="act-btn" data-type="esporte">⚽ Esporte</button>
+  </div>
+
+  <div id="activityDetails" style="margin-top:12px;"></div>
+
+  <button type="button" id="addActivity" class="save" style="margin-top:10px;">
+    ➕ Adicionar atividade
   </button>
 
-  <div id="measuresBox" style="display:none; margin-top:16px;">
+  <div id="activityList" style="margin-top:14px;"></div>
 
-  <div style="
-    display:grid;
-    grid-template-columns: 1fr 1fr;
-    gap:14px;
+  <!-- 💧 CARD HIDRATAÇÃO -->
+  <div class="gym-card">
+    <div class="card-title">💧 Hidratação</div>
+
+    <div class="water-buttons">
+      <button type="button" class="water-btn" data-ml="100">💧 100 ml</button>
+      <button type="button" class="water-btn" data-ml="200">💧 200 ml</button>
+      <button type="button" class="water-btn" data-ml="500">💧 500 ml</button>
+      <button type="button" class="water-btn" data-ml="1000">💧 1 L</button>
+    </div>
+
+    <div style="text-align:center; margin-top:12px;">
+      <div style="font-size:32px; font-weight:800; color:#22c55e;">
+        <span id="waterDisplay">0</span> ml
+      </div>
+
+      <div style="font-size:13px; opacity:0.7;">
+        de <span id="waterGoalText">2000</span> ml
+      </div>
+
+      <div style="margin-top:10px;">
+        <div style="height:10px; background:#020617; border-radius:8px; overflow:hidden;">
+          <div id="waterBar" style="
+            height:100%;
+            width:0%;
+            background:linear-gradient(90deg,#22c55e,#16a34a);
+            transition:width 0.3s;
+          "></div>
+        </div>
+      </div>
+
+      <p id="waterMessage" style="margin-top:10px; font-weight:700;"></p>
+    </div>
+  </div>
+
+  <!-- 📏 CARD MEDIDAS -->
+  <div class="gym-card">
+    <div class="card-title">📏 Medidas corporais</div>
+
+    <button id="toggleMeasures" class="save" style="background:#22c55e; color:#020617;">
+      Abrir / Fechar medidas
+    </button>
+
+    <div id="measuresBox" style="display:none; margin-top:16px;">
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+
+        <div><small>Peso</small><input type="number" id="weightInput" placeholder="kg"></div>
+        <div><small>Cintura</small><input type="number" id="waistInput" placeholder="cm"></div>
+        <div><small>Quadril</small><input type="number" id="hipInput" placeholder="cm"></div>
+        <div><small>Coxa</small><input type="number" id="thighInput" placeholder="cm"></div>
+        <div><small>Braço</small><input type="number" id="armInput" placeholder="cm"></div>
+        <div><small>Panturrilha</small><input type="number" id="calfInput" placeholder="cm"></div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔥 CARD PROGRESSO -->
+  <div class="gym-card">
+    <div class="card-title">🔥 Progresso</div>
+
+    <p id="streakInfo" style="text-align:center; font-weight:700; color:#22c55e;">
+      🔥 Constância: 0 dias
+    </p>
+
+    <p id="weeklyGoal" style="text-align:center;">
+      🎯 Meta semanal: 0 / 3 treinos
+    </p>
+
+    <div style="margin-top:10px;">
+      <div style="height:8px; background:#020617; border-radius:6px; overflow:hidden;">
+        <div id="weekBar" style="
+          height:100%;
+          width:0%;
+          background:linear-gradient(90deg,#22c55e,#16a34a);
+          transition:width 0.3s;
+        "></div>
+      </div>
+    </div>
+
+    <div id="miniWeekChart" style="display:flex; gap:8px; justify-content:center; margin-top:14px;"></div>
+  </div>
+
+  <!-- 💾 BOTÕES -->
+  <button class="save" id="saveDay">Salvar</button>
+
+  <button id="deleteDay" style="
+    margin-top: 10px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: none;
+    background: #ef4444;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
   ">
-
-    <div>
-      <small>Peso</small>
-      <input type="number" id="weightInput" step="0.1" placeholder="kg">
-    </div>
-
-    <div>
-      <small>Cintura</small>
-      <input type="number" id="waistInput" placeholder="cm">
-    </div>
-
-    <div>
-      <small>Quadril</small>
-      <input type="number" id="hipInput" placeholder="cm">
-    </div>
-
-    <div>
-      <small>Coxa</small>
-      <input type="number" id="thighInput" placeholder="cm">
-    </div>
-
-    <div>
-      <small>Braço</small>
-      <input type="number" id="armInput" placeholder="cm">
-    </div>
-
-    <div>
-      <small>Panturrilha</small>
-      <input type="number" id="calfInput" placeholder="cm">
-    </div>
-
-  </div>
+    🗑️ Limpar este dia
+  </button>
 
 </div>
-
-
-      <p class="gentle-msg">
-        Constância é mais importante que perfeição ✨
-      </p>
-
-<div class="info-card">
-<div class="card" style="margin-top:20px;">
-  <div class="card-title">🔥 Progresso</div>
-
-  <p id="streakInfo" style="text-align:center; font-weight:700; color:#22c55e;">
-    🔥 Constância: 0 dias
-  </p>
-
-  <p id="weeklyGoal" style="text-align:center; color:#cbd5f5;">
-    🎯 Meta semanal: 0 / 3 treinos
-  </p>
-
-  <div style="margin-top:10px;">
-    <div style="height:8px; background:#020617; border-radius:6px; overflow:hidden;">
-      <div id="weekBar" style="
-        height:100%;
-        width:0%;
-        background:linear-gradient(90deg,#22c55e,#16a34a);
-        transition:width 0.3s;
-      "></div>
-    </div>
-  </div>
-
-  <div id="miniWeekChart" style="
-    display:flex;
-    gap:8px;
-    justify-content:center;
-    margin-top:14px;
-  "></div>
-</div>
-
-
-     <button class="save" id="saveDay">Salvar</button>
-
-<button id="deleteDay" style="
-  margin-top: 10px;
-  width: 100%;
-  padding: 10px;
-  border-radius: 10px;
-  border: none;
-  background: #ef4444;
-  color: #fff;
-  font-size: 15px;
-  cursor: pointer;
-
-">
-  🗑️ Limpar este dia
-</button>
-
-
-  </div>
 
   <script>
     const calendarGrid = document.getElementById("calendarGrid");
@@ -1528,7 +1482,6 @@ calculateStreak();
 calculateWeeklyGoal();
 renderMiniWeekChart();
 renderMeasureCompare();
-document.body.classList.add("dark");
 
 
   </script>
