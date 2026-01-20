@@ -428,6 +428,24 @@ button.save:hover {
   margin-bottom: 12px;
 }
 
+/* 🗑️ Botão Limpar dia - estilo premium */
+#deleteDay {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  font-weight: 800;
+  box-shadow: 0 6px 18px rgba(220,38,38,0.4);
+  transition: all 0.2s ease;
+}
+
+#deleteDay:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(220,38,38,0.6);
+}
+
+#deleteDay:active {
+  transform: scale(0.96);
+}
+
+
 .water-btn {
   padding: 10px 16px;
   border-radius: 999px;
@@ -825,20 +843,33 @@ button.save:hover {
     <div id="miniWeekChart" style="display:flex; gap:8px; justify-content:center; margin-top:14px;"></div>
   </div>
 
+/* 🔥 Destaque da meta semanal */
+#weeklyGoal {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #22c55e;
+  margin-top: 6px;
+  background: rgba(34,197,94,0.08);
+  padding: 6px 10px;
+  border-radius: 10px;
+  display: inline-block;
+  width: 100%;
+}
+
   <!-- 💾 BOTÕES -->
   <button class="save" id="saveDay">Salvar</button>
 
-  <button id="deleteDay" style="
-    margin-top: 10px;
-    width: 100%;
-    padding: 12px;
-    border-radius: 12px;
-    border: none;
-    background: #ef4444;
-    color: #fff;
-    font-size: 15px;
-    cursor: pointer;
-  ">
+ <button id="deleteDay" style="
+  margin-top: 10px;
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+">
     🗑️ Limpar este dia
   </button>
 
