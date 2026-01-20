@@ -666,7 +666,9 @@ function loadActivityOptions(type) {
   }
 
   if (type === "cardio" || type === "esporte") {
-    box.innerHTML = `
+  const list = exerciseOptions[type];
+     
+box.innerHTML = `
   <label>Tipo</label>
   <select id="cardioType">
     ${list.map(x => `<option>${x}</option>`).join("")}
