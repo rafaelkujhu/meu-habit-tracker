@@ -962,7 +962,7 @@ if (monthIndex === new Date().getMonth()) {
     dayDiv.onclick = (e) => openDay(dateKey, e);
     calendarGrid.appendChild(dayDiv);
   }
-}
+
 function clearActiveDays() {
   document.querySelectorAll(".day").forEach(d => d.classList.remove("active"));
 }
