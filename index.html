@@ -1086,6 +1086,7 @@ function renderYear() {
 
   const year = currentDate.getFullYear();
   const data = getData();
+   const settings = getSettings();
 
   const months = [
     "Janeiro","Fevereiro","Março","Abril","Maio","Junho",
@@ -1138,12 +1139,19 @@ if (monthIndex === new Date().getMonth()) {
 
       const key = `${year}-${monthIndex + 1}-${day}`;
 
-      if (data[key]) {
-        const { treino, agua } = data[key];
-       if (treino && agua >= settings.waterGoal)
-        else if (treino) d.classList.add("workout");
-      else if (agua >= settings.waterGoal)
-      }
+     if (data[key]) {
+  const { treino, agua } = data[key];
+
+  if (treino && agua >= settings.waterGoal) {
+    d.classList.add("both");
+  }
+  else if (treino) {
+    d.classList.add("workout");
+  }
+  else if (agua >= settings.waterGoal) {
+    d.classList.add("water");
+  }
+}
 
       // 🔥 clicar já abre mês + dia
       d.onclick = () => {
