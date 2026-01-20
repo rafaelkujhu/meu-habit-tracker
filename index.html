@@ -386,25 +386,30 @@ button.save:hover {
     <div class="day-panel" id="dayPanel">
       <h3 id="selectedDate">Selecione um dia</h3>
 
-<label>Atividades realizadas hoje</label>
+<label>Atividade</label>
+<select id="activityType">
+  <option value="">Selecione</option>
+  <option value="musculacao">💪 Musculação</option>
+  <option value="cardio">🏃 Cardio</option>
+  <option value="esporte">⚽ Esporte</option>
+</select>
 
-<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
-  <button type="button" class="activity-main" data-type="Musculação">💪 Musculação</button>
-  <button type="button" class="activity-main" data-type="Cardio">🏃 Cardio</button>
-  <button type="button" class="activity-main" data-type="Esporte">⚽ Esporte</button>
-  <button type="button" class="activity-main" data-type="Outro">➕ Outro</button>
-</div>
+<div id="activityDetails" style="margin-top:12px;"></div>
 
-<!-- ÁREA DINÂMICA DE OPÇÕES -->
-<div id="activityOptions" style="
-  background:#f8fafc;
-  padding:14px;
-  border-radius:14px;
-  margin-bottom:12px;
-  display:none;
-"></div>
+<button type="button" id="addActivity" style="
+  margin-top:10px;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  background:#ff7a18;
+  color:#fff;
+  cursor:pointer;
+">
+➕ Adicionar atividade
+</button>
 
-<ul id="activityList" style="margin-top:12px;"></ul>
+<div id="activityList" style="margin-top:14px;"></div>
+
 
 <label>Água ingerida hoje</label>
 
@@ -453,12 +458,28 @@ button.save:hover {
   align-items:center;
   gap:8px;
 ">
-  📏 Medidas corporais
-</button>
 
-<div id="measuresBox" style="display:none; margin-top:12px;">
-<div id="measureCompare"></div>
+<button id="toggleMeasures">📏 Medidas corporais</button>
+
+<div id="measuresBox" style="display:none; margin-top:16px;">
+
+  <label>Peso (kg)</label>
+  <input type="number" id="weightInput" step="0.1">
+
+  <label>Cintura (cm)</label>
+  <input type="number" id="waistInput">
+
+  <label>Quadril (cm)</label>
+  <input type="number" id="hipInput">
+
+  <label>Coxa (cm)</label>
+  <input type="number" id="thighInput">
+
+  <label>Braço (cm)</label>
+  <input type="number" id="armInput">
+
 </div>
+
 
       <p class="gentle-msg">
         Constância é mais importante que perfeição ✨
@@ -513,21 +534,111 @@ button.save:hover {
     let currentDate = new Date();
     let selectedDateKey = null;
    let activitiesToday = [];
-const activityOptions = {
-  "Musculação": ["Glúteo", "Pernas", "Braço", "Costas", "Peito", "Ombro", "Full body"],
-  "Cardio": ["Bicicleta", "Corrida", "Esteira", "Escada", "Jump", "Elíptico"],
-  "Esporte": ["Futebol", "Vôlei", "Basquete", "Tênis"],
+const exerciseOptions = {
+  musculacao: {
+    "Glúteo": ["Elevação pélvica", "Abdução", "Coice",  "Búlgaro", "Glúteo na Polia", "Levatamento Terra"],
+    "Quadríceps": ["Agachamento no Smith", "Leg press", "Cadeira extensora", "Agachamento Livre", "Afundo"],
+    "Posteriores":["Stiff", "Mesa Flexora"],
+    "Costas": ["Remada", "Puxada", "Pulldown"],
+    "Ombro": ["Elevação Lateral", "Elevação Frontal", "Desenvolvimento Arnold"],
+    "Peito": ["Rosca direta", "Tríceps corda", "Martelo"],
+    "Bíceps": ["Rosca direta", "Scott", "Martelo"],
+    "Tríceps": ["Tríceps francês", "Tríceps corda", "Flexão diamante", "Tríceps testa"]
+  },
+  },
+  cardio: ["Bicicleta", "Corrida", "Esteira", "Elíptico", "Jump"],
+  esporte: ["Futebol", "Vôlei", "Tênis", "Basquete"]
 };
 
+document.getElementById("activityType").onchange = () => {
+  const type = document.getElementById("activityType").value;
+  const box = document.getElementById("activityDetails");
 
+  box.innerHTML = "";
 
-const exercisesByType = {
-  pernas: ["Agachamento", "Búlgaro", "Leg Press", "Cadeira Extensora", "Elevação Pélvica"],
-  gluteos: ["Elevação Pélvica", "Abdução", "Coice", "Passada"],
-  superior: ["Elevação Lateral", "Desenvolvimento", "Remada", "Rosca Bíceps", "Tríceps Corda"],
-  funcional: ["Burpee", "Prancha", "Mountain Climber", "Kettlebell Swing"],
-  alongamento: ["Posterior de Coxa", "Quadril", "Coluna", "Ombros"]
+  if (type === "musculacao") {
+    box.innerHTML = `
+      <label>Grupo muscular</label>
+      <select id="muscleGroup"></select>
+
+      <label>Exercício</label>
+      <select id="exerciseName"></select>
+
+      <label>Séries x repetições</label>
+      <select id="setsReps">
+        <option>4x10</option>
+        <option>4x12</option>
+        <option>4x15</option>
+        <option>3x12</option>
+       <option>3x10</option>
+      </select>
+    `;
+
+    const groupSelect = document.getElementById("muscleGroup");
+    Object.keys(exerciseOptions.musculacao).forEach(g => {
+      const op = document.createElement("option");
+      op.value = g;
+      op.innerText = g;
+      groupSelect.appendChild(op);
+    });
+
+    groupSelect.onchange = () => {
+      const exSelect = document.getElementById("exerciseName");
+      exSelect.innerHTML = "";
+
+      exerciseOptions.musculacao[groupSelect.value].forEach(ex => {
+        const op = document.createElement("option");
+        op.value = ex;
+        op.innerText = ex;
+        exSelect.appendChild(op);
+      });
+    };
+
+    groupSelect.dispatchEvent(new Event("change"));
+  }
+
+  if (type === "cardio" || type === "esporte") {
+    const list = exerciseOptions[type];
+
+    box.innerHTML = `
+      <label>Tipo</label>
+      <select id="cardioType">
+        ${list.map(x => `<option>${x}</option>`).join("")}
+      </select>
+
+      <label>Tempo (min)</label>
+      <input type="number" id="cardioTime">
+    `;
+  }
 };
+
+document.getElementById("addActivity").onclick = () => {
+  const type = document.getElementById("activityType").value;
+  if (!type) return;
+
+  let item = {};
+
+  if (type === "musculacao") {
+    item = {
+      tipo: "Musculação",
+      grupo: document.getElementById("muscleGroup").value,
+      exercicio: document.getElementById("exerciseName").value,
+      series: document.getElementById("setsReps").value
+    };
+  }
+
+  if (type === "cardio" || type === "esporte") {
+    item = {
+      tipo: type === "cardio" ? "Cardio" : "Esporte",
+      atividade: document.getElementById("cardioType").value,
+      tempo: document.getElementById("cardioTime").value + " min"
+    };
+  }
+
+  activitiesToday.push(item);
+  renderActivities();
+};
+
 
 function calculateStreak() {
   const data = getData();
@@ -642,22 +753,32 @@ document.querySelectorAll(".activity-main").forEach(btn => {
   };
 });
 
-
-
 function renderActivities() {
   const list = document.getElementById("activityList");
   list.innerHTML = "";
 
   activitiesToday.forEach((act, index) => {
-    const li = document.createElement("li");
-    li.className = "activity-item";
-    li.innerHTML = `
-      ${act}
+    let text = "";
+
+    if (act.tipo === "Musculação") {
+      text = `💪 ${act.grupo} — ${act.exercicio} (${act.series})`;
+    } else {
+      text = `🏃 ${act.atividade} — ${act.tempo}`;
+    }
+
+    const div = document.createElement("div");
+    div.className = "activity-item";
+    div.innerHTML = `
+      ${text}
       <button onclick="removeActivity(${index})">❌</button>
     `;
-    list.appendChild(li);
+
+    list.appendChild(div);
   });
 }
+
+
+
 
 function removeActivity(index) {
   activitiesToday.splice(index, 1);
@@ -911,7 +1032,6 @@ document.getElementById("saveDay").onclick = () => {
 
   data[selectedDateKey] = {
   atividades: activitiesToday,
-
   agua: Number(document.getElementById("waterInput").value),
   obs: document.getElementById("noteInput").value,
 
@@ -922,7 +1042,6 @@ document.getElementById("saveDay").onclick = () => {
   braco: Number(document.getElementById("armInput").value)
 };
 
-
 document.getElementById("deleteDay").onclick = () => {
   if (!selectedDateKey) return;
 
@@ -930,6 +1049,9 @@ document.getElementById("deleteDay").onclick = () => {
   if (!confirmDelete) return;
 
   const data = getData();
+activitiesToday = data.atividades || [];
+renderActivities();
+
 
   // apaga o dia do histórico
   delete data[selectedDateKey];
@@ -1024,6 +1146,12 @@ function renderMeasureCompare() {
 
   document.getElementById("measureCompare").innerHTML = html;
 }
+
+// 🔥 abrir / fechar medidas corporais
+document.getElementById("toggleMeasures").onclick = () => {
+  const box = document.getElementById("measuresBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+};
 
 
 // 🔥 tela inicial: mostra os meses
