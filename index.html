@@ -641,23 +641,23 @@ button.save:hover {
   <!-- 🔥 grade com 12 calendários -->
   <div class="year-grid" id="yearGrid"></div>
 
-</div>
+</div> 
 
-<div id="streakBox" class="streak-box">
-  🔥 Constância: <span id="streakCount">0</span> dias
-</div>
+<div id="monthView">
 
-<div id="streakVisual" class="streak-visual"></div>
+  <div id="streakBox" class="streak-box">
+    🔥 Constância: <span id="streakCount">0</span> dias
+  </div>
 
+  <div id="streakVisual" class="streak-visual"></div>
 
- <div class="calendar-header">
-  <button id="backYear">⟵</button>
-  <button id="prevMonth">◀</button>
-  <h2 id="monthYear"></h2>
-  <button id="nextMonth">▶</button>
-</div>
+  <div class="calendar-header">
+    <button id="backYear">⟵</button>
+    <button id="prevMonth">◀</button>
+    <h2 id="monthYear"></h2>
+    <button id="nextMonth">▶</button>
+  </div>
 
-  <!-- 🔥 DIAS DA SEMANA DENTRO DO CALENDÁRIO -->
   <div class="weekdays">
     <span>Seg</span>
     <span>Ter</span>
@@ -669,7 +669,9 @@ button.save:hover {
   </div>
 
   <div class="calendar-grid" id="calendarGrid"></div>
+
 </div>
+
  
 <!-- PAINEL DO DIA -->
 <div class="day-panel" id="dayPanel">
@@ -784,8 +786,18 @@ button.save:hover {
         <div><small>Panturrilha</small><input type="number" id="calfInput" placeholder="cm"></div>
 
       </div>
+
     </div>
-  </div>
+
+<div id="measureCompare" style="
+  margin-top:14px;
+  background:#020617;
+  border-radius:12px;
+  padding:12px;
+  text-align:center;
+  font-weight:700;
+  color:#22c55e;
+"></div>
 
   <!-- 🔥 CARD PROGRESSO -->
   <div class="gym-card">
@@ -1438,11 +1450,15 @@ document.getElementById("nextMonth").onclick = () => {
   renderCalendar();
 };
 
-document.getElementById("backYear").onclick = () => {
-  monthView.style.display = "none";
-  document.getElementById("dayPanel").style.display = "none";
+ document.getElementById("backYear").onclick = () => {
+  if (monthView) monthView.style.display = "none";
+
+  const panel = document.getElementById("dayPanel");
+  if (panel) panel.style.display = "none";
+
   document.querySelector(".app").classList.remove("show-panel");
-  yearView.style.display = "block";
+
+  if (yearView) yearView.style.display = "block";
 };
 
 
@@ -1495,9 +1511,12 @@ function renderMeasureCompare() {
 }
 
 // 🔥 tela inicial: mostra os meses
-monthView.style.display = "none";
-document.getElementById("dayPanel").style.display = "none";
-yearView.style.display = "block";
+if (monthView) monthView.style.display = "none";
+
+const panelInit = document.getElementById("dayPanel");
+if (panelInit) panelInit.style.display = "none";
+
+if (yearView) yearView.style.display = "block";
 
 document.getElementById("toggleMeasures").onclick = () => {
   const box = document.getElementById("measuresBox");
