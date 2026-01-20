@@ -400,6 +400,7 @@ button.save:hover {
   margin-top:10px;
   padding:10px;
   border-radius:10px;
+
   border:none;
   background:#ff7a18;
   color:#fff;
@@ -458,8 +459,9 @@ button.save:hover {
   align-items:center;
   gap:8px;
 ">
+  📏 Medidas corporais
+</button>
 
-<button id="toggleMeasures">📏 Medidas corporais</button>
 
 <div id="measuresBox" style="display:none; margin-top:16px;">
 
@@ -545,7 +547,7 @@ const exerciseOptions = {
     "Bíceps": ["Rosca direta", "Scott", "Martelo"],
     "Tríceps": ["Tríceps francês", "Tríceps corda", "Flexão diamante", "Tríceps testa"]
   },
-  },
+
   cardio: ["Bicicleta", "Corrida", "Esteira", "Elíptico", "Jump"],
   esporte: ["Futebol", "Vôlei", "Tênis", "Basquete"]
 };
@@ -676,30 +678,6 @@ document.querySelectorAll(".water-btn").forEach(btn => {
   };
 });
 
-let currentMainActivity = "";
-
-document.querySelectorAll(".activity-main").forEach(btn => {
-  btn.onclick = () => {
-    const type = btn.dataset.type;
-    currentMainActivity = type;
-
-    const box = document.getElementById("activityOptions");
-    box.style.display = "block";
-
-    // monta interface dinâmica
-    let html = `<b>${type}</b><br><br>`;
-
-    if (activityOptions[type]) {
-      html += `<div style="display:flex; gap:6px; flex-wrap:wrap;">`;
-      activityOptions[type].forEach(opt => {
-        html += `
-          <button type="button" class="sub-activity" data-sub="${opt}">
-            ${opt}
-          </button>
-        `;
-      });
-      html += `</div><br>`;
-    }
 
     html += `
       <label>Exercícios / Detalhes</label>
@@ -1146,13 +1124,6 @@ function renderMeasureCompare() {
 
   document.getElementById("measureCompare").innerHTML = html;
 }
-
-// 🔥 abrir / fechar medidas corporais
-document.getElementById("toggleMeasures").onclick = () => {
-  const box = document.getElementById("measuresBox");
-  box.style.display = box.style.display === "none" ? "block" : "none";
-};
-
 
 // 🔥 tela inicial: mostra os meses
 monthView.style.display = "none";
