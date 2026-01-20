@@ -664,6 +664,26 @@ button.save:hover {
 
   <div class="app">
 
+<!-- 👤 SELETOR DE USUÁRIO -->
+<div class="gym-card" style="margin-bottom:16px;">
+
+  <div class="card-title">👤 Usuário</div>
+
+  <div style="display:flex; gap:10px;">
+
+    <select id="userSelect" style="flex:1;">
+      <option value="padrao">Usuário padrão</option>
+    </select>
+
+    <button id="newUserBtn" class="save" style="width:120px;">
+      ➕ Novo
+    </button>
+
+  </div>
+
+</div>
+
+
 <div class="calendar" id="yearView">
 
   <h2 style="text-align:center; margin-bottom:16px;">
@@ -886,6 +906,8 @@ button.save:hover {
     let currentDate = new Date();
     let selectedDateKey = null;
    let activitiesToday = [];
+  let currentUser = localStorage.getItem("currentUser") || "padrao";
+
 const exerciseOptions = {
   musculacao: {
     "Glúteo": ["Elevação pélvica", "Abdução", "Coice",  "Búlgaro", "Glúteo na Polia", "Levantamento Terra", "Levantamento Terra Sumô"],
@@ -1275,24 +1297,24 @@ if (monthIndex === new Date().getMonth()) {
   });
 }
 
-    function getData() {
-      return JSON.parse(localStorage.getItem("habitData")) || {};
-    } 
+   function getData() {
+  return JSON.parse(localStorage.getItem("habitData_" + currentUser)) || {};
+}
 
 function getSettings() {
-  return JSON.parse(localStorage.getItem("habitSettings")) || {
+  return JSON.parse(localStorage.getItem("habitSettings_" + currentUser)) || {
     waterGoal: 3000,
     weeklyGoal: 5
   };
 }
 
 function saveSettings(settings) {
-  localStorage.setItem("habitSettings", JSON.stringify(settings));
+  localStorage.setItem("habitSettings_" + currentUser, JSON.stringify(settings));
 }
 
-    function saveData(data) {
-      localStorage.setItem("habitData", JSON.stringify(data));
-    }
+ function saveData(data) {
+  localStorage.setItem("habitData_" + currentUser, JSON.stringify(data));
+}
 
   function renderCalendar() {
   calendarGrid.innerHTML = "";
@@ -1517,6 +1539,72 @@ function renderMiniWeekChart() {
     chart.appendChild(bar);
   }
 }
+
+// 🔥 CARREGA LISTA DE USUÁRIOS
+function loadUsers() {
+  const select = document.getElementById("userSelect");
+  select.innerHTML = "";
+
+  const users = JSON.parse(localStorage.getItem("habitUsers")) || ["padrao"];
+
+  users.forEach(u => {
+    const op = document.createElement("option");
+    op.value = u;
+    op.innerText = u;
+    if (u === currentUser) op.selected = true;
+    select.appendChild(op);
+  });
+}
+
+loadUsers();
+
+document.getElementById("userSelect").onchange = () => {
+  currentUser = document.getElementById("userSelect").value;
+  localStorage.setItem("currentUser", currentUser);
+
+  // recarrega tudo
+  renderYear();
+  renderCalendar();
+  calculateStreak();
+  calculateWeeklyGoal();
+  renderMiniWeekChart();
+};
+
+document.getElementById("newUserBtn").onclick = () => {
+  const name = prompt("Digite o nome do novo usuário:");
+
+  if (!name) return;
+
+  let users = JSON.parse(localStorage.getItem("habitUsers")) || [];
+
+  if (users.includes(name)) {
+    alert("Esse usuário já existe.");
+    return;
+  }
+
+  users.push(name);
+  localStorage.setItem("habitUsers", JSON.stringify(users));
+
+  currentUser = name;
+  localStorage.setItem("currentUser", currentUser);
+
+  loadUsers();
+
+  // limpa visual para novo usuário
+  activitiesToday = [];
+  currentWater = 0;
+  selectedDateKey = null;
+
+  renderYear();
+  renderCalendar();
+  calculateStreak();
+  calculateWeeklyGoal();
+  renderMiniWeekChart();
+
+  alert("Usuário criado com sucesso ✨");
+};
+
+
 
 function renderMeasureCompare() {
   const data = getData();
