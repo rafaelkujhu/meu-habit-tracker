@@ -160,6 +160,28 @@ body {
   color: #fff;
 }
 
+.time-btn {
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  background:#fff;
+  cursor:pointer;
+  font-weight:600;
+  transition:all 0.2s ease;
+}
+
+.time-btn:hover {
+  background:#ff7a18;
+  color:#fff;
+  border-color:#ff7a18;
+}
+
+.time-btn.active {
+  background:#ff7a18;
+  color:#fff;
+  border-color:#ff7a18;
+}
+
 .activity-btn {
   padding: 8px 12px;
   border-radius: 12px;
@@ -573,7 +595,7 @@ const exerciseOptions = {
     "Posteriores":["Stiff", "Mesa Flexora"],
     "Costas": ["Remada", "Puxada", "Pulldown"],
     "Ombro": ["Elevação Lateral", "Elevação Frontal", "Desenvolvimento Arnold"],
-    "Peito": ["Rosca direta", "Tríceps corda", "Martelo"],
+    "Peito": ["Supino Reto (barra ou halteres)", "Supino Inclinado", "Crucifixos"],
     "Bíceps": ["Rosca direta", "Scott", "Martelo"],
     "Tríceps": ["Tríceps francês", "Tríceps corda", "Flexão diamante", "Tríceps testa"]
   },
@@ -644,20 +666,34 @@ function loadActivityOptions(type) {
   }
 
   if (type === "cardio" || type === "esporte") {
-    const list = exerciseOptions[type];
-
     box.innerHTML = `
-      <label>Tipo</label>
-      <select id="cardioType">
-        ${list.map(x => `<option>${x}</option>`).join("")}
-      </select>
+  <label>Tipo</label>
+  <select id="cardioType">
+    ${list.map(x => `<option>${x}</option>`).join("")}
+  </select>
 
-      <label>Tempo (min)</label>
-      <input type="number" id="cardioTime">
-    `;
-  }
+  <label>Tempo</label>
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+    <button type="button" class="time-btn" data-time="20">20 min</button>
+    <button type="button" class="time-btn" data-time="30">30 min</button>
+    <button type="button" class="time-btn" data-time="40">40 min</button>
+    <button type="button" class="time-btn" data-time="60">60 min</button>
+  </div>
+
+  <input type="number" id="cardioTime" placeholder="Outro tempo (min)">
+`;
+
+ // 🔥 lógica dos botões de tempo (AQUIIIII 👇)
+  document.querySelectorAll(".time-btn").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      document.getElementById("cardioTime").value = btn.dataset.time;
+    };
+  });
 }
-
 
 // botão adicionar atividade
 document.getElementById("addActivity").onclick = () => {
