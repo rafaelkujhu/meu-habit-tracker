@@ -568,7 +568,7 @@ button.save:hover {
    let activitiesToday = [];
 const exerciseOptions = {
   musculacao: {
-    "Glúteo": ["Elevação pélvica", "Abdução", "Coice",  "Búlgaro", "Glúteo na Polia", "Levantamento Terra" "Levantamento Terra Sumô"],
+    "Glúteo": ["Elevação pélvica", "Abdução", "Coice",  "Búlgaro", "Glúteo na Polia", "Levantamento Terra", "Levantamento Terra Sumô"],
     "Quadríceps": ["Agachamento no Smith", "Leg press", "Cadeira extensora", "Agachamento Livre", "Afundo"],
     "Posteriores":["Stiff", "Mesa Flexora"],
     "Costas": ["Remada", "Puxada", "Pulldown"],
@@ -578,7 +578,7 @@ const exerciseOptions = {
     "Tríceps": ["Tríceps francês", "Tríceps corda", "Flexão diamante", "Tríceps testa"]
   },
 
-  cardio: ["Bicicleta", "Corrida", "Esteira", "Elíptico", "Jump" "Escada"],
+  cardio: ["Bicicleta", "Corrida", "Esteira", "Elíptico", "Jump", "Escada"],
   esporte: ["Futebol", "Vôlei", "Tênis", "Basquete"]
 };
  
@@ -997,6 +997,7 @@ document.getElementById("waistInput").value = data.cintura || "";
 document.getElementById("hipInput").value = data.quadril || "";
 document.getElementById("thighInput").value = data.coxa || "";
 document.getElementById("armInput").value = data.braco || "";
+document.getElementById("armInput").value = data.panturilha || "";
 }
 
 document.getElementById("saveDay").onclick = () => {
