@@ -915,28 +915,28 @@ if (type === "musculacao") {
 function calculateStreak() {
   const data = getData();
   let streak = 0;
-  let date = new Date();
 
-  const today = new Date();
-  let checkDate = new Date(today);
+  let checkDate = new Date();
 
   while (true) {
-    const key = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+    const key = `${checkDate.getFullYear()}-${checkDate.getMonth() + 1}-${checkDate.getDate()}`;
 
     if (data[key] && data[key].treino) {
       streak++;
-      date.setDate(date.getDate() - 1);
+      checkDate.setDate(checkDate.getDate() - 1);
     } else {
       break;
     }
   }
 
-   document.getElementById("streakCount").innerText = streak;
- const visual = document.getElementById("streakVisual");
+  document.getElementById("streakCount").innerText = streak;
+
+  const visual = document.getElementById("streakVisual");
   visual.innerHTML = streak > 0
     ? `🔥 Você está em <b>${streak} dias seguidos</b> de treino!`
     : `✨ Comece hoje sua sequência`;
 }
+
 
 // 🔥 botões de adicionar água
 document.querySelectorAll(".water-btn").forEach(btn => {
@@ -1020,8 +1020,10 @@ function calculateWeeklyGoal() {
 
   let count = 0;
 
-  const startOfWeek = new Date(today);
-  startOfWeek.setDate(today.getDate() - today.getDay());
+const startOfWeek = new Date(today);
+const day = today.getDay() === 0 ? 7 : today.getDay(); // domingo vira 7
+startOfWeek.setDate(today.getDate() - day + 1); // começa segunda
+
 
   for (let i = 0; i < 7; i++) {
     const d = new Date(startOfWeek);
@@ -1230,7 +1232,7 @@ document.getElementById("waistInput").value = data.cintura || "";
 document.getElementById("hipInput").value = data.quadril || "";
 document.getElementById("thighInput").value = data.coxa || "";
 document.getElementById("armInput").value = data.braco || "";
-document.getElementById("calfInput").value = data.panturilha || "";
+document.getElementById("calfInput").value = data.panturrilha || "";
 }
 
 document.getElementById("saveDay").onclick = () => {
@@ -1240,9 +1242,14 @@ document.getElementById("saveDay").onclick = () => {
 
   data[selectedDateKey] = {
   atividades: activitiesToday,
+
+  // 🔥 marca automaticamente como treino se tiver atividade
   treino: activitiesToday.length > 0,
+
+  // 🔥 salva água corretamente
   agua: currentWater,
 
+  // medidas
   peso: Number(document.getElementById("weightInput").value),
   cintura: Number(document.getElementById("waistInput").value),
   quadril: Number(document.getElementById("hipInput").value),
@@ -1251,27 +1258,34 @@ document.getElementById("saveDay").onclick = () => {
   panturrilha: Number(document.getElementById("calfInput").value)
 };
 
-document.getElementById("deleteDay").onclick = () => {
+  saveData(data);
+renderCalendar();
+calculateStreak();
+calculateWeeklyGoal();
+renderMiniWeekChart();
+ renderMeasureCompare();
+
+  alert("Dia salvo com sucesso ✨");
+};
+
+ document.getElementById("deleteDay").onclick = () => {
   if (!selectedDateKey) return;
 
   const confirmDelete = confirm("Tem certeza que deseja apagar os dados deste dia?");
   if (!confirmDelete) return;
 
   const data = getData();
-activitiesToday = data.atividades || [];
-renderActivities();
-
 
   // apaga o dia do histórico
   delete data[selectedDateKey];
 
   saveData(data);
 
-  // 🔥 limpa variáveis locais
+  // limpa variáveis
   activitiesToday = [];
   currentWater = 0;
 
-  // 🔥 limpa visual
+  // limpa visual
   renderActivities();
   updateWaterUI();
 
@@ -1290,14 +1304,6 @@ renderActivities();
   renderMiniWeekChart();
 
   alert("Dia limpo com sucesso ✨");
-};
-
-  saveData(data);
-renderCalendar();
-calculateStreak();
-calculateWeeklyGoal();
-renderMiniWeekChart();
- renderMeasureCompare();
 };
 
 document.getElementById("prevMonth").onclick = () => {
