@@ -197,15 +197,15 @@ body {
 }
 
 .time-btn:hover {
-  background:#ff7a18;
+  background:#2563eb;
   color:#fff;
-  border-color:#ff7a18;
+  border-color:#2563eb;
 }
 
 .time-btn.active {
-  background:#ff7a18;
+  background:#2563eb;
   color:#fff;
-  border-color:#ff7a18;
+  border-color:#2563eb;
 }
 
 .activity-btn {
@@ -354,11 +354,12 @@ select, input, textarea {
 }
 
 .act-btn.active {
-  background:#ff7a18;
+  background:#2563eb;          /* azul premium */
   color:#fff;
-  border-color:#ff7a18;
-  box-shadow:0 4px 12px rgba(255,122,24,0.4);
+  border-color:#2563eb;
+  box-shadow:0 4px 12px rgba(37,99,235,0.4);
 }
+
 
 button.save {
   margin-top: 24px;
@@ -1216,13 +1217,13 @@ renderActivities();
   const [year, month, day] = dateKey.split("-");
   const dateObj = new Date(year, month - 1, day);
 
-  document.getElementById("selectedDate").innerText =
-    dateObj.toLocaleDateString("pt-BR", {
-      weekday: "long",
-      day: "2-digit",
-      month: "long",
-      year: "numeric"
-    });
+ const days = ["DOM","SEG","TER","QUA","QUI","SEX","SÁB"];
+const months = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+
+const label = `${days[dateObj.getDay()]} • ${dateObj.getDate().toString().padStart(2,"0")} ${months[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+
+document.getElementById("selectedDate").innerText = label;
+
 
   
     currentWater = data.agua || 0;
@@ -1264,6 +1265,8 @@ calculateStreak();
 calculateWeeklyGoal();
 renderMiniWeekChart();
  renderMeasureCompare();
+
+openDay(selectedDateKey, { target: document.querySelector(".day.active") });
 
   alert("Dia salvo com sucesso ✨");
 };
