@@ -1227,12 +1227,20 @@ function saveSettings(settings) {
 
     const dateKey = `${year}-${month + 1}-${day}`;
 
-    if (data[dateKey]) {
-      const { treino, agua } = data[dateKey];
-     if (treino && agua >= settings.waterGoal) dayDiv.classList.add("both");
-      else if (treino) dayDiv.classList.add("workout");
-      else if (agua >= settings.waterGoal) dayDiv.classList.add("water");
-    }
+if (data[dateKey]) {
+  const { treino, agua } = data[dateKey];
+
+  if (treino && agua >= settings.waterGoal) {
+    dayDiv.classList.add("both");
+  } 
+  else if (treino) {
+    dayDiv.classList.add("workout");
+  } 
+  else if (agua >= settings.waterGoal) {
+    dayDiv.classList.add("water");
+  }
+}
+
 
     // 🔥 clique correto com evento
     dayDiv.onclick = (e) => openDay(dateKey, e);
