@@ -348,6 +348,36 @@ button.save:hover {
   transform: translateY(-2px);
 }
 
+/* 💧 botões de água premium */
+.water-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.water-btn {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #60a5fa, #2563eb);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(37,99,235,0.3);
+  transition: all 0.2s ease;
+}
+
+.water-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(37,99,235,0.4);
+}
+
+.water-btn:active {
+  transform: scale(0.95);
+}
 
 #yearView {
   max-width: 1000px;
@@ -506,12 +536,12 @@ button.save:hover {
 
 <label>Água ingerida hoje</label>
 
-<!-- 🔥 botões rápidos -->
-<div style="display:flex; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
-  <button type="button" class="water-btn" data-ml="100">+100 ml</button>
-  <button type="button" class="water-btn" data-ml="200">+200 ml</button>
-  <button type="button" class="water-btn" data-ml="500">+500 ml</button>
-  <button type="button" class="water-btn" data-ml="1000">+1 L</button>
+<!-- 💧 controle rápido de água -->
+<div class="water-buttons">
+  <button type="button" class="water-btn" data-ml="100">💧 100 ml</button>
+  <button type="button" class="water-btn" data-ml="200">💧 200 ml</button>
+  <button type="button" class="water-btn" data-ml="500">💧 500 ml</button>
+  <button type="button" class="water-btn" data-ml="1000">💧 1 L</button>
 </div>
 
 <div style="
