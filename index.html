@@ -242,6 +242,31 @@ select, input, textarea {
   font-size: 14px;
 }
 
+.act-btn {
+  flex:1;
+  padding:12px;
+  border-radius:14px;
+  border:1px solid #e5e7eb;
+  background:#ffffff;
+  font-size:15px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s ease;
+}
+
+.act-btn:hover {
+  background:#ff7a18;
+  color:#fff;
+  border-color:#ff7a18;
+}
+
+.act-btn.active {
+  background:#ff7a18;
+  color:#fff;
+  border-color:#ff7a18;
+  box-shadow:0 4px 12px rgba(255,122,24,0.4);
+}
+
 button.save {
   margin-top: 24px;
   width: 100%;
@@ -387,12 +412,17 @@ button.save:hover {
       <h3 id="selectedDate">Selecione um dia</h3>
 
 <label>Atividade</label>
-<select id="activityType">
-  <option value="">Selecione</option>
-  <option value="musculacao">💪 Musculação</option>
-  <option value="cardio">🏃 Cardio</option>
-  <option value="esporte">⚽ Esporte</option>
-</select>
+
+<div id="activityButtons" style="
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin-bottom:14px;
+">
+  <button class="act-btn" data-type="musculacao">💪 Musculação</button>
+  <button class="act-btn" data-type="cardio">🏃 Cardio</button>
+  <button class="act-btn" data-type="esporte">⚽ Esporte</button>
+</div>
 
 <div id="activityDetails" style="margin-top:12px;"></div>
 
@@ -538,7 +568,7 @@ button.save:hover {
    let activitiesToday = [];
 const exerciseOptions = {
   musculacao: {
-    "Glúteo": ["Elevação pélvica", "Abdução", "Coice",  "Búlgaro", "Glúteo na Polia", "Levatamento Terra"],
+    "Glúteo": ["Elevação pélvica", "Abdução", "Coice",  "Búlgaro", "Glúteo na Polia", "Levantamento Terra" "Levantamento Terra Sumô"],
     "Quadríceps": ["Agachamento no Smith", "Leg press", "Cadeira extensora", "Agachamento Livre", "Afundo"],
     "Posteriores":["Stiff", "Mesa Flexora"],
     "Costas": ["Remada", "Puxada", "Pulldown"],
@@ -548,14 +578,27 @@ const exerciseOptions = {
     "Tríceps": ["Tríceps francês", "Tríceps corda", "Flexão diamante", "Tríceps testa"]
   },
 
-  cardio: ["Bicicleta", "Corrida", "Esteira", "Elíptico", "Jump"],
+  cardio: ["Bicicleta", "Corrida", "Esteira", "Elíptico", "Jump" "Escada"],
   esporte: ["Futebol", "Vôlei", "Tênis", "Basquete"]
 };
+ 
+let selectedActivity = "";
 
-document.getElementById("activityType").onchange = () => {
-  const type = document.getElementById("activityType").value;
+// clique nos botões de atividade
+document.querySelectorAll(".act-btn").forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll(".act-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    selectedActivity = btn.dataset.type;
+    loadActivityOptions(selectedActivity);
+  };
+});
+
+
+// carrega opções conforme atividade escolhida
+function loadActivityOptions(type) {
   const box = document.getElementById("activityDetails");
-
   box.innerHTML = "";
 
   if (type === "musculacao") {
@@ -572,11 +615,12 @@ document.getElementById("activityType").onchange = () => {
         <option>4x12</option>
         <option>4x15</option>
         <option>3x12</option>
-       <option>3x10</option>
+        <option>3x10</option>
       </select>
     `;
 
     const groupSelect = document.getElementById("muscleGroup");
+
     Object.keys(exerciseOptions.musculacao).forEach(g => {
       const op = document.createElement("option");
       op.value = g;
@@ -612,11 +656,17 @@ document.getElementById("activityType").onchange = () => {
       <input type="number" id="cardioTime">
     `;
   }
-};
+}
 
+
+// botão adicionar atividade
 document.getElementById("addActivity").onclick = () => {
-  const type = document.getElementById("activityType").value;
-  if (!type) return;
+  const type = selectedActivity;
+
+  if (!type) {
+    alert("Selecione uma atividade primeiro 💪");
+    return;
+  }
 
   let item = {};
 
@@ -640,7 +690,6 @@ document.getElementById("addActivity").onclick = () => {
   activitiesToday.push(item);
   renderActivities();
 };
-
 
 function calculateStreak() {
   const data = getData();
