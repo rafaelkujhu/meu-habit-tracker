@@ -6,19 +6,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    :root {
-      --bg: #f8fafc;
-      --card: #ffffff;
-      --primary: #6366f1;
-      --text: #1f2937;
-    } 
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --primary: #3b82f6;   /* azul premium */
+  --text: #1f2937;
+}
 
 .theme-feminino {
   --bg: #0f172a;        /* fundo escuro premium */
   --card: #111827;     /* cards elegantes */
-  --primary: #f59e0b;   /* dourado treino – luxo + energia */
+  --primary: #3b82f6;   /* azul wellness */
   --accent: #2563eb;  /* água / wellness */
   --text: #f9fafb;
+} 
+
+ /* 🌙 MODO ESCURO PREMIUM */
+
+body.dark {
+  background: linear-gradient(180deg, #05070c, #0b1020);
+  color: #e5e7eb;
+}
+
+body.dark label,
+body.dark small,
+body.dark .activity-sub,
+body.dark .gentle-msg,
+body.dark p {
+  color: #cbd5f5;
+  opacity: 1;
+}
+
+body.dark .calendar,
+body.dark .day-panel {
+  background: #0f172a;
+}
+
+body.dark select,
+body.dark input {
+  background: #020617;
+  color: #e5e7eb;
+  border-color: #334155;
 }
 
 body {
@@ -230,16 +258,21 @@ body {
   background: #ef4444;
   border: none;
   color: #fff;
-  border-radius: 10px;
-  padding: 6px 10px;
-  cursor: pointer;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 14px;
+  cursor: pointer;
   transition: transform 0.15s ease;
 }
 
 .activity-remove:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(6px); }
@@ -1113,9 +1146,9 @@ if (monthIndex === new Date().getMonth()) {
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
 
-  monthYear.innerText = currentDate.toLocaleDateString("pt-BR", {
-    month: "long",
-    year: "numeric"
+ const monthNames = ["JAN","FEV","MAR","ABR","MAI","JUN","JUL","AGO","SET","OUT","NOV","DEZ"];
+
+ monthYear.innerText = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
   });
 
   // 🔥 Corrige para começar em SEGUNDA
