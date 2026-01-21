@@ -405,16 +405,6 @@ button.save {
   box-shadow: 0 6px 20px rgba(34,197,94,0.4);
 }
 
-#deleteDay {
-  width:100%;
-  padding:12px;
-  border-radius:12px;
-  border:none;
-  background:#ef4444;
-  color:#fff;
-  font-weight:800;
-}
-
 button.save:hover {
   transform: translateY(-2px);
 }
@@ -859,10 +849,9 @@ button.save:hover {
       🔥 Constância: 0 dias
     </p>
 
-    <p id="weeklyGoal"
-      🎯 Meta semanal: 0 / 3 treinos
-    </p>
-
+   <p id="weeklyGoal">
+  🎯 Meta semanal: 0 / 3 treinos
+</p>
     <div style="margin-top:10px;">
       <div style="height:8px; background:#020617; border-radius:6px; overflow:hidden;">
         <div id="weekBar" style="
@@ -937,31 +926,15 @@ document.querySelectorAll(".act-btn").forEach(btn => {
   };
 });
 
-
-// carrega opções conforme atividade escolhida
 function loadActivityOptions(type) {
   const box = document.getElementById("activityDetails");
   box.innerHTML = "";
 
+  // ===== MUSCULAÇÃO: só grupo muscular =====
   if (type === "musculacao") {
     box.innerHTML = `
       <label>Grupo muscular</label>
       <select id="muscleGroup"></select>
-
-   <label>Exercício</label>
-<select id="exerciseName"></select>
-
-<input type="text" id="customExercise" placeholder="Ou digite outro exercício (opcional)">
-
-
-      <label>Séries x repetições</label>
-      <select id="setsReps">
-        <option>4x10</option>
-        <option>4x12</option>
-        <option>4x15</option>
-        <option>3x12</option>
-        <option>3x10</option>
-      </select>
     `;
 
     const groupSelect = document.getElementById("muscleGroup");
@@ -972,132 +945,74 @@ function loadActivityOptions(type) {
       op.innerText = g;
       groupSelect.appendChild(op);
     });
-
-    groupSelect.onchange = () => {
-      const exSelect = document.getElementById("exerciseName");
-      exSelect.innerHTML = "";
-
-      exerciseOptions.musculacao[groupSelect.value].forEach(ex => {
-        const op = document.createElement("option");
-        op.value = ex;
-        op.innerText = ex;
-        exSelect.appendChild(op);
-      });
-    };
-
-    groupSelect.dispatchEvent(new Event("change"));
   }
 
-  if (type === "cardio" || type === "esporte") {
-  const list = exerciseOptions[type];
-     
-box.innerHTML = `
-  <label>Tipo</label>
-  <select id="cardioType">
-    ${list.map(x => `<option>${x}</option>`).join("")}
-  </select>
+  // ===== CARDIO: tipo + distância + tempo =====
+  if (type === "cardio") {
+    const list = exerciseOptions.cardio;
 
-  <label>Tempo</label>
+    box.innerHTML = `
+      <label>Tipo</label>
+      <select id="cardioType">
+        ${list.map(x => `<option>${x}</option>`).join("")}
+      </select>
 
-  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
-    <button type="button" class="time-btn" data-time="20">20 min</button>
-    <button type="button" class="time-btn" data-time="30">30 min</button>
-    <button type="button" class="time-btn" data-time="40">40 min</button>
-    <button type="button" class="time-btn" data-time="60">60 min</button>
-  </div>
+      <label>Distância (km)</label>
+      <input type="number" id="cardioDistance" placeholder="Ex: 5">
 
-  <input type="number" id="cardioTime" placeholder="Outro tempo (min)">
-  `;
+      <label>Tempo</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+        <button type="button" class="time-btn" data-time="20">20 min</button>
+        <button type="button" class="time-btn" data-time="30">30 min</button>
+        <button type="button" class="time-btn" data-time="40">40 min</button>
+        <button type="button" class="time-btn" data-time="60">60 min</button>
+      </div>
 
- // 🔥 lógica dos botões de tempo (AQUIIIII 👇)
-  document.querySelectorAll(".time-btn").forEach(btn => {
-    btn.onclick = () => {
-      document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
+      <input type="number" id="cardioTime" placeholder="Outro tempo (min)">
+    `;
 
-      document.getElementById("cardioTime").value = btn.dataset.time;
-    };
-  });
-}
-
-}
-// botão adicionar atividade
-document.getElementById("addActivity").onclick = () => {
-  const type = selectedActivity;
-
-  if (!type) {
-    alert("Selecione uma atividade primeiro 💪");
-    return;
+    // lógica dos botões de tempo
+    document.querySelectorAll(".time-btn").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("cardioTime").value = btn.dataset.time;
+      };
+    });
   }
 
-  let item = {};
+  // ===== ESPORTE: mantém como estava =====
+  if (type === "esporte") {
+    const list = exerciseOptions.esporte;
 
-if (type === "musculacao") {
+    box.innerHTML = `
+      <label>Tipo</label>
+      <select id="cardioType">
+        ${list.map(x => `<option>${x}</option>`).join("")}
+      </select>
 
-  const custom = document.getElementById("customExercise").value;
+      <label>Tempo</label>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+        <button type="button" class="time-btn" data-time="20">20 min</button>
+        <button type="button" class="time-btn" data-time="30">30 min</button>
+        <button type="button" class="time-btn" data-time="40">40 min</button>
+        <button type="button" class="time-btn" data-time="60">60 min</button>
+      </div>
 
-  item = {
-    tipo: "Musculação",
-    grupo: document.getElementById("muscleGroup").value,
+      <input type="number" id="cardioTime" placeholder="Outro tempo (min)">
+    `;
 
-    exercicio: custom !== "" 
-      ? custom 
-      : document.getElementById("exerciseName").value,
-
-    series: document.getElementById("setsReps").value
-  };
+    document.querySelectorAll(".time-btn").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("cardioTime").value = btn.dataset.time;
+      };
+    });
+  }
 }
 
-
-  if (type === "cardio" || type === "esporte") {
-    item = {
-      tipo: type === "cardio" ? "Cardio" : "Esporte",
-      atividade: document.getElementById("cardioType").value,
-      tempo: document.getElementById("cardioTime").value + " min"
-    };
-  }
-
-  activitiesToday.push(item);
-  renderActivities();
-};
-
-function calculateStreak() {
-  const data = getData();
-  let streak = 0;
-
-  let checkDate = new Date();
-
-  while (true) {
-    const key = `${checkDate.getFullYear()}-${checkDate.getMonth() + 1}-${checkDate.getDate()}`;
-
-    if (data[key] && data[key].treino) {
-      streak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    } else {
-      break;
-    }
-  }
-
-  document.getElementById("streakCount").innerText = streak;
-
-  const visual = document.getElementById("streakVisual");
-  visual.innerHTML = streak > 0
-    ? `🔥 Você está em <b>${streak} dias seguidos</b> de treino!`
-    : `✨ Comece hoje sua sequência`;
-}
-
-
-// 🔥 botões de adicionar água
-document.querySelectorAll(".water-btn").forEach(btn => {
-  btn.onclick = () => {
-    const add = Number(btn.dataset.ml);
-    currentWater += add;
-
-    updateWaterUI();
-  };
-});
-
-   function renderActivities() {
+function renderActivities() {
   const list = document.getElementById("activityList");
   list.innerHTML = "";
 
@@ -1107,12 +1022,23 @@ document.querySelectorAll(".water-btn").forEach(btn => {
     let title = "";
     let sub = "";
 
+    // ===== MUSCULAÇÃO =====
     if (act.tipo === "Musculação") {
       icon = "💪";
-      title = `${act.grupo}`;
-      sub = `${act.exercicio} • ${act.series}`;
-    } else {
-      icon = act.tipo === "Cardio" ? "🏃" : "⚽";
+      title = act.grupo;
+      sub = "Grupo muscular trabalhado";
+    }
+
+    // ===== CARDIO =====
+    if (act.tipo === "Cardio") {
+      icon = "🏃";
+      title = act.atividade;
+      sub = `Distância: ${act.distancia} • Tempo: ${act.tempo}`;
+    }
+
+    // ===== ESPORTE =====
+    if (act.tipo === "Esporte") {
+      icon = "⚽";
       title = act.atividade;
       sub = `Tempo: ${act.tempo}`;
     }
@@ -1134,7 +1060,6 @@ document.querySelectorAll(".water-btn").forEach(btn => {
     list.appendChild(div);
   });
 }
-
 
 
 function removeActivity(index) {
