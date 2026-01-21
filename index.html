@@ -1677,14 +1677,12 @@ function renderMeasureCompare() {
   document.getElementById("measureCompare").innerHTML = html;
 }
 
-// 🔥 tela inicial: começa na visão mensal
-if (yearView) yearView.style.display = "none";
-if (monthView) monthView.style.display = "block";
+// 🔥 tela inicial: começa na visão ANUAL
+if (yearView) yearView.style.display = "block";
+if (monthView) monthView.style.display = "none";
 
 const panelInit = document.getElementById("dayPanel");
 if (panelInit) panelInit.style.display = "none";
-
-renderCalendar();
 
 
 document.getElementById("toggleMeasures").onclick = () => {
@@ -1697,17 +1695,32 @@ document.getElementById("toggleMeasures").onclick = () => {
   }
 };
 
-// 🔥 carrega metas salvas
+// 🔥 tela inicial: começa na visão ANUAL
+if (yearView) yearView.style.display = "block";
+if (monthView) monthView.style.display = "none";
+
+const panelInit = document.getElementById("dayPanel");
+if (panelInit) panelInit.style.display = "none";
+
+// 🔥 botão abrir/fechar medidas
+document.getElementById("toggleMeasures").onclick = () => {
+  const box = document.getElementById("measuresBox");
+
+  if (box.style.display === "none") {
+    box.style.display = "block";
+  } else {
+    box.style.display = "none";
+  }
+};
+
+// 🔥 carrega metas salvas (APENAS UMA VEZ)
 const settings = getSettings();
 document.getElementById("waterGoalInput").value = settings.waterGoal;
 document.getElementById("weeklyGoalInput").value = settings.weeklyGoal;
 
-const settings = getSettings();
-document.getElementById("waterGoalInput").value = settings.waterGoal;
-document.getElementById("weeklyGoalInput").value = settings.weeklyGoal;
+updateWaterUI();   // 🔥 ESSENCIAL para mostrar meta da água
 
-updateWaterUI();   // 🔥 ESSENCIAL
-
+// 🔥 listeners de mudança
 document.getElementById("waterGoalInput").onchange = () => {
   const settings = getSettings();
   settings.waterGoal = Number(document.getElementById("waterGoalInput").value);
@@ -1725,7 +1738,7 @@ document.getElementById("weeklyGoalInput").onchange = () => {
   calculateWeeklyGoal();
 };
 
-
+// 🔥 inicializações finais
 renderYear();
 calculateStreak();
 calculateWeeklyGoal();
