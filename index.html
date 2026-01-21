@@ -409,6 +409,28 @@ button.save:hover {
   transform: translateY(-2px);
 }
 
+.time-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.time-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.time-input {
+  background: #020617;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+
 /* 💧 botões de água premium */
 .water-buttons {
   display: flex;
@@ -913,7 +935,7 @@ const exerciseOptions = {
   esporte: ["Futebol", "Vôlei", "Tênis", "Basquete"]
 };
  
-let selectedActivity = "";
+let selectedActivity = null;
 
 // clique nos botões de atividade
 document.querySelectorAll(".act-btn").forEach(btn => {
@@ -960,16 +982,17 @@ function loadActivityOptions(type) {
       <label>Distância (km)</label>
       <input type="number" id="cardioDistance" placeholder="Ex: 5">
 
-      <label>Tempo</label>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+<label>Tempo</label>
+<div class="time-group">
+  <div class="time-buttons">
         <button type="button" class="time-btn" data-time="20">20 min</button>
         <button type="button" class="time-btn" data-time="30">30 min</button>
         <button type="button" class="time-btn" data-time="40">40 min</button>
         <button type="button" class="time-btn" data-time="60">60 min</button>
-      </div>
+   </div>
 
-      <input type="number" id="cardioTime" placeholder="Outro tempo (min)">
-    `;
+  <input type="number" id="cardioTime" class="time-input" placeholder="Outro tempo (min)">
+</div>
 
     // lógica dos botões de tempo
     document.querySelectorAll(".time-btn").forEach(btn => {
@@ -1011,6 +1034,71 @@ function loadActivityOptions(type) {
     });
   }
 }
+
+document.getElementById("addActivity").onclick = () => {
+  if (!selectedActivity) {
+    alert("Selecione uma atividade primeiro 💪");
+    return;
+  }
+
+  let item = {};
+
+  // ===== MUSCULAÇÃO =====
+  if (selectedActivity === "musculacao") {
+    const grupo = document.getElementById("muscleGroup").value;
+
+    item = {
+      tipo: "Musculação",
+      grupo: grupo
+    };
+  }
+
+  // ===== CARDIO =====
+  if (selectedActivity === "cardio") {
+    const tipo = document.getElementById("cardioType").value;
+    const distancia = document.getElementById("cardioDistance").value;
+    const tempo = document.getElementById("cardioTime").value;
+
+    if (!distancia || !tempo) {
+      alert("Informe distância e tempo para o cardio 🏃");
+      return;
+    }
+
+    item = {
+      tipo: "Cardio",
+      atividade: tipo,
+      distancia: distancia + " km",
+      tempo: tempo + " min"
+    };
+  }
+
+  // ===== ESPORTE =====
+  if (selectedActivity === "esporte") {
+    const tipo = document.getElementById("cardioType").value;
+    const tempo = document.getElementById("cardioTime").value;
+
+    if (!tempo) {
+      alert("Informe o tempo do esporte ⚽");
+      return;
+    }
+
+    item = {
+      tipo: "Esporte",
+      atividade: tipo,
+      tempo: tempo + " min"
+    };
+  }
+
+  // salva no array do dia
+  activitiesToday.push(item);
+
+  // atualiza lista na tela
+  renderActivities();
+
+  // limpa apenas os campos (opcional)
+  document.getElementById("activityDetails").querySelectorAll("input").forEach(i => i.value = "");
+};
+
 
 function renderActivities() {
   const list = document.getElementById("activityList");
