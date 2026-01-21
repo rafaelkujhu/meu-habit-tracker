@@ -969,40 +969,42 @@ function loadActivityOptions(type) {
     });
   }
 
-  // ===== CARDIO: tipo + distância + tempo =====
-  if (type === "cardio") {
-    const list = exerciseOptions.cardio;
+// ===== CARDIO: tipo + distância + tempo =====
+if (type === "cardio") {
+  const list = exerciseOptions.cardio;
 
-    box.innerHTML = `
-      <label>Tipo</label>
-      <select id="cardioType">
-        ${list.map(x => `<option>${x}</option>`).join("")}
-      </select>
+  box.innerHTML = `
+    <label>Tipo</label>
+    <select id="cardioType">
+      ${list.map(x => `<option>${x}</option>`).join("")}
+    </select>
 
-      <label>Distância (km)</label>
-      <input type="number" id="cardioDistance" placeholder="Ex: 5">
+    <label>Distância (km)</label>
+    <input type="number" id="cardioDistance" placeholder="Ex: 5">
 
-<label>Tempo</label>
-<div class="time-group">
-  <div class="time-buttons">
+    <label>Tempo</label>
+    <div class="time-group">
+      <div class="time-buttons">
         <button type="button" class="time-btn" data-time="20">20 min</button>
         <button type="button" class="time-btn" data-time="30">30 min</button>
         <button type="button" class="time-btn" data-time="40">40 min</button>
         <button type="button" class="time-btn" data-time="60">60 min</button>
-   </div>
+      </div>
 
-  <input type="number" id="cardioTime" class="time-input" placeholder="Outro tempo (min)">
-</div>
+      <input type="number" id="cardioTime" class="time-input" placeholder="Outro tempo (min)">
+    </div>
+  `;  // 👈 CRÍTICO: FECHA A STRING AQUI
 
-    // lógica dos botões de tempo
-    document.querySelectorAll(".time-btn").forEach(btn => {
-      btn.onclick = () => {
-        document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById("cardioTime").value = btn.dataset.time;
-      };
-    });
-  }
+  // 🔥 AGORA o JS fica FORA da string
+  document.querySelectorAll(".time-btn").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("cardioTime").value = btn.dataset.time;
+    };
+  });
+}
+ 
 
   // ===== ESPORTE: mantém como estava =====
   if (type === "esporte") {
