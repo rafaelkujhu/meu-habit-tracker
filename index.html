@@ -1677,23 +1677,6 @@ function renderMeasureCompare() {
   document.getElementById("measureCompare").innerHTML = html;
 }
 
-// 🔥 tela inicial: começa na visão ANUAL
-if (yearView) yearView.style.display = "block";
-if (monthView) monthView.style.display = "none";
-
-const panelInit = document.getElementById("dayPanel");
-if (panelInit) panelInit.style.display = "none";
-
-
-document.getElementById("toggleMeasures").onclick = () => {
-  const box = document.getElementById("measuresBox");
-
-  if (box.style.display === "none") {
-    box.style.display = "block";
-  } else {
-    box.style.display = "none";
-  }
-};
 
 // 🔥 tela inicial: começa na visão ANUAL
 if (yearView) yearView.style.display = "block";
