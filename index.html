@@ -1729,6 +1729,16 @@ renderMiniWeekChart();
 renderMeasureCompare();
 
 
+// 🔥 BOTÕES DE ÁGUA - SOMA E ATUALIZA BARRA
+document.querySelectorAll(".water-btn").forEach(btn => {
+  btn.onclick = () => {
+    const ml = Number(btn.dataset.ml);
+
+    currentWater += ml;        // soma a água
+    updateWaterUI();          // atualiza número + barra
+  };
+});
+
   </script>
 </body>
 </html>
