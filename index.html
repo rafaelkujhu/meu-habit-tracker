@@ -1183,6 +1183,39 @@ function updateWaterUI() {
   }
 }
 
+function calculateStreak() {
+  const data = getData();
+  const today = new Date();
+
+  let streak = 0;
+
+  for (let i = 0; ; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+
+    const key = `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+
+    if (data[key] && data[key].treino) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+
+  // atualiza os textos de constância
+  const streakInfo = document.getElementById("streakInfo");
+  const streakCount = document.getElementById("streakCount");
+
+  if (streakInfo) {
+    streakInfo.innerText = `🔥 Constância: ${streak} dias`;
+  }
+
+  if (streakCount) {
+    streakCount.innerText = streak;
+  }
+}
+
+
 
 function calculateWeeklyGoal() {
   const data = getData();
@@ -1668,6 +1701,12 @@ document.getElementById("toggleMeasures").onclick = () => {
 const settings = getSettings();
 document.getElementById("waterGoalInput").value = settings.waterGoal;
 document.getElementById("weeklyGoalInput").value = settings.weeklyGoal;
+
+const settings = getSettings();
+document.getElementById("waterGoalInput").value = settings.waterGoal;
+document.getElementById("weeklyGoalInput").value = settings.weeklyGoal;
+
+updateWaterUI();   // 🔥 ESSENCIAL
 
 document.getElementById("waterGoalInput").onchange = () => {
   const settings = getSettings();
