@@ -1642,13 +1642,15 @@ function renderMeasureCompare() {
   document.getElementById("measureCompare").innerHTML = html;
 }
 
-// 🔥 tela inicial: mostra os meses
-if (monthView) monthView.style.display = "none";
+// 🔥 tela inicial: começa na visão mensal
+if (yearView) yearView.style.display = "none";
+if (monthView) monthView.style.display = "block";
 
 const panelInit = document.getElementById("dayPanel");
 if (panelInit) panelInit.style.display = "none";
 
-if (yearView) yearView.style.display = "block";
+renderCalendar();
+
 
 document.getElementById("toggleMeasures").onclick = () => {
   const box = document.getElementById("measuresBox");
