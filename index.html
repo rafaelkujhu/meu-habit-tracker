@@ -869,6 +869,13 @@ button.save:hover {
       Abrir / Fechar medidas
     </button>
 
+<div id="measureLockMsg" style="
+  margin-top:10px;
+  font-size:13px;
+  text-align:center;
+  color:#94a3b8;
+"></div>
+
     <div id="measuresBox" style="display:none; margin-top:16px;">
 
       <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
@@ -1469,6 +1476,28 @@ function getSettings() {
   };
 }
 
+function canRegisterNewMeasures() {
+  const data = getData();
+
+  // pega a última data de medida registrada no histórico
+  const dates = Object.keys(data)
+    .filter(k => data[k].lastMeasureDate)
+    .sort();
+
+  if (dates.length === 0) return true; // nunca mediu ainda
+
+  const lastKey = dates[dates.length - 1];
+  const lastDate = new Date(lastKey);
+  const today = new Date();
+
+  const diffDays = Math.floor(
+    (today - lastDate) / (1000 * 60 * 60 * 24)
+  );
+
+  return diffDays >= 15; // 🔥 regra: só libera após 15 dias
+}
+
+
 function saveSettings(settings) {
   localStorage.setItem("habitSettings_" + currentUser, JSON.stringify(settings));
 }
@@ -1582,27 +1611,47 @@ document.getElementById("armInput").value = data.braco || "";
 document.getElementById("calfInput").value = data.panturrilha || "";
 }
 
+// 🔥 CONTROLE DE BLOQUEIO DAS MEDIDAS
+const canEdit = canRegisterNewMeasures();
+
+[
+  "weightInput",
+  "waistInput",
+  "hipInput",
+  "thighInput",
+  "armInput",
+  "calfInput"
+].forEach(id => {
+  const input = document.getElementById(id);
+  input.disabled = !canEdit;
+});
+
+// 🔥 MENSAGEM DE STATUS DAS MEDIDAS
+const lockMsg = document.getElementById("measureLockMsg");
+
+if (!canEdit) {
+  lockMsg.innerText = "⏳ Próxima medição disponível em 15 dias";
+} else {
+  lockMsg.innerText = "✨ Você já pode registrar novas medidas";
+}
+
 document.getElementById("saveDay").onclick = () => {
   if (!selectedDateKey) return;
 
-  const data = getData();
-
-  data[selectedDateKey] = {
+ data[selectedDateKey] = {
   atividades: activitiesToday,
-
-  // 🔥 marca automaticamente como treino se tiver atividade
   treino: activitiesToday.length > 0,
-
-  // 🔥 salva água corretamente
   agua: currentWater,
 
-  // medidas
   peso: Number(document.getElementById("weightInput").value),
   cintura: Number(document.getElementById("waistInput").value),
   quadril: Number(document.getElementById("hipInput").value),
   coxa: Number(document.getElementById("thighInput").value),
   braco: Number(document.getElementById("armInput").value),
-  panturrilha: Number(document.getElementById("calfInput").value)
+  panturrilha: Number(document.getElementById("calfInput").value),
+
+  // 🔥 NOVO: data da última medição
+  lastMeasureDate: selectedDateKey
 };
 
   saveData(data);
