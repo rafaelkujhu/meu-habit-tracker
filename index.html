@@ -863,6 +863,19 @@ button.save:hover {
   color:#22c55e;
 "></div>
 
+<!-- 📝 RESUMO DO DIA -->
+<div class="gym-card" id="daySummaryCard">
+  <div class="card-title">📝 Resumo do dia</div>
+
+  <div id="daySummary" style="
+    font-size:14px;
+    line-height:1.6;
+    color:#e5e7eb;
+  ">
+    Nenhuma atividade registrada ainda.
+  </div>
+</div>
+
   <!-- 🔥 CARD PROGRESSO -->
   <div class="gym-card">
     <div class="card-title">🔥 Progresso</div>
@@ -1096,6 +1109,8 @@ document.getElementById("addActivity").onclick = () => {
 
   // atualiza lista na tela
   renderActivities();
+updateDaySummary();
+
 
   // limpa apenas os campos (opcional)
   document.getElementById("activityDetails").querySelectorAll("input").forEach(i => i.value = "");
@@ -1149,6 +1164,55 @@ function renderActivities() {
 
     list.appendChild(div);
   });
+}
+
+function updateDaySummary() {
+  const summaryBox = document.getElementById("daySummary");
+
+  if (!summaryBox) return;
+
+  const settings = getSettings();
+  const goalWater = settings.waterGoal;
+
+  let text = "";
+
+  // ===== TREINOS =====
+  const treinos = activitiesToday.filter(a => a.tipo === "Musculação");
+  const grupos = [...new Set(treinos.map(t => t.grupo))];
+
+  if (grupos.length > 0) {
+    text += `💪 <b>Treino:</b> ${grupos.join(", ")}<br>`;
+  } else {
+    text += `💪 <b>Treino:</b> nenhum<br>`;
+  }
+
+  // ===== CARDIO =====
+  const cardios = activitiesToday.filter(a => a.tipo === "Cardio");
+
+  if (cardios.length > 0) {
+    const c = cardios[0]; // por enquanto mostra o primeiro
+    text += `🏃 <b>Cardio:</b> ${c.atividade} • ${c.tempo} • ${c.distancia}<br>`;
+  } else {
+    text += `🏃 <b>Cardio:</b> nenhum<br>`;
+  }
+
+  // ===== ÁGUA =====
+  text += `💧 <b>Água:</b> ${currentWater} / ${goalWater} ml<br>`;
+
+  if (currentWater >= goalWater) {
+    text += `🎉 <b>Meta de água:</b> atingida<br>`;
+  } else {
+    text += `⚠️ <b>Meta de água:</b> em progresso<br>`;
+  }
+
+  // ===== META DE TREINO =====
+  if (treinos.length > 0) {
+    text += `🔥 <b>Treino do dia:</b> concluído<br>`;
+  } else {
+    text += `🔥 <b>Treino do dia:</b> não realizado<br>`;
+  }
+
+  summaryBox.innerHTML = text;
 }
 
 
@@ -1459,6 +1523,8 @@ document.getElementById("selectedDate").innerText = label;
   
     currentWater = data.agua || 0;
  updateWaterUI();
+updateDaySummary();
+
 document.getElementById("weightInput").value = data.peso || "";
 document.getElementById("waistInput").value = data.cintura || "";
 document.getElementById("hipInput").value = data.quadril || "";
@@ -1738,6 +1804,18 @@ document.querySelectorAll(".water-btn").forEach(btn => {
     updateWaterUI();          // atualiza número + barra
   };
 });
+
+// 🔥 ATIVA BOTÕES DE ÁGUA (DEPOIS QUE O HTML EXISTE)
+document.querySelectorAll(".water-btn").forEach(btn => {
+  btn.onclick = () => {
+    const ml = Number(btn.dataset.ml);
+
+    currentWater += ml;
+    updateWaterUI();
+    updateDaySummary();   // atualiza o resumo do dia
+  };
+});
+
 
   </script>
 </body>
