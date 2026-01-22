@@ -896,8 +896,7 @@ button.save:hover {
 
   <!-- 🔥 CARD PROGRESSO -->
   <div class="gym-card">
-    <div class="card-title">🔥 Progresso</div>
-
+  
     <p id="streakInfo" style="text-align:center; font-weight:700; color:#22c55e;">
       🔥 Constância: 0 dias
     </p>
@@ -915,6 +914,38 @@ button.save:hover {
         "></div>
       </div>
     </div>
+
+    <div style="margin-top:10px;">
+      <div style="height:8px; background:#020617; border-radius:6px; overflow:hidden;">
+        <div id="weekBar" style="
+          height:100%;
+          width:0%;
+          background:linear-gradient(90deg,#22c55e,#16a34a);
+          transition:width 0.3s;
+        "></div>
+      </div>
+    </div>
+
+    <!-- 🔹 LEGENDA DOS DIAS DA SEMANA -->
+    <p style="
+      text-align:center;
+      font-size:12px;
+      color:#94a3b8;
+      margin-top:10px;
+      margin-bottom:6px;
+    ">
+      Seg · Ter · Qua · Qui · Sex · Sáb · Dom
+    </p>
+
+<p style="
+  text-align:center;
+  font-size:13px;
+  font-weight:600;
+  color:#22c55e;
+  margin-top:10px;
+">
+  Treinos na semana
+</p>
 
     <div id="miniWeekChart" style="display:flex; gap:8px; justify-content:center; margin-top:14px;"></div>
   </div>
