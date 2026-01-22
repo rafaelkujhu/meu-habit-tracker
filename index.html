@@ -566,6 +566,21 @@ button.save:hover {
   cursor: pointer;
 }
 
+.day-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;              /* espaço entre os cards */
+  margin-top: 12px;
+}
+
+.day-card {
+  background: #0b1220;
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
  /* 🧱 CARD PREMIUM (estilo post-it fitness) */
 .card {
   background: linear-gradient(160deg, #0b1220, #020617);
@@ -740,7 +755,10 @@ button.save:hover {
 <!-- PAINEL DO DIA -->
 <div class="day-panel" id="dayPanel">
 
-  <h3 id="selectedDate">Selecione um dia</h3>
+<h3 id="selectedDate">Selecione um dia</h3>
+
+<!-- 🔥 CONTAINER DOS CARDS DO DIA -->
+<div class="day-cards">
 
   <!-- 🎯 CARD METAS -->
 <div class="card">
@@ -762,6 +780,19 @@ button.save:hover {
       <input type="number" id="weeklyGoalInput" placeholder="ex: 5">
     </div>
 
+  </div>
+</div>
+
+<!-- 📝 RESUMO DO DIA -->
+<div class="gym-card" id="daySummaryCard">
+  <div class="card-title">📝 Resumo do dia</div>
+
+  <div id="daySummary" style="
+    font-size:14px;
+    line-height:1.6;
+    color:#e5e7eb;
+  ">
+    Nenhuma atividade registrada ainda.
   </div>
 </div>
 
@@ -862,19 +893,6 @@ button.save:hover {
   font-weight:700;
   color:#22c55e;
 "></div>
-
-<!-- 📝 RESUMO DO DIA -->
-<div class="gym-card" id="daySummaryCard">
-  <div class="card-title">📝 Resumo do dia</div>
-
-  <div id="daySummary" style="
-    font-size:14px;
-    line-height:1.6;
-    color:#e5e7eb;
-  ">
-    Nenhuma atividade registrada ainda.
-  </div>
-</div>
 
   <!-- 🔥 CARD PROGRESSO -->
   <div class="gym-card">
