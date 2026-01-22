@@ -22,17 +22,6 @@
   --accent: #2563eb;  /* água / wellness */
   --text: #f9fafb;
 } 
-
-/* ===== TEMA CLARO / UNIVERSAL ===== */
-.theme-light {
-  --bg: #f8fafc;        /* fundo geral */
-  --card: #ffffff;     /* cards brancos */
-  --primary: #22c55e;  /* verde saúde */
-  --text: #1f2937;    /* texto escuro */
-  --muted: #64748b;   /* textos secundários */
-  --border: #e5e7eb;  /* bordas suaves */
-}
-
  .info-card {
   background: #ffffff;
   border-radius: 16px;
@@ -78,18 +67,6 @@ body.dark input {
 * {
   box-sizing: border-box;
 }
-
-body {
-  background: var(--bg);
-  color: var(--text);
-}
-
-.card, .gym-card {
-  background: var(--card);
-  border-radius: 20px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-}
-
 
 body {
   margin: 0;
@@ -234,61 +211,92 @@ body {
   }
 }
 
-/* ===== BOTÃO BASE UNIVERSAL ===== */
-button {
-  font-family: inherit;
-  border: none;
+
+.time-btn {
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  background:#fff;
+  cursor:pointer;
+  font-weight:600;
+  transition:all 0.2s ease;
+}
+
+.time-btn:hover {
+  background:#2563eb;
+  color:#fff;
+  border-color:#2563eb;
+}
+
+.time-btn.active {
+  background:#2563eb;
+  color:#fff;
+  border-color:#2563eb;
+}
+
+.activity-btn {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
   cursor: pointer;
+  font-size: 14px;
   transition: all 0.2s ease;
 }
 
-/* 🔵 BOTÃO PRINCIPAL (Salvar, Adicionar, Novo) */
-.btn-primary {
-  background: linear-gradient(135deg, #3b82f6, #60a5fa);
-  color: white;
-  padding: 14px;
+.activity-btn:hover {
+  background: #ff7a18;
+  color: #fff;
+  border-color: #ff7a18;
+}
+
+.activity-item {
+  background: #ffffff;
   border-radius: 16px;
-  font-weight: 800;
+  padding: 14px 16px;
+  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  animation: fadeIn 0.25s ease;
+}
+
+.activity-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.activity-title {
+  font-weight: 700;
   font-size: 15px;
-  box-shadow: 0 6px 18px rgba(59,130,246,0.35);
+  color: #111827;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
+.activity-sub {
+  font-size: 13px;
+  opacity: 0.7;
 }
 
-/* ⚪ BOTÃO SECUNDÁRIO (tempo, atividade, água, seleções) */
-.btn-secondary {
-  background: #f1f5f9;
-  color: #1f2937;
-  padding: 10px 14px;
-  border-radius: 14px;
-  font-weight: 600;
-  border: 1px solid #e5e7eb;
+.activity-remove {
+  background: #ef4444;
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
 }
 
-.btn-secondary:hover {
-  background: #e2e8f0;
-}
-
-.btn-secondary.active {
-  background: #3b82f6;
-  color: white;
-  border-color: #3b82f6;
-}
-
-/* 🔴 BOTÃO PERIGOSO (Limpar dia) */
-.btn-danger {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
-  color: white;
-  padding: 14px;
-  border-radius: 16px;
-  font-weight: 800;
-  box-shadow: 0 6px 18px rgba(239,68,68,0.4);
-}
-
-.btn-danger:hover {
-  transform: translateY(-2px);
+.activity-remove:hover {
+  transform: scale(1.15);
 }
 
 
@@ -679,7 +687,7 @@ button.save:hover {
   </style>
 </head>
 
-<body class="theme-light">
+ <body class="theme-feminino">
 
   <div class="app">
 
@@ -694,7 +702,7 @@ button.save:hover {
       <option value="padrao">Usuário padrão</option>
     </select>
 
-    <button id="newUserBtn" class="btn-primary" style="width:120px;">
+    <button id="newUserBtn" class="save" style="width:120px;">
       ➕ Novo
     </button>
 
@@ -793,7 +801,7 @@ button.save:hover {
   <label>Atividade</label>
 
   <div id="activityButtons" style="display:flex; gap:10px; justify-content:center; margin-bottom:14px;">
-   <button class="btn-secondary act-btn" data-type="musculacao">💪 Musculação</button>
+    <button class="act-btn" data-type="musculacao">💪 Musculação</button>
     <button class="act-btn" data-type="cardio">🏃 Cardio</button>
     <button class="act-btn" data-type="esporte">⚽ Esporte</button>
   </div>
@@ -810,7 +818,7 @@ button.save:hover {
   <div class="card-title">💧 Hidratação</div>
 
   <div class="water-buttons">
-  <button class="btn-secondary water-btn" data-ml="100">100 ml</button>
+    <button class="water-btn" data-ml="100">100 ml</button>
     <button class="water-btn" data-ml="200">200 ml</button>
     <button class="water-btn" data-ml="500">500 ml</button>
     <button class="water-btn" data-ml="1000">1 L</button>
@@ -950,9 +958,9 @@ button.save:hover {
   </div>
 
   <!-- 💾 BOTÕES -->
-<button class="btn-primary" id="saveDay">Salvar</button>
+  <button class="save" id="saveDay">Salvar</button>
 
- <button id="deleteDay" class="btn-danger">
+ <button id="deleteDay" style="
   margin-top: 10px;
   width: 100%;
   padding: 12px;
@@ -1046,7 +1054,7 @@ if (type === "cardio") {
     <label>Tempo</label>
     <div class="time-group">
       <div class="time-buttons">
-        <button class="btn-secondary time-btn" data-time="20">20 min</button>
+        <button type="button" class="time-btn" data-time="20">20 min</button>
         <button type="button" class="time-btn" data-time="30">30 min</button>
         <button type="button" class="time-btn" data-time="40">40 min</button>
         <button type="button" class="time-btn" data-time="60">60 min</button>
