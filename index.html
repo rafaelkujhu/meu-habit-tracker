@@ -1593,11 +1593,14 @@ function clearActiveDays() {
 
 function openDay(dateKey, e) {
   clearActiveDays();
-  e.target.classList.add("active");
 
- document.querySelector(".app").classList.add("show-panel");
+  if (e && e.target && e.target.classList && e.target.classList.contains("day")) {
+    e.target.classList.add("active");
+  }
 
- document.getElementById("dayPanel").style.display = "block";
+  document.querySelector(".app").classList.add("show-panel");
+  document.getElementById("dayPanel").style.display = "block";
+
 
   selectedDateKey = dateKey;
   const data = getData()[dateKey] || {};
@@ -1653,68 +1656,62 @@ if (!canEdit) {
 
 }
 
-
 document.getElementById("saveDay").onclick = () => {
   if (!selectedDateKey) return;
 
- const data = getData();
+  const data = getData();
 
- data[selectedDateKey] = {
-  atividades: activitiesToday,
-  treino: activitiesToday.length > 0,
-  agua: currentWater,
+  data[selectedDateKey] = {
+    atividades: activitiesToday,
+    treino: activitiesToday.length > 0,
+    agua: currentWater,
 
-  peso: Number(document.getElementById("weightInput").value),
-  cintura: Number(document.getElementById("waistInput").value),
-  quadril: Number(document.getElementById("hipInput").value),
-  coxa: Number(document.getElementById("thighInput").value),
-  braco: Number(document.getElementById("armInput").value),
-  panturrilha: Number(document.getElementById("calfInput").value),
+    peso: Number(document.getElementById("weightInput").value),
+    cintura: Number(document.getElementById("waistInput").value),
+    quadril: Number(document.getElementById("hipInput").value),
+    coxa: Number(document.getElementById("thighInput").value),
+    braco: Number(document.getElementById("armInput").value),
+    panturrilha: Number(document.getElementById("calfInput").value),
 
-  // 🔥 NOVO: data da última medição
-  lastMeasureDate: selectedDateKey
-};
+    lastMeasureDate: selectedDateKey
+  };
 
   saveData(data);
-renderCalendar();
-calculateStreak();
-calculateWeeklyGoal();
-renderMiniWeekChart();
- renderMeasureCompare();
 
-openDay(selectedDateKey, { target: document.querySelector(".day.active") });
+  renderCalendar();
+  calculateStreak();
+  calculateWeeklyGoal();
+  renderMiniWeekChart();
+  renderMeasureCompare();
 
-const status = document.getElementById("saveStatus");
-status.style.display = "block";
+  openDay(selectedDateKey, { 
+    target: document.querySelector(".day.active") 
+  });
 
-setTimeout(() => {
-  status.style.display = "none";
-}, 3000);
+  const status = document.getElementById("saveStatus");
+  status.style.display = "block";
 
-},
+  setTimeout(() => {
+    status.style.display = "none";
+  }, 3000);
+};
 
- document.getElementById("deleteDay").onclick = () => {
+document.getElementById("deleteDay").onclick = () => {
   if (!selectedDateKey) return;
 
   const confirmDelete = confirm("Tem certeza que deseja apagar os dados deste dia?");
   if (!confirmDelete) return;
 
   const data = getData();
-
-  // apaga o dia do histórico
   delete data[selectedDateKey];
-
   saveData(data);
 
-  // limpa variáveis
   activitiesToday = [];
   currentWater = 0;
 
-  // limpa visual
   renderActivities();
   updateWaterUI();
 
-  // limpa medidas
   document.getElementById("weightInput").value = "";
   document.getElementById("waistInput").value = "";
   document.getElementById("hipInput").value = "";
@@ -1722,7 +1719,6 @@ setTimeout(() => {
   document.getElementById("armInput").value = "";
   document.getElementById("calfInput").value = "";
 
-  // atualiza tudo
   renderCalendar();
   calculateStreak();
   calculateWeeklyGoal();
@@ -1730,6 +1726,7 @@ setTimeout(() => {
 
   alert("Dia limpo com sucesso ✨");
 };
+
 
 document.getElementById("prevMonth").onclick = () => {
   currentDate.setMonth(currentDate.getMonth() - 1);
@@ -1842,7 +1839,6 @@ document.getElementById("newUserBtn").onclick = () => {
 
   alert("Usuário criado com sucesso ✨");
 };
-
 
 
 function renderMeasureCompare() {
