@@ -967,6 +967,17 @@ button.save:hover {
     <div id="miniWeekChart" style="display:flex; gap:8px; justify-content:center; margin-top:14px;"></div>
   </div>
 
+<p id="saveStatus" style="
+  text-align:center;
+  font-size:13px;
+  color:#22c55e;
+  font-weight:700;
+  margin-top:10px;
+  display:none;
+">
+  ✅ Dia salvo com sucesso
+</p>
+
   <!-- 💾 BOTÕES -->
   <button class="save" id="saveDay">Salvar</button>
 
@@ -1486,10 +1497,15 @@ function getSettings() {
   };
 }
 
-function canRegisterNewMeasures() {
+function canRegisterNewMeasures(dateKey) {
   const data = getData();
 
-  // pega a última data de medida registrada no histórico
+  // se esse dia já tem medição salva, NÃO pode editar de novo
+  if (data[dateKey] && data[dateKey].lastMeasureDate === dateKey) {
+    return false;
+  }
+
+  // pega todas as datas com medição
   const dates = Object.keys(data)
     .filter(k => data[k].lastMeasureDate)
     .sort();
@@ -1498,13 +1514,15 @@ function canRegisterNewMeasures() {
 
   const lastKey = dates[dates.length - 1];
   const lastDate = new Date(lastKey);
-  const today = new Date();
+
+  const [y, m, d] = dateKey.split("-");
+  const currentDate = new Date(y, m - 1, d);
 
   const diffDays = Math.floor(
-    (today - lastDate) / (1000 * 60 * 60 * 24)
+    (currentDate - lastDate) / (1000 * 60 * 60 * 24)
   );
 
-  return diffDays >= 15; // 🔥 regra: só libera após 15 dias
+  return diffDays >= 15;
 }
 
 
@@ -1622,7 +1640,7 @@ document.getElementById("calfInput").value = data.panturrilha || "";
 }
 
 // 🔥 CONTROLE DE BLOQUEIO DAS MEDIDAS
-const canEdit = canRegisterNewMeasures();
+const canEdit = canRegisterNewMeasures(selectedDateKey);
 
 [
   "weightInput",
@@ -1675,8 +1693,12 @@ renderMiniWeekChart();
 
 openDay(selectedDateKey, { target: document.querySelector(".day.active") });
 
-  alert("Dia salvo com sucesso ✨");
-};
+const status = document.getElementById("saveStatus");
+status.style.display = "block";
+
+setTimeout(() => {
+  status.style.display = "none";
+}, 3000);
 
  document.getElementById("deleteDay").onclick = () => {
   if (!selectedDateKey) return;
