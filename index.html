@@ -366,6 +366,16 @@ input::placeholder {
   color: #64748b;
 }
 
+/* 🔥 Labels das medidas corporais */
+.gym-card small {
+  display: block;
+  margin-bottom: 4px;
+  color: #22c55e;       /* verde legível */
+  font-weight: 600;
+  font-size: 12px;
+}
+
+
 .act-btn {
   flex:1;
   padding:12px;
@@ -1637,6 +1647,8 @@ if (!canEdit) {
 
 document.getElementById("saveDay").onclick = () => {
   if (!selectedDateKey) return;
+
+ const data = getData();
 
  data[selectedDateKey] = {
   atividades: activitiesToday,
