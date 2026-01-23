@@ -1625,7 +1625,6 @@ const label = `${days[dateObj.getDay()]} • ${dateObj.getDate().toString().padS
 
 document.getElementById("selectedDate").innerText = label;
 
-
   
     currentWater = data.agua || 0;
  updateWaterUI();
@@ -1637,7 +1636,6 @@ document.getElementById("hipInput").value = data.quadril || "";
 document.getElementById("thighInput").value = data.coxa || "";
 document.getElementById("armInput").value = data.braco || "";
 document.getElementById("calfInput").value = data.panturrilha || "";
-}
 
 // 🔥 CONTROLE DE BLOQUEIO DAS MEDIDAS
 const canEdit = canRegisterNewMeasures(selectedDateKey);
@@ -1662,6 +1660,9 @@ if (!canEdit) {
 } else {
   lockMsg.innerText = "✨ Você já pode registrar novas medidas";
 }
+
+}
+
 
 document.getElementById("saveDay").onclick = () => {
   if (!selectedDateKey) return;
@@ -1926,25 +1927,14 @@ calculateWeeklyGoal();
 renderMiniWeekChart();
 renderMeasureCompare();
 
-
-// 🔥 BOTÕES DE ÁGUA - SOMA E ATUALIZA BARRA
-document.querySelectorAll(".water-btn").forEach(btn => {
-  btn.onclick = () => {
-    const ml = Number(btn.dataset.ml);
-
-    currentWater += ml;        // soma a água
-    updateWaterUI();          // atualiza número + barra
-  };
-});
-
-// 🔥 ATIVA BOTÕES DE ÁGUA (DEPOIS QUE O HTML EXISTE)
+// 🔥 BOTÕES DE ÁGUA - SOMA, ATUALIZA UI E RESUMO
 document.querySelectorAll(".water-btn").forEach(btn => {
   btn.onclick = () => {
     const ml = Number(btn.dataset.ml);
 
     currentWater += ml;
     updateWaterUI();
-    updateDaySummary();   // atualiza o resumo do dia
+    updateDaySummary();
   };
 });
 
