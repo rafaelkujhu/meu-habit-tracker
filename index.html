@@ -707,16 +707,26 @@ button.save:hover {
   <div class="card-title">👤 Usuário</div>
 
   <div style="display:flex; gap:10px;">
+  <select id="userSelect" style="flex:1;">
+    <option value="padrao">Usuário padrão</option>
+  </select>
 
-    <select id="userSelect" style="flex:1;">
-      <option value="padrao">Usuário padrão</option>
-    </select>
+  <button id="newUserBtn" class="save" style="width:90px;">
+    ➕ Novo
+  </button>
 
-    <button id="newUserBtn" class="save" style="width:120px;">
-      ➕ Novo
-    </button>
-
-  </div>
+  <button id="deleteUserBtn" style="
+    width:90px;
+    border:none;
+    border-radius:12px;
+    background:#ef4444;
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+  ">
+    🗑️ Apagar
+  </button>
+</div>
 
 </div>
 
@@ -1840,6 +1850,48 @@ document.getElementById("newUserBtn").onclick = () => {
   alert("Usuário criado com sucesso ✨");
 };
 
+document.getElementById("deleteUserBtn").onclick = () => {
+  const user = currentUser;
+
+  if (user === "padrao") {
+    alert("O usuário padrão não pode ser apagado.");
+    return;
+  }
+
+  const confirmDelete = confirm(
+    `Tem certeza que deseja apagar o usuário "${user}"?\n\nTodos os dados serão perdidos.`
+  );
+
+  if (!confirmDelete) return;
+
+  // 1. Remove da lista de usuários
+  let users = JSON.parse(localStorage.getItem("habitUsers")) || [];
+  users = users.filter(u => u !== user);
+  localStorage.setItem("habitUsers", JSON.stringify(users));
+
+  // 2. Apaga os dados desse usuário
+  localStorage.removeItem("habitData_" + user);
+  localStorage.removeItem("habitSettings_" + user);
+
+  // 3. Volta para usuário padrão
+  currentUser = "padrao";
+  localStorage.setItem("currentUser", currentUser);
+
+  loadUsers();
+
+  // 4. Recarrega a tela limpa
+  activitiesToday = [];
+  currentWater = 0;
+  selectedDateKey = null;
+
+  renderYear();
+  renderCalendar();
+  calculateStreak();
+  calculateWeeklyGoal();
+  renderMiniWeekChart();
+
+  alert("Usuário apagado com sucesso ✨");
+};
 
 function renderMeasureCompare() {
   const data = getData();
